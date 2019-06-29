@@ -1,0 +1,2 @@
+# minecrash
+Clone of minecraft
