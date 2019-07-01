@@ -32,7 +32,7 @@ public class Mesh {
         IntBuffer indicesBuffer = null;
         try {
             this.texture = texture;
-            vertexCount = indices.length;
+            vertexCount = positions.length;
             vboIdList = new ArrayList<>();
 
             vaoId = glGenVertexArrays();
@@ -73,9 +73,9 @@ public class Mesh {
             if (textCoordsBuffer != null) {
                 MemoryUtil.memFree(textCoordsBuffer);
             }
-            if (indicesBuffer != null) {
-                MemoryUtil.memFree(indicesBuffer);
-            }
+//            if (indicesBuffer != null) {
+//                MemoryUtil.memFree(indicesBuffer);
+//            }
         }
     }
 
