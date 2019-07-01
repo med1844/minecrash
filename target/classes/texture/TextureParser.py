@@ -5,6 +5,7 @@ FULL_SIZE = 256
 class Face(object):
 
     def __init__(self, texture_index, coord):
+        print(', '.join(["new Vector3d%s" % str(_) for _ in coord]))
         self.coord = coord
         x1 = ((texture_index // (FULL_SIZE // SIZE)) * SIZE) / FULL_SIZE
         y1 = ((texture_index % (FULL_SIZE // SIZE)) * SIZE) / FULL_SIZE
@@ -52,6 +53,7 @@ class Texture(object):
 
 
 def pprint(position, texture_coord):
+    return
     pos_render, tex_render = [], []
     for i in range(len(position) // 3):
         pos_render.append(', '.join([str(position[i * 3 + d]) + 'f' for d in range(3) if i + d < len(position)]))
@@ -65,6 +67,6 @@ def pprint(position, texture_coord):
 
 
 l = [Texture() for _ in range(10)]
-# pprint(*l[1].get(0, 0, 0, 0, 0, 0))  # stone
-pprint(*l[2].get(1, 3, 2, 2, 2, 2))  # grass
-pprint(*l[4].get(4, 4, 4, 4, 4, 4))  # cobblestone
+pprint(*l[1].get(0, 0, 0, 0, 0, 0))  # stone
+# pprint(*l[2].get(1, 3, 2, 2, 2, 2))  # grass
+# pprint(*l[4].get(4, 4, 4, 4, 4, 4))  # cobblestone

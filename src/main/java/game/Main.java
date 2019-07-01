@@ -1,7 +1,6 @@
 package game;
 
 import engine.MainEngine;
-import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
