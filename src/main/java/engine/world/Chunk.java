@@ -1,8 +1,8 @@
 package engine.world;
 
-import engine.graphics.Mesh;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import static engine.world.TextureManager.*;
 
@@ -30,19 +30,20 @@ public class Chunk {
         renderList = new LinkedList<>();
     }
 
-    public void init(Mesh mesh) {
+    public void init() {
+        Random rand = new Random();
         try {
             for (int x = 0; x < X; ++x) {
                 for (int y = 0; y < Y; ++y) {
                     for (int z = 0; z < Z; ++z) {
-                        blocks[x][y][z] = new Block(GRASS, (this.x << 4) + x, y, (this.z << 4) + z, mesh);
+                        blocks[x][y][z] = new Block(1 + rand.nextInt(5), (this.x << 4) + x, y, (this.z << 4) + z);
                     }
                 }
             }
             for (int x = 0; x < X; ++x) {
                 for (int y = 4; y < 10; ++y) {
                     for (int z = 0; z < Z; ++z) {
-                        blocks[x][y][z] = new Block(AIR, (this.x << 4) + x, y, (this.z << 4) + z, mesh);
+                        blocks[x][y][z] = new Block(AIR, (this.x << 4) + x, y, (this.z << 4) + z);
                     }
                 }
             }

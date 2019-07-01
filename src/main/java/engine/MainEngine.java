@@ -2,8 +2,6 @@ package engine;
 
 import engine.IO.Window;
 import engine.graphics.Renderer;
-import engine.graphics.Mesh;
-import engine.graphics.Texture;
 import engine.IO.Input;
 import engine.world.Chunk;
 import engine.world.TextureManager;
@@ -22,7 +20,6 @@ public class MainEngine implements Runnable {
     private Chunk[] chunks;
     private Input input; // this controls Camera
     private Camera camera;
-    private TextureManager textureManager;
 
     public MainEngine(int width, int height, String windowTitle, boolean vSync) {
         game = new Thread(this, "MINECRASH");
@@ -32,149 +29,18 @@ public class MainEngine implements Runnable {
         camera = new Camera();
         chunks = new Chunk[3];
         chunks[0] = new Chunk(0, 0);
-        chunks[1] = new Chunk(1, 0);
+        chunks[1] = new Chunk(1, -1);
         chunks[2] = new Chunk(2, 2);
-        textureManager = new TextureManager();
     }
 
     public void init() throws Exception {
         window.init();
         renderer.init(camera);
         input.init(window, camera);
-        textureManager.init();
-
-        float[] positions = new float[] {
-                -0.5f, 0.5f, -0.5f,
-                0.5f, 0.5f, -0.5f,
-                0.5f, 0.5f, 0.5f,
-                -0.5f, 0.5f, -0.5f,
-                -0.5f, 0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                -0.5f, -0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                0.5f, -0.5f, 0.5f,
-                -0.5f, -0.5f, -0.5f,
-                -0.5f, -0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-                0.5f, 0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                -0.5f, -0.5f, -0.5f,
-                0.5f, 0.5f, -0.5f,
-                -0.5f, 0.5f, -0.5f,
-                -0.5f, -0.5f, -0.5f,
-                0.5f, 0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-                -0.5f, -0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                -0.5f, 0.5f, 0.5f,
-                -0.5f, -0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-                0.5f, -0.5f, -0.5f,
-                0.5f, 0.5f, 0.5f,
-                0.5f, 0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                -0.5f, 0.5f, 0.5f,
-                -0.5f, -0.5f, 0.5f,
-                -0.5f, -0.5f, -0.5f,
-                -0.5f, 0.5f, 0.5f,
-                -0.5f, 0.5f, -0.5f,
-                -0.5f, -0.5f, -0.5f
-//                -0.5f, 0.5f, 0.5f,
-//                -0.5f, -0.5f, 0.5f,
-//                0.5f, -0.5f, 0.5f,
-//                0.5f, 0.5f, 0.5f,
-//                -0.5f, 0.5f, -0.5f,
-//                0.5f, 0.5f, -0.5f,
-//                -0.5f, -0.5f, -0.5f,
-//                0.5f, -0.5f, -0.5f,
-//
-//                -0.5f, 0.5f, -0.5f,
-//                0.5f, 0.5f, -0.5f,
-//                -0.5f, 0.5f, 0.5f,
-//                0.5f, 0.5f, 0.5f,
-//
-//                0.5f, 0.5f, 0.5f,
-//                0.5f, -0.5f, 0.5f,
-//
-//                -0.5f, 0.5f, 0.5f,
-//                -0.5f, -0.5f, 0.5f,
-//
-//                -0.5f, -0.5f, -0.5f,
-//                0.5f, -0.5f, -0.5f,
-//                -0.5f, -0.5f, 0.5f,
-//                0.5f, -0.5f, 0.5f,
-        };
-        float[] textureCoord = new float[]{
-                0.25f, 0.0f,
-                0.25f, 0.0625f,
-                0.3125f, 0.0625f,
-                0.25f, 0.0f,
-                0.3125f, 0.0f,
-                0.3125f, 0.0625f,
-                0.25f, 0.0f,
-                0.25f, 0.0625f,
-                0.3125f, 0.0625f,
-                0.25f, 0.0f,
-                0.3125f, 0.0f,
-                0.3125f, 0.0625f,
-                0.25f, 0.0f,
-                0.25f, 0.0625f,
-                0.3125f, 0.0625f,
-                0.25f, 0.0f,
-                0.3125f, 0.0f,
-                0.3125f, 0.0625f,
-                0.25f, 0.0f,
-                0.25f, 0.0625f,
-                0.3125f, 0.0625f,
-                0.25f, 0.0f,
-                0.3125f, 0.0f,
-                0.3125f, 0.0625f,
-                0.25f, 0.0f,
-                0.25f, 0.0625f,
-                0.3125f, 0.0625f,
-                0.25f, 0.0f,
-                0.3125f, 0.0f,
-                0.3125f, 0.0625f,
-                0.25f, 0.0f,
-                0.25f, 0.0625f,
-                0.3125f, 0.0625f,
-                0.25f, 0.0f,
-                0.3125f, 0.0f,
-                0.3125f, 0.0625f
-//                0.0f, 0.0f,
-//                0.0f, 0.5f,
-//                0.5f, 0.5f,
-//                0.5f, 0.0f,
-//
-//                0.0f, 0.0f,
-//                0.5f, 0.0f,
-//                0.0f, 0.5f,
-//                0.5f, 0.5f,
-//
-//                0.0f, 0.5f,
-//                0.5f, 0.5f,
-//                0.0f, 1.0f,
-//                0.5f, 1.0f,
-//
-//                0.0f, 0.0f,
-//                0.0f, 0.5f,
-//
-//                0.5f, 0.0f,
-//                0.5f, 0.5f,
-//
-//                0.5f, 0.0f,
-//                1.0f, 0.0f,
-//                0.5f, 0.5f,
-//                1.0f, 0.5f,
-        };
-        int[] indices = new int[36];
-        for (int i = 0; i < 36; ++i) indices[i] = i;
-        Texture texture = new Texture("/texture/terrain.png");
-        Mesh mesh = new Mesh(positions, textureCoord, indices, texture);
+        TextureManager.init();
 
         for (Chunk chunk : chunks) {
-            chunk.init(mesh);
+            chunk.init();
             chunk.genBlockList();
         }
     }

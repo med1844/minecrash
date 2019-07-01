@@ -3,15 +3,13 @@ package engine.world;
 import engine.graphics.Mesh;
 import org.joml.Vector3f;
 
-//import static engine.world.TextureManager.*;
-
 public class Block {
     private int blockID;
     private int x, y, z;
     private Mesh mesh;
 
-    public Block(int blockID, int x, int y, int z, Mesh mesh) {
-        this.mesh = mesh;
+    public Block(int blockID, int x, int y, int z) {
+        this.mesh = TextureManager.meshes[blockID];
         this.blockID = blockID;
         this.x = x;
         this.y = y;
