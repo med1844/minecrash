@@ -1,6 +1,7 @@
-package Engine;
+package engine.IO;
 
 import static org.lwjgl.glfw.GLFW.*;
+
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
@@ -53,21 +54,14 @@ public class Window {
             this.resized = true;
         });
 
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        glfwSetKeyCallback(windowHandle, (window, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-            }
-        });
-
         // Get the resolution of the primary monitor
-        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         // Center our window
-        assert vidmode != null;
+        assert vidMode != null;
         glfwSetWindowPos(
                 windowHandle,
-                (vidmode.width() - width) / 2,
-                (vidmode.height() - height) / 2
+                (vidMode.width() - width) / 2,
+                (vidMode.height() - height) / 2
         );
 
         // Make the OpenGL context current
@@ -91,6 +85,8 @@ public class Window {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+        // this hides mouse cursor
+        glfwSetInputMode(windowHandle, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     }
 
     public void setBackgroundColor(float r, float g, float b, float alpha) {
@@ -104,6 +100,10 @@ public class Window {
 
     public boolean shouldClose() {
         return glfwWindowShouldClose(windowHandle);
+    }
+
+    public void setShouldClose(boolean value) {
+        glfwSetWindowShouldClose(windowHandle, value);
     }
 
     public void clear() {
@@ -137,4 +137,7 @@ public class Window {
         glfwSwapBuffers(windowHandle);
     }
 
+    public long getWindowHandle() {
+        return windowHandle;
+    }
 }

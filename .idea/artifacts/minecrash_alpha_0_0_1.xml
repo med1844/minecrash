@@ -1,0 +1,31 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="minecrash-alpha-0.0.1">
+    <output-path>$PROJECT_DIR$/out/artifacts/minecrash_alpha_0_0_1</output-path>
+    <root id="archive" name="minecrash-alpha-0.0.1.jar">
+      <element id="module-output" name="minecrash" />
+      <element id="library" level="project" name="Maven: org.joml:joml:${joml.version}" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-assimp:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-assimp:natives-windows:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-bgfx:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-bgfx:natives-windows:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-glfw:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-glfw:natives-windows:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-nanovg:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-nanovg:natives-windows:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-nuklear:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-nuklear:natives-windows:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-openal:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-openal:natives-windows:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-opengl:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-opengl:natives-windows:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-par:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-par:natives-windows:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-stb:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-stb:natives-windows:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl-vulkan:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl:3.2.2" />
+      <element id="library" level="project" name="Maven: org.lwjgl:lwjgl:natives-windows:3.2.2" />
+      <element id="library" level="project" name="lwjgl_3.2" />
+    </root>
+  </artifact>
+</component>
