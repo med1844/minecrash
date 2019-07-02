@@ -7,6 +7,7 @@ import engine.maths.Transformations;
 import engine.Camera;
 import engine.world.Block;
 import engine.world.Chunk;
+import engine.world.Timer;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -23,7 +24,8 @@ public class Renderer {
     private float Z_NEAR = 0.1f;
     private float Z_FAR = 1000.0f;
     private final float specularPower = 10f;
-    private final Vector3f ambientLight = new Vector3f(.3f, .3f, .3f);
+    private final Vector3f ambientLight = new Vector3f(.5f, .5f, .5f);
+    private final double PI = Math.acos(-1);
 
     public Renderer() {
         transformations = new Transformations();
@@ -53,8 +55,6 @@ public class Renderer {
         shader.createMaterialUniform("material");
         shader.createDirectionalLightUniform("directionalLight");
 
-        shader.setUniform("specularPower", specularPower);
-        shader.setUniform("ambientLight", ambientLight);
     }
 
     /**
@@ -67,7 +67,8 @@ public class Renderer {
      * @param window Renderer handles events like window resize.
      * @param chunk The chunk that you want to render.
      */
-    public void render(Window window, Chunk chunk, DirectionalLight directionalLight) {
+    public void render(Window window, Chunk chunk, DirectionalLight directionalLight,
+                       Timer timer) {
         // the window's buffer has been cleaned, in MainEngine.update();
 
         if (window.isResized()) {
@@ -75,12 +76,40 @@ public class Renderer {
             window.setResized(false);
         }
 
-        shader.bind();
+        // this part adjusts the angle and light color according to current time.
+        double currentTime = timer.getTimeRatio(); // currentTime in [0, 1]
+        double currentTimeRad = currentTime * 2 * PI;
+        if (currentTime > 0.5) {
+            directionalLight.setIntensity(0); // there should be no light in night
+        } else {
+            directionalLight.setIntensity((float)(0.65 * Math.sqrt(Math.sin(currentTimeRad))));
+            directionalLight.setDirection(
+                    new Vector3f(
+                            (float) -Math.cos(currentTimeRad),
+                            (float) Math.sin(currentTimeRad),
+                            0.12f
+                    )
+            );
+            double THRESHOLD = 0.1;
+            if ((0 < currentTime && currentTime <= THRESHOLD) ||
+                    (0.5 - THRESHOLD <= currentTime && currentTime < 0.5)) {
+                double duskTimeRad;
+                if (currentTime >= 0.5 - THRESHOLD) duskTimeRad = 0.5 - currentTime;
+                else duskTimeRad = currentTime;
+                duskTimeRad *= (1 / THRESHOLD) * PI / 2;
+                directionalLight.setColour(
+                        new Vector3f(
+                                1.0f - (float) (0.05 * Math.cos(duskTimeRad)),
+                                1.0f - (float) (0.35 * Math.cos(duskTimeRad)),
+                                1.0f - (float) (0.85 * Math.cos(duskTimeRad))
+                        )
+                );
+            } else {
+                directionalLight.setColour(new Vector3f(1, 1, 1));
+            }
+        }
 
-        Vector4f direction = new Vector4f(camera.getDirection(), 0);
-        direction.mul(transformations.getViewMatrix(camera));
-        directionalLight.setDirection(new Vector3f(direction.x, direction.y, direction.z));
-        shader.setUniform("directionalLight", directionalLight);
+        shader.bind();
 
         // update matrices
         shader.setUniform("projectionMatrix",
@@ -97,6 +126,12 @@ public class Renderer {
                 transformations.getViewMatrix(camera)
         );
 
+        // Update view Matrix
+        Matrix4f viewMatrix = transformations.getViewMatrix(camera);
+
+        // Update Light Uniforms
+        renderLight(viewMatrix, ambientLight, directionalLight);
+
         shader.setUniform("texture_sampler", 0);
 
         for (Block block : chunk.renderList) {
@@ -109,6 +144,18 @@ public class Renderer {
 
         shader.unbind();
 
+    }
+
+    public void renderLight(Matrix4f viewMatrix, Vector3f ambientLight, DirectionalLight directionalLight) {
+        shader.setUniform("specularPower", specularPower);
+        shader.setUniform("ambientLight", ambientLight);
+
+        // Get a copy of the directional light object and transform its position to view coordinates
+        DirectionalLight cur = new DirectionalLight(directionalLight);
+        Vector4f dir = new Vector4f(cur.getDirection(), 0);
+        dir.mul(viewMatrix);
+        cur.setDirection(new Vector3f(dir.x, dir.y, dir.z));
+        shader.setUniform("directionalLight", cur);
     }
 
     /**

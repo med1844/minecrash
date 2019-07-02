@@ -6,6 +6,7 @@ import engine.graphics.Renderer;
 import engine.IO.Input;
 import engine.world.Chunk;
 import engine.world.TextureManager;
+import engine.world.Timer;
 import org.joml.Vector3f;
 
 /**
@@ -23,6 +24,7 @@ public class MainEngine implements Runnable {
     private Input input; // this controls Camera
     private Camera camera;
     private DirectionalLight directionalLight;
+    private Timer timer;
 
     public MainEngine(int width, int height, String windowTitle, boolean vSync) {
         game = new Thread(this, "minecrash");
@@ -35,7 +37,8 @@ public class MainEngine implements Runnable {
         chunks[1] = new Chunk(1, 0);
         chunks[2] = new Chunk(2, 2);
         directionalLight = new DirectionalLight(new Vector3f(1, 1, 1),
-                new Vector3f(2, 1, 3), 1f);
+                new Vector3f(0, 5, 0), 0.65f);
+        timer = new Timer(10.0);
     }
 
     public void init() throws Exception {
@@ -48,6 +51,8 @@ public class MainEngine implements Runnable {
             chunk.init();
             chunk.genBlockList();
         }
+
+        timer.init();
     }
 
     @Override
@@ -66,12 +71,13 @@ public class MainEngine implements Runnable {
 
     public void update() {
         input.update(); // the input class would update camera.
+        timer.update();
     }
 
     public void render() {
         window.clear(); // clear up existing data
         for (Chunk chunk : chunks) {
-            renderer.render(window, chunk, directionalLight);
+            renderer.render(window, chunk, directionalLight, timer);
         }
         window.swapBuffers();
     }
