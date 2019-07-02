@@ -7,6 +7,9 @@ import engine.maths.Transformations;
 import engine.Camera;
 import engine.world.Block;
 import engine.world.Chunk;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 /**
  * This class is responsible for rendering images to the
@@ -19,6 +22,8 @@ public class Renderer {
     private float FOV = (float)Math.toRadians(60.0f);
     private float Z_NEAR = 0.1f;
     private float Z_FAR = 1000.0f;
+    private final float specularPower = 10f;
+    private final Vector3f ambientLight = new Vector3f(.3f, .3f, .3f);
 
     public Renderer() {
         transformations = new Transformations();
@@ -43,7 +48,13 @@ public class Renderer {
         shader.createUniform("viewMatrix");
         shader.createUniform("modelMatrix");
         shader.createUniform("texture_sampler");
-//        shader.createUniform("worldMatrix");
+        shader.createUniform("specularPower");
+        shader.createUniform("ambientLight");
+        shader.createMaterialUniform("material");
+        shader.createDirectionalLightUniform("directionalLight");
+
+        shader.setUniform("specularPower", specularPower);
+        shader.setUniform("ambientLight", ambientLight);
     }
 
     /**
@@ -56,7 +67,7 @@ public class Renderer {
      * @param window Renderer handles events like window resize.
      * @param chunk The chunk that you want to render.
      */
-    public void render(Window window, Chunk chunk) {
+    public void render(Window window, Chunk chunk, DirectionalLight directionalLight) {
         // the window's buffer has been cleaned, in MainEngine.update();
 
         if (window.isResized()) {
@@ -65,6 +76,11 @@ public class Renderer {
         }
 
         shader.bind();
+
+        Vector4f direction = new Vector4f(camera.getDirection(), 0);
+        direction.mul(transformations.getViewMatrix(camera));
+        directionalLight.setDirection(new Vector3f(direction.x, direction.y, direction.z));
+        shader.setUniform("directionalLight", directionalLight);
 
         // update matrices
         shader.setUniform("projectionMatrix",
@@ -87,6 +103,7 @@ public class Renderer {
             shader.setUniform("modelMatrix",
                     transformations.getModelMatrix(block)
             );
+            shader.setUniform("material", block.getMesh().getMaterial());
             block.render();
         }
 

@@ -1,10 +1,12 @@
 package engine;
 
 import engine.IO.Window;
+import engine.graphics.DirectionalLight;
 import engine.graphics.Renderer;
 import engine.IO.Input;
 import engine.world.Chunk;
 import engine.world.TextureManager;
+import org.joml.Vector3f;
 
 /**
  * This class is the main engine of the game, mainly handling:
@@ -20,17 +22,20 @@ public class MainEngine implements Runnable {
     private Chunk[] chunks;
     private Input input; // this controls Camera
     private Camera camera;
+    private DirectionalLight directionalLight;
 
     public MainEngine(int width, int height, String windowTitle, boolean vSync) {
-        game = new Thread(this, "MINECRASH");
+        game = new Thread(this, "minecrash");
         window = new Window(width, height, windowTitle, vSync);
         renderer = new Renderer();
         input = new Input();
         camera = new Camera();
         chunks = new Chunk[3];
         chunks[0] = new Chunk(0, 0);
-        chunks[1] = new Chunk(1, -1);
+        chunks[1] = new Chunk(1, 0);
         chunks[2] = new Chunk(2, 2);
+        directionalLight = new DirectionalLight(new Vector3f(1, 1, 1),
+                new Vector3f(2, 1, 3), 1f);
     }
 
     public void init() throws Exception {
@@ -66,7 +71,7 @@ public class MainEngine implements Runnable {
     public void render() {
         window.clear(); // clear up existing data
         for (Chunk chunk : chunks) {
-            renderer.render(window, chunk);
+            renderer.render(window, chunk, directionalLight);
         }
         window.swapBuffers();
     }
