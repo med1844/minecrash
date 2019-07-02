@@ -70,5 +70,4 @@ void main() {
     vec4 diffuseSpecular = calcDirectionalLight(directionalLight, vertexPos, vertexNormal);
 
     fragColor = ambientC * vec4(ambientLight, 1) + diffuseSpecular;
-    fragColor = vec4(.3f, .3f, .3f, 1);
 }

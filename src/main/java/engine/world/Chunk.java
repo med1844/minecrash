@@ -33,17 +33,11 @@ public class Chunk {
     public void init() {
         Random rand = new Random();
         try {
+            for (int x = 0; x < X; ++x) for (int y = 0; y < Y; ++y) for (int z = 0; z < Z; ++z) blocks[x][y][z] = new Block(AIR, (this.x << 4) + x, y, (this.z << 4) + z);
             for (int x = 0; x < X; ++x) {
-                for (int y = 0; y < Y; ++y) {
-                    for (int z = 0; z < Z; ++z) {
+                for (int z = 0; z < Z; ++z) {
+                    for (int y = 0; y < 1 + rand.nextInt(5); ++y) {
                         blocks[x][y][z] = new Block(1 + rand.nextInt(5), (this.x << 4) + x, y, (this.z << 4) + z);
-                    }
-                }
-            }
-            for (int x = 0; x < X; ++x) {
-                for (int y = 4; y < 10; ++y) {
-                    for (int z = 0; z < Z; ++z) {
-                        blocks[x][y][z] = new Block(AIR, (this.x << 4) + x, y, (this.z << 4) + z);
                     }
                 }
             }
