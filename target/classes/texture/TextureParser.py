@@ -53,7 +53,6 @@ class Texture(object):
 
 
 def pprint(position, texture_coord):
-    return
     pos_render, tex_render = [], []
     for i in range(len(position) // 3):
         pos_render.append(', '.join([str(position[i * 3 + d]) + 'f' for d in range(3) if i + d < len(position)]))

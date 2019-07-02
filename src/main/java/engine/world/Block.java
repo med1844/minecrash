@@ -31,4 +31,9 @@ public class Block {
     public boolean equals(int ID) {
         return blockID == ID;
     }
+
+    public Mesh getMesh() {
+        return mesh;
+    }
+
 }

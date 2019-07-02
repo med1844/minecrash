@@ -81,7 +81,7 @@ public class Texture {
         return textureId;
     }
 
-    public void cleanup() {
+    public void clear() {
         glDeleteTextures(id);
     }
 }

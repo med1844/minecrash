@@ -3,8 +3,12 @@ package engine.graphics;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.joml.Matrix4f;
 import static org.lwjgl.opengl.GL20.*;
+
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.system.MemoryStack;
 
 public class Shader {
@@ -29,6 +33,20 @@ public class Shader {
         uniformTable.put(uniformName, uniformLocation);
     }
 
+    public void createDirectionalLightUniform(String uniformName) throws Exception {
+        createUniform(uniformName + ".colour");
+        createUniform(uniformName + ".direction");
+        createUniform(uniformName + ".intensity");
+    }
+
+    public void createMaterialUniform(String uniformName) throws Exception {
+        createUniform(uniformName + ".ambient");
+        createUniform(uniformName + ".diffuse");
+        createUniform(uniformName + ".specular");
+        createUniform(uniformName + ".hasTexture");
+        createUniform(uniformName + ".reflectance");
+    }
+
     public void setUniform(String uniformName, Matrix4f value) {
         try (MemoryStack stack = MemoryStack.stackPush()) {
             // Dump the matrix into a float buffer
@@ -40,6 +58,32 @@ public class Shader {
 
     public void setUniform(String uniformName, int value) {
         glUniform1i(uniformTable.get(uniformName), value);
+    }
+
+    public void setUniform(String uniformName, Vector3f value) {
+        glUniform3f(uniformTable.get(uniformName), value.x, value.y, value.z);
+    }
+
+    public void setUniform(String uniformName, Vector4f value) {
+        glUniform4f(uniformTable.get(uniformName), value.x, value.y, value.z, value.w);
+    }
+
+    public void setUniform(String uniformName, float value) {
+        glUniform1f(uniformTable.get(uniformName), value);
+    }
+
+    public void setUniform(String uniformName, DirectionalLight directionalLight) {
+        setUniform(uniformName + ".colour", directionalLight.getColour());
+        setUniform(uniformName + ".direction", directionalLight.getDirection());
+        setUniform(uniformName + ".intensity", directionalLight.getIntensity());
+    }
+
+    public void setUniform(String uniformName, Material material) {
+        setUniform(uniformName + ".ambient", material.getAmbient());
+        setUniform(uniformName + ".diffuse", material.getDiffuse());
+        setUniform(uniformName + ".specular", material.getSpecular());
+        setUniform(uniformName + ".hasTexture", material.getHasTexture());
+        setUniform(uniformName + ".reflectance", material.getReflectance());
     }
 
     public void createVertexShader(String shaderCode) throws Exception {
@@ -70,7 +114,7 @@ public class Shader {
 
     /**
      * this method links the shader program and validates it
-     * @throws Exception
+     * @throws Exception when linking process failed
      */
     public void link() throws Exception {
         glLinkProgram(programId);
