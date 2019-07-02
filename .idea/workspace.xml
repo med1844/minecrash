@@ -12,6 +12,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/engine/MainEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/MainEngine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/Chunk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/world/Chunk.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/shader/fragment.fsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/shader/fragment.fsh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/engine/MainEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/MainEngine.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/engine/graphics/Renderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/graphics/Renderer.class" afterDir="false" />
@@ -30,11 +31,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1034">
-              <caret line="92" column="33" selection-start-line="92" selection-start-column="33" selection-end-line="92" selection-end-column="33" />
+            <state relative-caret-position="220">
+              <caret line="149" column="52" selection-start-line="149" selection-start-column="52" selection-end-line="149" selection-end-column="52" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -45,11 +46,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/engine/MainEngine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="292">
+            <state relative-caret-position="556">
               <caret line="40" column="27" selection-start-line="40" selection-start-column="27" selection-end-line="40" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/game/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="132">
+              <caret line="6" column="50" selection-start-line="6" selection-start-column="50" selection-end-line="6" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -86,7 +96,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Chunk.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="66">
               <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -151,7 +161,6 @@
         <option value="$PROJECT_DIR$/src/main/java/engine/IO/Input.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/Utils.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/world/Block.java" />
-        <option value="$PROJECT_DIR$/src/main/java/game/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/DirectionalLight.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/Texture.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/Mesh.java" />
@@ -166,6 +175,7 @@
         <option value="$PROJECT_DIR$/src/main/java/engine/world/Timer.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/MainEngine.java" />
+        <option value="$PROJECT_DIR$/src/main/java/game/Main.java" />
       </list>
     </option>
   </component>
@@ -642,13 +652,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/game/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/engine/IO/Window.java">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -702,16 +705,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Chunk.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Material.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
@@ -741,6 +734,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="149" column="52" selection-start-line="149" selection-start-column="52" selection-end-line="149" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Timer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="248">
@@ -756,9 +759,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Chunk.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/engine/MainEngine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
+        <state relative-caret-position="556">
           <caret line="40" column="27" selection-start-line="40" selection-start-column="27" selection-end-line="40" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -766,13 +779,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/game/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1034">
-          <caret line="92" column="33" selection-start-line="92" selection-start-column="33" selection-end-line="92" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="132">
+          <caret line="6" column="50" selection-start-line="6" selection-start-column="50" selection-end-line="6" selection-end-column="50" />
         </state>
       </provider>
     </entry>
