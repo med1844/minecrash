@@ -76,9 +76,7 @@ public class MainEngine implements Runnable {
 
     public void render() {
         window.clear(); // clear up existing data
-        for (Chunk chunk : chunks) {
-            renderer.render(window, chunk, directionalLight, timer);
-        }
+        renderer.render(window, chunks, directionalLight, timer);
         window.swapBuffers();
     }
 

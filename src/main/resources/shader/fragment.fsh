@@ -3,6 +3,7 @@
 in vec2 outTextureCoord;
 in vec3 vertexPos;
 in vec3 vertexNormal;
+in vec3 originVertexNormal;
 out vec4 fragColor;
 
 struct Material {
@@ -57,7 +58,7 @@ vec4 calcLightColour(vec3 light_colour, float light_intensity, vec3 position, ve
     specularFactor = pow(specularFactor, specularPower);
     specColour = specularC * light_intensity * specularFactor * material.reflectance * vec4(light_colour, 1.0);
 
-    return (diffuseColour + specColour);
+    return (diffuseColour * material.diffuse + specColour * material.specular);
 }
 
 vec4 calcDirectionalLight(DirectionalLight light, vec3 position, vec3 normal) {
@@ -67,7 +68,13 @@ vec4 calcDirectionalLight(DirectionalLight light, vec3 position, vec3 normal) {
 void main() {
     setupColours(material, outTextureCoord);
 
-    vec4 diffuseSpecular = calcDirectionalLight(directionalLight, vertexPos, vertexNormal);
+    vec4 diffuseSpecular = calcDirectionalLight(directionalLight, vertexPos, vertexNormal) * 0.8;
 
-    fragColor = ambientC * vec4(ambientLight, 1) + diffuseSpecular;
+    float mixRatio = 0.0f;
+    if (originVertexNormal == vec3(-1, 0, 0) || originVertexNormal == vec3(1, 0, 0))
+        mixRatio = 0.15f;
+    else if (originVertexNormal == vec3(0, 0, -1) || originVertexNormal == vec3(0, 0, 1))
+        mixRatio = 0.3f;
+
+    fragColor = mix(ambientC * vec4(ambientLight, 1) + diffuseSpecular, vec4(0, 0, 0, 1), mixRatio);
 }

@@ -7,6 +7,7 @@ import engine.maths.Transformations;
 import engine.Camera;
 import engine.world.Block;
 import engine.world.Chunk;
+import engine.world.DayNightCycle;
 import engine.world.Timer;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -65,9 +66,9 @@ public class Renderer {
      * transformations.
      *
      * @param window Renderer handles events like window resize.
-     * @param chunk The chunk that you want to render.
+     * @param chunks Chunks that you want to render.
      */
-    public void render(Window window, Chunk chunk, DirectionalLight directionalLight,
+    public void render(Window window, Chunk[] chunks, DirectionalLight directionalLight,
                        Timer timer) {
         // the window's buffer has been cleaned, in MainEngine.update();
 
@@ -76,38 +77,7 @@ public class Renderer {
             window.setResized(false);
         }
 
-        // this part adjusts the angle and light color according to current time.
-        double currentTime = timer.getTimeRatio(); // currentTime in [0, 1]
-        double currentTimeRad = currentTime * 2 * PI;
-        if (currentTime > 0.5) {
-            directionalLight.setIntensity(0); // there should be no light in night
-        } else {
-            directionalLight.setIntensity((float)(0.65 * Math.sqrt(Math.sin(currentTimeRad))));
-            directionalLight.setDirection(
-                    new Vector3f(
-                            (float) -Math.cos(currentTimeRad),
-                            (float) Math.sin(currentTimeRad),
-                            0.12f
-                    )
-            );
-            double THRESHOLD = 0.1;
-            if ((0 < currentTime && currentTime <= THRESHOLD) ||
-                    (0.5 - THRESHOLD <= currentTime && currentTime < 0.5)) {
-                double duskTimeRad;
-                if (currentTime >= 0.5 - THRESHOLD) duskTimeRad = 0.5 - currentTime;
-                else duskTimeRad = currentTime;
-                duskTimeRad *= (1 / THRESHOLD) * PI / 2;
-                directionalLight.setColour(
-                        new Vector3f(
-                                1.0f - (float) (0.05 * Math.cos(duskTimeRad)),
-                                1.0f - (float) (0.35 * Math.cos(duskTimeRad)),
-                                1.0f - (float) (0.85 * Math.cos(duskTimeRad))
-                        )
-                );
-            } else {
-                directionalLight.setColour(new Vector3f(1, 1, 1));
-            }
-        }
+        renderDayNightCycle(window, directionalLight, timer);
 
         shader.bind();
 
@@ -134,12 +104,14 @@ public class Renderer {
 
         shader.setUniform("texture_sampler", 0);
 
-        for (Block block : chunk.renderList) {
-            shader.setUniform("modelMatrix",
-                    transformations.getModelMatrix(block)
-            );
-            shader.setUniform("material", block.getMesh().getMaterial());
-            block.render();
+        for (Chunk chunk : chunks) {
+            for (Block block : chunk.renderList) {
+                shader.setUniform("modelMatrix",
+                        transformations.getModelMatrix(block)
+                );
+                shader.setUniform("material", block.getMesh().getMaterial());
+                block.render();
+            }
         }
 
         shader.unbind();
@@ -156,6 +128,11 @@ public class Renderer {
         dir.mul(viewMatrix);
         cur.setDirection(new Vector3f(dir.x, dir.y, dir.z));
         shader.setUniform("directionalLight", cur);
+    }
+
+    public void renderDayNightCycle(Window window, DirectionalLight directionalLight, Timer timer) {
+        // this part adjusts the angle and light color according to current time.
+        DayNightCycle.setDirectionalLight(timer.getTimeRatio(), directionalLight, window);
     }
 
     /**
