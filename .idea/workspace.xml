@@ -6,10 +6,16 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd199bd0-17de-4e96-8139-258e73d17526" name="Default Changelist" comment="">
+    <list default="true" id="fd199bd0-17de-4e96-8139-258e73d17526" name="Default Changelist" comment="jk">
+      <change afterPath="$PROJECT_DIR$/src/main/java/engine/world/DayNightCycle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/engine/IO/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/IO/Window.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/TextureManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/world/TextureManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/texture/TextureParser.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/texture/TextureParser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/MainEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/MainEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/shader/fragment.fsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/shader/fragment.fsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/shader/vertex.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/shader/vertex.vsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/engine/IO/Window.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/IO/Window.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/engine/graphics/Renderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/graphics/Renderer.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -27,8 +33,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/game/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="44">
-              <caret line="2" column="14" lean-forward="true" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
+            <state relative-caret-position="154">
+              <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/shader/fragment.fsh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="322">
+              <caret line="70" column="95" selection-start-line="70" selection-start-column="95" selection-end-line="70" selection-end-column="95" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/shader/vertex.vsh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="484">
+              <caret line="22" column="43" selection-start-line="22" selection-start-column="43" selection-end-line="22" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -36,8 +60,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/engine/IO/Window.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-624">
-              <caret line="75" column="36" selection-start-line="75" selection-start-column="36" selection-end-line="75" selection-end-column="36" />
+            <state relative-caret-position="27">
+              <caret line="112" column="39" lean-forward="true" selection-start-line="112" selection-start-column="39" selection-end-line="112" selection-end-column="39" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#setBackgroundColor#0;class#Window#0" />
@@ -47,19 +71,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/shader/fragment.fsh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1195">
-              <caret line="71" column="45" selection-start-line="71" selection-start-column="45" selection-end-line="71" selection-end-column="45" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/engine/MainEngine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="484">
-              <caret line="40" column="26" lean-forward="true" selection-start-line="40" selection-start-column="26" selection-end-line="40" selection-end-column="26" />
+            <state>
+              <caret line="58" column="22" selection-start-line="58" selection-start-column="22" selection-end-line="58" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -67,11 +82,24 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/engine/Camera.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="438">
+              <caret line="43" column="20" selection-start-line="43" selection-start-column="20" selection-end-line="43" selection-end-column="20" />
+              <folding>
+                <element signature="e#1223#1224#0" expanded="true" />
+                <element signature="e#1268#1269#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/TextureManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
-              <caret line="138" column="112" selection-start-line="138" selection-start-column="112" selection-end-line="138" selection-end-column="112" />
+            <state relative-caret-position="594">
+              <caret line="149" column="39" lean-forward="true" selection-start-line="149" selection-start-column="39" selection-end-line="149" selection-end-column="39" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -80,23 +108,51 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/texture/TextureParser.py">
+        <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="32" column="8" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="8" />
+            <state relative-caret-position="205">
+              <caret line="79" column="60" selection-start-line="79" selection-start-column="60" selection-end-line="79" selection-end-column="60" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Texture.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/DayNightCycle.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-44">
-              <caret line="49" column="21" selection-start-line="49" selection-start-column="21" selection-end-line="49" selection-end-column="21" />
+            <state relative-caret-position="233">
+              <caret line="39" column="32" selection-start-line="39" selection-start-column="32" selection-end-line="39" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#580#581#0" expanded="true" />
-                <element signature="e#608#609#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/DirectionalLight.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-374">
+              <caret line="10" column="30" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
+              <folding>
+                <element signature="e#298#299#0" expanded="true" />
+                <element signature="e#347#348#0" expanded="true" />
+                <element signature="e#399#400#0" expanded="true" />
+                <element signature="e#457#458#0" expanded="true" />
+                <element signature="e#677#678#0" expanded="true" />
+                <element signature="e#706#707#0" expanded="true" />
+                <element signature="e#752#753#0" expanded="true" />
+                <element signature="e#788#789#0" expanded="true" />
+                <element signature="e#826#827#0" expanded="true" />
+                <element signature="e#858#859#0" expanded="true" />
+                <element signature="e#910#911#0" expanded="true" />
+                <element signature="e#952#953#0" expanded="true" />
+                <element signature="e#987#988#0" expanded="true" />
+                <element signature="e#1019#1020#0" expanded="true" />
+                <element signature="e#1068#1069#0" expanded="true" />
+                <element signature="e#1110#1111#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -152,18 +208,19 @@
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/DirectionalLight.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/Texture.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/Mesh.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/shader/vertex.vsh" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/Shader.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/world/Chunk.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/Material.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/world/Timer.java" />
         <option value="$PROJECT_DIR$/src/main/java/game/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/MainEngine.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/shader/fragment.fsh" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/IO/Window.java" />
         <option value="$PROJECT_DIR$/src/main/resources/texture/TextureParser.py" />
         <option value="$PROJECT_DIR$/src/main/java/engine/world/TextureManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/engine/world/Chunk.java" />
+        <option value="$PROJECT_DIR$/src/main/java/engine/IO/Window.java" />
+        <option value="$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/engine/MainEngine.java" />
+        <option value="$PROJECT_DIR$/src/main/java/engine/world/DayNightCycle.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/shader/vertex.vsh" />
+        <option value="$PROJECT_DIR$/src/main/resources/shader/fragment.fsh" />
       </list>
     </option>
   </component>
@@ -405,7 +462,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3295583" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49828178" visible="true" weight="0.29105324" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49828178" visible="true" weight="0.2423556" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997735" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -580,24 +637,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/Camera.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="43" column="20" selection-start-line="43" selection-start-column="20" selection-end-line="43" selection-end-column="20" />
-          <folding>
-            <element signature="e#1223#1224#0" expanded="true" />
-            <element signature="e#1268#1269#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/shader/vertex.vsh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" column="29" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Shader.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1254">
@@ -618,16 +657,6 @@
           <folding>
             <element signature="e#280#281#0" expanded="true" />
             <element signature="e#322#323#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Chunk.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1100">
-          <caret line="54" selection-start-line="54" selection-end-line="54" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -668,82 +697,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/DirectionalLight.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="10" column="30" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
-          <folding>
-            <element signature="e#298#299#0" expanded="true" />
-            <element signature="e#347#348#0" expanded="true" />
-            <element signature="e#399#400#0" expanded="true" />
-            <element signature="e#457#458#0" expanded="true" />
-            <element signature="e#677#678#0" expanded="true" />
-            <element signature="e#706#707#0" expanded="true" />
-            <element signature="e#752#753#0" expanded="true" />
-            <element signature="e#788#789#0" expanded="true" />
-            <element signature="e#826#827#0" expanded="true" />
-            <element signature="e#858#859#0" expanded="true" />
-            <element signature="e#910#911#0" expanded="true" />
-            <element signature="e#952#953#0" expanded="true" />
-            <element signature="e#987#988#0" expanded="true" />
-            <element signature="e#1019#1020#0" expanded="true" />
-            <element signature="e#1068#1069#0" expanded="true" />
-            <element signature="e#1110#1111#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="89" column="30" lean-forward="true" selection-start-line="89" selection-start-column="30" selection-end-line="89" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/shader/fragment.fsh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1195">
-          <caret line="71" column="45" selection-start-line="71" selection-start-column="45" selection-end-line="71" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/game/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="2" column="14" lean-forward="true" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Mesh.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
           <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/MainEngine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="40" column="26" lean-forward="true" selection-start-line="40" selection-start-column="26" selection-end-line="40" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/IO/Window.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-624">
-          <caret line="75" column="36" selection-start-line="75" selection-start-column="36" selection-end-line="75" selection-end-column="36" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#setBackgroundColor#0;class#Window#0" />
           </folding>
         </state>
       </provider>
@@ -767,13 +726,121 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/TextureManager.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Chunk.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="138" column="112" selection-start-line="138" selection-start-column="112" selection-end-line="138" selection-end-column="112" />
+        <state relative-caret-position="359">
+          <caret line="36" column="40" selection-start-line="36" selection-start-column="40" selection-end-line="36" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/DirectionalLight.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-374">
+          <caret line="10" column="30" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
+          <folding>
+            <element signature="e#298#299#0" expanded="true" />
+            <element signature="e#347#348#0" expanded="true" />
+            <element signature="e#399#400#0" expanded="true" />
+            <element signature="e#457#458#0" expanded="true" />
+            <element signature="e#677#678#0" expanded="true" />
+            <element signature="e#706#707#0" expanded="true" />
+            <element signature="e#752#753#0" expanded="true" />
+            <element signature="e#788#789#0" expanded="true" />
+            <element signature="e#826#827#0" expanded="true" />
+            <element signature="e#858#859#0" expanded="true" />
+            <element signature="e#910#911#0" expanded="true" />
+            <element signature="e#952#953#0" expanded="true" />
+            <element signature="e#987#988#0" expanded="true" />
+            <element signature="e#1019#1020#0" expanded="true" />
+            <element signature="e#1068#1069#0" expanded="true" />
+            <element signature="e#1110#1111#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/Camera.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="43" column="20" selection-start-line="43" selection-start-column="20" selection-end-line="43" selection-end-column="20" />
+          <folding>
+            <element signature="e#1223#1224#0" expanded="true" />
+            <element signature="e#1268#1269#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="79" column="60" selection-start-line="79" selection-start-column="60" selection-end-line="79" selection-end-column="60" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/TextureManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="594">
+          <caret line="149" column="39" lean-forward="true" selection-start-line="149" selection-start-column="39" selection-end-line="149" selection-end-column="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/MainEngine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="58" column="22" selection-start-line="58" selection-start-column="22" selection-end-line="58" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/IO/Window.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27">
+          <caret line="112" column="39" lean-forward="true" selection-start-line="112" selection-start-column="39" selection-end-line="112" selection-end-column="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#setBackgroundColor#0;class#Window#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/DayNightCycle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="39" column="32" selection-start-line="39" selection-start-column="32" selection-end-line="39" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/game/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/shader/vertex.vsh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="22" column="43" selection-start-line="22" selection-start-column="43" selection-end-line="22" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/shader/fragment.fsh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="70" column="95" selection-start-line="70" selection-start-column="95" selection-end-line="70" selection-end-column="95" />
         </state>
       </provider>
     </entry>
