@@ -14,6 +14,8 @@ public class Window {
     private String title;
     private boolean resized;
     private boolean vSync;
+    private int frames;
+    private long time;
 
     public Window(int width, int height, String title, boolean vSync) {
         this.width = width;
@@ -26,6 +28,7 @@ public class Window {
     public void init() {
         // Setup an error callback. The default implementation
         // will print the error message in System.err.
+        time=System.currentTimeMillis();
         GLFWErrorCallback.createPrint(System.err).set();
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
@@ -114,7 +117,16 @@ public class Window {
         glfwPollEvents();
         setBackgroundColor(0.1f, 0.3f, 0.5f, 1.0f);
     }
-
+    
+    public void update() {
+        frames++;
+        if (System.currentTimeMillis()>time+1000) {
+            setTitle(title+" | FPS:"+frames);
+            frames=0;
+            time=System.currentTimeMillis();
+        }
+    }
+    
     public void setTitle(String title) {
         glfwSetWindowTitle(windowHandle, title);
     }
