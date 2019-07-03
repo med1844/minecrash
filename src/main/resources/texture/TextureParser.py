@@ -26,10 +26,10 @@ class Texture(object):
 
     def get(self, up, down, left, right, front, back):
         self.faces.append(Face(up, [
-            (x, .5, y) for x in [-.5, .5] for y in [-.5, .5]
+            (x, .5, y) for x in [.5, -.5] for y in [.5, -.5]
         ]))
         self.faces.append(Face(down, [
-            (x, -.5, y) for x in [-.5, .5] for y in [-.5, .5]
+            (x, -.5, y) for x in [.5, -.5] for y in [.5, -.5]
         ]))
         self.faces.append(Face(left, [
             (x, y, -.5) for y in [.5, -.5] for x in [.5, -.5]
