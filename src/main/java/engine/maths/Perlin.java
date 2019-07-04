@@ -4,11 +4,11 @@ public class Perlin {
     public float persistence;
     public int Number_Of_Octaves;
     public Perlin(){
-        persistence = 0.50f;
-        Number_Of_Octaves = 4;
+        persistence = 0.50f;    //持续度，持续度越大，振幅越大，对比度更搞
+        Number_Of_Octaves = 4;  //倍频，叠加噪声函数的次数，使图像更细致
     }
  
-    public double Noise(int x,int y)    // 根据(x,y)获取一个初步噪声值
+    public double Noise(int x,int y)    // 随机数发生器，根据(x,y)获取一个初步噪声值，同样的输入有相同的输出
     {
         int n = x + y * 57;
         n = (n<<13) ^ n;

@@ -6,31 +6,50 @@ import engine.graphics.Renderer;
 
 public class World {
     private final int WORLD_MAX_WIDTH = 4;
-    private final int WORLD_MAX_LENGHT = 4;
-    private Chunk[] chunks;
+    private final int WORLD_MAX_LENGTH = 4;
+    private Chunk[][] chunks;
 
     public World() {
-        chunks = new Chunk[WORLD_MAX_WIDTH * WORLD_MAX_LENGHT];
+        chunks = new Chunk[WORLD_MAX_WIDTH][WORLD_MAX_LENGTH];
     }
 
     public void init() {
         for (int i = 0; i < chunks.length; i++) {
-            chunks[i] = new Chunk(i / WORLD_MAX_WIDTH, i % WORLD_MAX_WIDTH);
-            new ChunkProvider().provideChunk(chunks[i]);
-            chunks[i].genBlockList();
+            for (int j=0;j<chunks[i].length;j++) {
+                chunks[i][j] = new Chunk(i, j);
+                new ChunkProvider().provideChunk(chunks[i][j]);
+                chunks[i][j].genBlockList();
+            }
         }
     }
 
     public void render(Renderer renderer, Window window, DirectionalLight directionalLight, Timer timer) {
-        for (Chunk chunk : chunks) {
-            renderer.render(window, chunk, directionalLight, timer);
+        for (int i = 0; i < chunks.length; i++) {
+            for (int j=0;j<chunks[i].length;j++) {
+                renderer.render(window, chunks[i][j], directionalLight, timer);
+            }
         }
     }
 
     public void clear() {
-        for (Chunk chunk : chunks) {
-            chunk.clear();
+        for (int i = 0; i < chunks.length; i++) {
+            for (int j=0;j<chunks[i].length;j++) {
+                chunks[i][j].clear();
+            }
         }
+    }
+    
+    public Block getBlock(int x,int y,int z) {//x y z are world coord
+        int chunkx=x/Chunk.getX();
+        int chunkz=z/Chunk.getZ();
+        
+        return chunks[chunkx][chunkz].getBlock(x%Chunk.getX(),y,z%Chunk.getZ());
     }
 
 }
+
+/*
+ * 01234
+ * 56789
+ * 
+ * */
