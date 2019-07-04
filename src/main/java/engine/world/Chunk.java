@@ -118,5 +118,8 @@ public class Chunk {
     public void setBlocks(int x,int y,int z,Block block) {
         blocks[x][y][z]=block;
     }
-
+    
+    public Block getBlock(int x,int y,int z) {
+        return blocks[x][y][z];
+    }
 }
