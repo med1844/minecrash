@@ -103,7 +103,7 @@ void main() {
         mixRatio = 0.15f;
     else if (originVertexNormal == vec3(0, 0, -1) || originVertexNormal == vec3(0, 0, 1))
         mixRatio = 0.3f;
-    else if (originVertexNormal == vec3(0, -1, 0)) mixRatio = 0.4f;
+    else if (originVertexNormal == vec3(0, -1, 0)) mixRatio = 0.45f;
 
     float shadow = calcShadow(lightViewVertexPos);
     fragColor = mix(clamp(ambientC * vec4(ambientLight, 1) + diffuseSpecular * shadow, 0, 1), vec4(0, 0, 0, 1), mixRatio);

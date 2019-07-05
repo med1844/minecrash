@@ -107,7 +107,6 @@ public class Renderer {
         glViewport(0, 0, window.getWidth(), window.getHeight());
 
         renderScene(window, camera, scene);
-//        System.out.println("====================");
     }
 
     private void renderScene(Window window, Camera camera, Scene scene) {
@@ -153,19 +152,16 @@ public class Renderer {
 
         glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, shadowMap.getDepthMap().getId());
+        sceneShader.setUniform("material", TextureManager.material);
         for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
             for (Chunk chunk : chunkList) {
-                for (Block block : chunk.renderList) {
-                    sceneShader.setUniform("material", block.getMesh().getMaterial());
-                    sceneShader.setUniform("modelViewMatrix",
-                            transformations.buildModelViewMatrix(block, viewMatrix)
-                    );
-                    sceneShader.setUniform("modelLightViewMatrix",
-                            transformations.buildModelLightViewMatrix(block, lightViewMatrix)
-//                            lightViewMatrix
-                    );
-                    block.render();
-                }
+                sceneShader.setUniform("modelViewMatrix",
+                        transformations.buildModelViewMatrix(chunk, viewMatrix)
+                );
+                sceneShader.setUniform("modelLightViewMatrix",
+                        transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
+                );
+                chunk.render();
             }
         }
         sceneShader.unbind();
@@ -204,7 +200,6 @@ public class Renderer {
 //                new vector3f(lightdirection).mul(5),
 //                new vector3f(lightanglex, lightangley, lightanglez)
         );
-//        System.out.println(lightViewMatrix);
 
         OrthoCoords orthoCoords = scene.light.getOrthoCoords();
         Matrix4f orthoProjectionMatrix = new Matrix4f().identity().ortho(
@@ -219,13 +214,11 @@ public class Renderer {
 
         for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
             for (Chunk chunk : chunkList) {
-                for (Block block : chunk.renderList) {
-                    depthShader.setUniform("modelLightViewMatrix",
-                            transformations.buildModelLightViewMatrix(block, lightViewMatrix)
-//                            lightViewMatrix
-                    );
-                    block.render();
-                }
+                depthShader.setUniform("modelLightViewMatrix",
+                        transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
+//                        lightViewMatrix
+                );
+                chunk.render();
             }
         }
 
