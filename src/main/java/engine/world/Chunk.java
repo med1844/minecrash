@@ -115,8 +115,8 @@ public class Chunk {
         return Z;
     }
     
-    public void setBlocks(int x,int y,int z,Block block) {
-        blocks[x][y][z]=block;
+    public void setBlocks(int blockID,int x,int y,int z) {
+        blocks[x][y][z]=new Block(blockID, (this.x << 4) + x, y, (this.z << 4) + z);
     }
     
     public Block getBlock(int x,int y,int z) {
