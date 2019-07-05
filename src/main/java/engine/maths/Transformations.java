@@ -11,13 +11,13 @@ public class Transformations {
      *      https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/
      */
     private Matrix4f projectionMatrix;
-    private Matrix4f worldMatrix;
     private Matrix4f viewMatrix;
+    private Matrix4f lightViewMatrix;
 
     public Transformations() {
         projectionMatrix = new Matrix4f().identity();
-        worldMatrix = new Matrix4f().identity();
         viewMatrix = new Matrix4f().identity();
+        lightViewMatrix = new Matrix4f().identity();
     }
 
     public final Matrix4f getProjectionMatrix(float FOV, float width, float height,
@@ -45,5 +45,23 @@ public class Transformations {
                 new Vector3f(0, 1, 0)
         );
         return viewMatrix;
+    }
+
+    public Matrix4f getLightViewMatrix(Vector3f direction, Camera camera) {
+        lightViewMatrix.identity();
+        lightViewMatrix.lookAt(
+                camera.getPosition().add(camera.getDirection()),
+                camera.getPosition(),
+                direction.x < 0 ? new Vector3f(0, 1, 0) : new Vector3f(0, -1, 0)
+        );
+        return lightViewMatrix;
+    }
+
+    public Matrix4f buildModelViewMatrix(Block block, Matrix4f matrix) {
+        return new Matrix4f(matrix).mul(getModelMatrix(block));
+    }
+
+    public Matrix4f buildModelLightViewMatrix(Block block, Matrix4f matrix) {
+        return new Matrix4f(matrix).mul(getModelMatrix(block));
     }
 }

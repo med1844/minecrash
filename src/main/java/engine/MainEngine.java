@@ -4,6 +4,7 @@ import engine.IO.Window;
 import engine.graphics.DirectionalLight;
 import engine.graphics.Renderer;
 import engine.IO.Input;
+import engine.world.Scene;
 import engine.world.TextureManager;
 import engine.world.Timer;
 import engine.world.World;
@@ -21,7 +22,7 @@ public class MainEngine implements Runnable {
     private Thread game;
     private Window window;
     private Renderer renderer;
-    private World world;
+    private Scene scene;
     private Input input; // this controls Camera
     private Camera camera;
     private DirectionalLight directionalLight;
@@ -33,18 +34,22 @@ public class MainEngine implements Runnable {
         renderer = new Renderer();
         input = new Input();
         camera = new Camera();
-        world = new World();
-        directionalLight = new DirectionalLight(new Vector3f(1, 1, 1),
-                new Vector3f(0, 5, 0), 0.65f);
         timer = new Timer(10.0);
     }
 
     public void init() throws Exception {
         window.init();
-        renderer.init(camera);
+        renderer.init();
         input.init(window, camera);
         TextureManager.init();
+        World world = new World();
         world.init();
+        directionalLight = new DirectionalLight(new Vector3f(1, 1, 1),
+                new Vector3f(0, 5, 0), 0.65f);
+        scene = new Scene(
+                world, directionalLight
+        );
+        scene.init();
         timer.init();
     }
 
@@ -70,13 +75,14 @@ public class MainEngine implements Runnable {
 
     public void render() {
         window.clear(); // clear up existing data
-        world.render(renderer, window, directionalLight, timer);
+        renderer.render(window, camera, scene, timer);
+//        scene.render(renderer, window, directionalLight, timer);
         window.swapBuffers();
     }
 
     public void clear() {
         renderer.clear();
-        world.clear();
+        scene.clear();
     }
 
 }
