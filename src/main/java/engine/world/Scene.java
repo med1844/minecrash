@@ -1,22 +1,22 @@
 package engine.world;
 
 import engine.graphics.DirectionalLight;
-import engine.world.World;
+import engine.world.ChunkManager;
 
 public class Scene {
-    public World world;
+    public ChunkManager chunkManager;
     public DirectionalLight light;
 
-    public Scene(World world, DirectionalLight light) {
-        this.world = world;
+    public Scene(ChunkManager chunkManager, DirectionalLight light) {
+        this.chunkManager = chunkManager;
         this.light = light;
     }
 
     public void init() {
-        world.init();
+        chunkManager.init();
     }
 
     public void clear() {
-        world.clear();
+        chunkManager.clear();
     }
 }

@@ -153,7 +153,7 @@ public class Renderer {
 
         glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, shadowMap.getDepthMap().getId());
-        for (Chunk[] chunkList : scene.world.getChunks()) {
+        for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
             for (Chunk chunk : chunkList) {
                 for (Block block : chunk.renderList) {
                     sceneShader.setUniform("material", block.getMesh().getMaterial());
@@ -217,7 +217,7 @@ public class Renderer {
         );
         depthShader.setUniform("orthoProjectionMatrix", orthoProjectionMatrix);
 
-        for (Chunk[] chunkList : scene.world.getChunks()) {
+        for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
             for (Chunk chunk : chunkList) {
                 for (Block block : chunk.renderList) {
                     depthShader.setUniform("modelLightViewMatrix",

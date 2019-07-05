@@ -89,7 +89,7 @@ public class Chunk {
     }
 
     public void generateMesh() {
-        // will be implemented later
+        
     }
 
     public void clear() {
