@@ -22,13 +22,13 @@ public class Perlin {
         double center = Noise(x, y) / 4;
         return corners + sides + center;
     }
-    public double Cosine_Interpolate(double a,double b, double x)  // 余弦插值
+    public static double Cosine_Interpolate(double a,double b, double x)  // 余弦插值
     {
         double ft = x * 3.1415927;
         double f = (1 - Math.cos(ft)) * 0.5;
         return a*(1-f) + b*f;
     }
-    public double Linear_Interpolate(double a, double b, double x) //线性插值
+    public static double Linear_Interpolate(double a, double b, double x) //线性插值
     {
         return a*(1-x) + b*x;
     }

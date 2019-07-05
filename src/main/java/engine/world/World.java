@@ -3,6 +3,7 @@ package engine.world;
 import engine.IO.Window;
 import engine.graphics.DirectionalLight;
 import engine.graphics.Renderer;
+import engine.world.gen.ChunkGeneratorOverWorld;
 
 public class World {
     private final int WORLD_MAX_WIDTH = 4;
@@ -14,10 +15,11 @@ public class World {
     }
 
     public void init() {
+        ChunkGeneratorOverWorld chunkGenerator=new ChunkGeneratorOverWorld();
         for (int i = 0; i < chunks.length; i++) {
             for (int j=0;j<chunks[i].length;j++) {
-                chunks[i][j] = new Chunk(i, j);
-                new ChunkProvider().provideChunk(chunks[i][j]);
+//                chunks[i][j] = new Chunk(i, j);
+                chunks[i][j] = chunkGenerator.generateChunk(i, j);
                 chunks[i][j].genBlockList();
             }
         }
