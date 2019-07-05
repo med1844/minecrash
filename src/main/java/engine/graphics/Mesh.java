@@ -102,6 +102,12 @@ public class Mesh {
     }
 
     public void render() {
+        initRender();
+        glDrawElements(GL_TRIANGLES, getVertexCount(), GL_UNSIGNED_INT, 0);
+        endRender();
+    }
+
+    private void initRender() {
         // Activate firs texture bank
         glActiveTexture(GL_TEXTURE0);
         // Bind the texture
@@ -112,9 +118,9 @@ public class Mesh {
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
         glEnableVertexAttribArray(2);
+    }
 
-        glDrawElements(GL_TRIANGLES, getVertexCount(), GL_UNSIGNED_INT, 0);
-
+    private void endRender() {
         // Restore state
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
