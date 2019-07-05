@@ -6,22 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd199bd0-17de-4e96-8139-258e73d17526" name="Default Changelist" comment="jk">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/lwjgl_3_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/lwjgl_3_2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/IO/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/IO/Window.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/MainEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/MainEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/maths/Transformations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/maths/Transformations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/world/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/Chunk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/world/Chunk.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/ChunkManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/world/ChunkManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/TextureManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/world/TextureManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/shader/scene.fsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/shader/scene.fsh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/engine/world/Block.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/world/Block.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/engine/world/TextureManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/world/TextureManager.class" afterDir="false" />
-    </list>
+    <list default="true" id="fd199bd0-17de-4e96-8139-258e73d17526" name="Default Changelist" comment="jk" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -127,8 +112,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Chunk.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="180" selection-start-line="180" selection-end-line="180" />
+            <state relative-caret-position="198">
+              <caret line="63" column="41" selection-start-line="63" selection-start-column="41" selection-end-line="63" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#11038#11039#0" expanded="true" />
@@ -871,8 +856,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Chunk.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="180" selection-start-line="180" selection-end-line="180" />
+        <state relative-caret-position="198">
+          <caret line="63" column="41" selection-start-line="63" selection-start-column="41" selection-end-line="63" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#11038#11039#0" expanded="true" />
