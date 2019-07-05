@@ -33,7 +33,7 @@ public class DayNightCycle {
                 new Vector3f(
                         (float) -Math.cos(currentTimeRatioRad),
                         (float) Math.sin(currentTimeRatioRad),
-                        0.19f
+                        0
                 )
         );
         double tempIntensity = (Math.sin(currentTimeRatioRad) + 0.35) / (1 + 0.35);
@@ -42,11 +42,9 @@ public class DayNightCycle {
         }
         if ((1 - THRESHOLD <= currentTimeRatio || currentTimeRatio <= THRESHOLD) ||
             (0.5 - THRESHOLD <= currentTimeRatio && currentTimeRatio <= 0.5 + THRESHOLD)) {
-            double duskTimeRad;
             if (currentTimeRatio >= 1 - THRESHOLD) currentTimeRatio -= 1;
             if (currentTimeRatio >= 0.5 - THRESHOLD) currentTimeRatio = 0.5 - currentTimeRatio;
             currentTimeRatio *= (1 / THRESHOLD); // currentTimeRatio in [-1, 1]
-            duskTimeRad = currentTimeRatio * PI / 2;
             Vector3f resultColor, resultLight;
             if (currentTimeRatio < 0) {
                 resultColor = mixColor(nightColor, duskColor, currentTimeRatio + 1);

@@ -41,6 +41,9 @@ public class Chunk {
                     }
                 }
             }
+            for (int y = 0; y < Y; ++y) {
+                blocks[5][y][5] = new Block(PLANKS, (this.x << 4) + x, y, (this.z << 4) + z);
+            }
         } catch (Exception e) {
             System.err.println("[ERROR] Chunk.init():\r\n" + e);
             System.exit(-1);
