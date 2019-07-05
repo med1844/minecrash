@@ -4,10 +4,10 @@ import engine.IO.Window;
 import engine.graphics.DirectionalLight;
 import engine.graphics.Renderer;
 import engine.IO.Input;
+import engine.world.ChunkManager;
 import engine.world.Scene;
 import engine.world.TextureManager;
 import engine.world.Timer;
-import engine.world.World;
 
 import org.joml.Vector3f;
 
@@ -42,12 +42,12 @@ public class MainEngine implements Runnable {
         renderer.init();
         input.init(window, camera);
         TextureManager.init();
-        World world = new World();
-        world.init();
+        ChunkManager chunkManager = new ChunkManager();
+        chunkManager.init();
         directionalLight = new DirectionalLight(new Vector3f(1, 1, 1),
                 new Vector3f(0, 5, 0), 0.65f);
         scene = new Scene(
-                world, directionalLight
+                chunkManager, directionalLight
         );
         scene.init();
         timer.init();
