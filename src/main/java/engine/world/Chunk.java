@@ -95,4 +95,31 @@ public class Chunk {
         }
     }
 
+    public int getx() {
+        return x;
+    }
+
+    public int getz() {
+        return z;
+    }
+
+    public static int getX() {
+        return X;
+    }
+
+    public static int getY() {
+        return Y;
+    }
+
+    public static int getZ() {
+        return Z;
+    }
+    
+    public void setBlocks(int blockID,int x,int y,int z) {
+        blocks[x][y][z]=new Block(blockID, (this.x << 4) + x, y, (this.z << 4) + z);
+    }
+    
+    public Block getBlock(int x,int y,int z) {
+        return blocks[x][y][z];
+    }
 }
