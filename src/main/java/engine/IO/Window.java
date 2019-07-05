@@ -28,7 +28,6 @@ public class Window {
     public void init() {
         // Setup an error callback. The default implementation
         // will print the error message in System.err.
-        time=System.currentTimeMillis();
         GLFWErrorCallback.createPrint(System.err).set();
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
@@ -91,8 +90,10 @@ public class Window {
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
 
-        // this hides mouse cursor
+        // Hide mouse cursor
         glfwSetInputMode(windowHandle, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
+        time = System.currentTimeMillis();
     }
 
     public void setBackgroundColor(float r, float g, float b, float alpha) {
@@ -116,13 +117,13 @@ public class Window {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glfwPollEvents();
     }
-    
+
     public void update() {
-        frames++;
-        if (System.currentTimeMillis()>time+1000) {
-            setTitle(title+" | FPS:"+frames);
-            frames=0;
-            time=System.currentTimeMillis();
+        ++frames;
+        if (System.currentTimeMillis() > time + 1000) {
+            setTitle(title + " [FPS: " + frames + "]");
+            frames = 0;
+            time = System.currentTimeMillis();
         }
     }
     

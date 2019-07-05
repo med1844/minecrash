@@ -44,8 +44,10 @@ public class MainEngine implements Runnable {
         TextureManager.init();
         ChunkManager chunkManager = new ChunkManager();
         chunkManager.init();
-        directionalLight = new DirectionalLight(new Vector3f(1, 1, 1),
-                new Vector3f(0, 5, 0), 0.65f);
+        directionalLight = new DirectionalLight(
+                new Vector3f(1, 1, 1),
+                new Vector3f(0, 5, 0), 0.65f
+        );
         scene = new Scene(
                 chunkManager, directionalLight
         );
@@ -63,7 +65,8 @@ public class MainEngine implements Runnable {
             }
             clear();
         } catch (Exception e) {
-            System.err.println("[ERROR] MainEngine.run():\r\n" + e);
+            System.err.println("[ERROR] MainEngine.run():\r\n");
+            e.printStackTrace();
         }
     }
 
@@ -76,7 +79,6 @@ public class MainEngine implements Runnable {
     public void render() {
         window.clear(); // clear up existing data
         renderer.render(window, camera, scene, timer);
-//        scene.render(renderer, window, directionalLight, timer);
         window.swapBuffers();
     }
 

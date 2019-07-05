@@ -1,10 +1,7 @@
 package engine.world;
 
 import engine.graphics.Material;
-import engine.graphics.Mesh;
 import engine.graphics.Texture;
-import org.joml.Vector3d;
-import org.joml.Vector2d;
 
 public class TextureManager {
     public static int AIR = 0;
@@ -13,154 +10,49 @@ public class TextureManager {
     public static int DIRT = 3;
     public static int COBBLESTONE = 4;
     public static int PLANKS = 5;
-    public static Mesh[] meshes;
 
-    private static float[] position = new float[36 * 3];
-    private static float[] textureCoord = new float[36 * 2];
-    private static float[] normal = new float[36 * 3];
-    private static int[] indices = new int[36];
-    private static int pos, tex, norm;
+    private static int EMPTY = 0;
+    private static int SOLID = 1;
+    private static int GLASS = 2;
+    private static int WATER = 3;
+
+    private static int[][] face = {
+            {0, 0, 0, 0, 0, 0, EMPTY}, // air
+            {0, 0, 0, 0, 0, 0, SOLID}, // stone
+            {1, 3, 2, 2, 2, 2, SOLID}, // grass
+            {3, 3, 3, 3, 3, 3, SOLID}, // dirt
+            {4, 4, 4, 4, 4, 4, SOLID}, // cobblestone
+            {5, 5, 5, 5, 5, 5, SOLID}, // planks
+    };
+
+    public static Material material;
 
     public TextureManager() {
     }
 
-    private static void genFace(int textureID, Vector3d a, Vector3d b, Vector3d c, Vector3d d, Vector3d normalVector,
-                                boolean flag) {
-        float x1 = (textureID / 16) / 16.0f, y1 = (textureID % 16) / 16.0f;
-        float x2 = x1 + 1 / 16.0f, y2 = y1 + 1 / 16.0f;
-        Vector2d e = new Vector2d(y1, x1), f = new Vector2d(y2, x1), g = new Vector2d(y1, x2), h = new Vector2d(y2, x2);
-        if (flag) {
-            position[pos++] = (float) d.x;
-            position[pos++] = (float) d.y;
-            position[pos++] = (float) d.z;
-            position[pos++] = (float) c.x;
-            position[pos++] = (float) c.y;
-            position[pos++] = (float) c.z;
-            position[pos++] = (float) a.x;
-            position[pos++] = (float) a.y;
-            position[pos++] = (float) a.z;
-            position[pos++] = (float) b.x;
-            position[pos++] = (float) b.y;
-            position[pos++] = (float) b.z;
-            position[pos++] = (float) d.x;
-            position[pos++] = (float) d.y;
-            position[pos++] = (float) d.z;
-            position[pos++] = (float) a.x;
-            position[pos++] = (float) a.y;
-            position[pos++] = (float) a.z;
-            textureCoord[tex++] = (float) h.x;
-            textureCoord[tex++] = (float) h.y;
-            textureCoord[tex++] = (float) g.x;
-            textureCoord[tex++] = (float) g.y;
-            textureCoord[tex++] = (float) e.x;
-            textureCoord[tex++] = (float) e.y;
-            textureCoord[tex++] = (float) f.x;
-            textureCoord[tex++] = (float) f.y;
-            textureCoord[tex++] = (float) h.x;
-            textureCoord[tex++] = (float) h.y;
-            textureCoord[tex++] = (float) e.x;
-            textureCoord[tex++] = (float) e.y;
-            normal[norm++] = (float) normalVector.x;
-            normal[norm++] = (float) normalVector.y;
-            normal[norm++] = (float) normalVector.z;
-            normal[norm++] = (float) normalVector.x;
-            normal[norm++] = (float) normalVector.y;
-            normal[norm++] = (float) normalVector.z;
-            normal[norm++] = (float) normalVector.x;
-            normal[norm++] = (float) normalVector.y;
-            normal[norm++] = (float) normalVector.z;
-            normal[norm++] = (float) normalVector.x;
-            normal[norm++] = (float) normalVector.y;
-            normal[norm++] = (float) normalVector.z;
-            normal[norm++] = (float) normalVector.x;
-            normal[norm++] = (float) normalVector.y;
-            normal[norm++] = (float) normalVector.z;
-            normal[norm++] = (float) normalVector.x;
-            normal[norm++] = (float) normalVector.y;
-            normal[norm++] = (float) normalVector.z;
+    public static int[] getFace(int blockID) {
+        if (blockID < face.length) {
+            return face[blockID];
         } else {
-            position[pos++] = (float) a.x;
-            position[pos++] = (float) a.y;
-            position[pos++] = (float) a.z;
-            position[pos++] = (float) c.x;
-            position[pos++] = (float) c.y;
-            position[pos++] = (float) c.z;
-            position[pos++] = (float) d.x;
-            position[pos++] = (float) d.y;
-            position[pos++] = (float) d.z;
-            position[pos++] = (float) a.x;
-            position[pos++] = (float) a.y;
-            position[pos++] = (float) a.z;
-            position[pos++] = (float) d.x;
-            position[pos++] = (float) d.y;
-            position[pos++] = (float) d.z;
-            position[pos++] = (float) b.x;
-            position[pos++] = (float) b.y;
-            position[pos++] = (float) b.z;
-            textureCoord[tex++] = (float) e.x;
-            textureCoord[tex++] = (float) e.y;
-            textureCoord[tex++] = (float) g.x;
-            textureCoord[tex++] = (float) g.y;
-            textureCoord[tex++] = (float) h.x;
-            textureCoord[tex++] = (float) h.y;
-            textureCoord[tex++] = (float) e.x;
-            textureCoord[tex++] = (float) e.y;
-            textureCoord[tex++] = (float) h.x;
-            textureCoord[tex++] = (float) h.y;
-            textureCoord[tex++] = (float) f.x;
-            textureCoord[tex++] = (float) f.y;
-            normal[norm++] = (float) normalVector.x;
-            normal[norm++] = (float) normalVector.y;
-            normal[norm++] = (float) normalVector.z;
-            normal[norm++] = (float) normalVector.x;
-            normal[norm++] = (float) normalVector.y;
-            normal[norm++] = (float) normalVector.z;
-            normal[norm++] = (float) normalVector.x;
-            normal[norm++] = (float) normalVector.y;
-            normal[norm++] = (float) normalVector.z;
-            normal[norm++] = (float) normalVector.x;
-            normal[norm++] = (float) normalVector.y;
-            normal[norm++] = (float) normalVector.z;
-            normal[norm++] = (float) normalVector.x;
-            normal[norm++] = (float) normalVector.y;
-            normal[norm++] = (float) normalVector.z;
-            normal[norm++] = (float) normalVector.x;
-            normal[norm++] = (float) normalVector.y;
-            normal[norm++] = (float) normalVector.z;
+            return null;
         }
-    }
-
-    private static void genArray(int[] face) {
-        genFace(face[0], new Vector3d(0.5, 0.5, 0.5), new Vector3d(-0.5, 0.5, 0.5), new Vector3d(0.5, 0.5, -0.5), new Vector3d(-0.5, 0.5, -0.5), new Vector3d(0, 1, 0), false);
-        genFace(face[1], new Vector3d(-0.5, -0.5, -0.5), new Vector3d(-0.5, -0.5, 0.5), new Vector3d(0.5, -0.5, -0.5), new Vector3d(0.5, -0.5, 0.5), new Vector3d(0, -1, 0), false);
-        genFace(face[2], new Vector3d(0.5, 0.5, -0.5), new Vector3d(-0.5, 0.5, -0.5), new Vector3d(0.5, -0.5, -0.5), new Vector3d(-0.5, -0.5, -0.5), new Vector3d(0, 0, -1), false);
-        genFace(face[3], new Vector3d(0.5, 0.5, 0.5), new Vector3d(-0.5, 0.5, 0.5), new Vector3d(0.5, -0.5, 0.5), new Vector3d(-0.5, -0.5, 0.5), new Vector3d(0, 0, 1), true);
-        genFace(face[4], new Vector3d(0.5, 0.5, 0.5), new Vector3d(0.5, 0.5, -0.5), new Vector3d(0.5, -0.5, 0.5), new Vector3d(0.5, -0.5, -0.5), new Vector3d(1, 0, 0), false);
-        genFace(face[5], new Vector3d(-0.5, 0.5, 0.5), new Vector3d(-0.5, 0.5, -0.5), new Vector3d(-0.5, -0.5, 0.5), new Vector3d(-0.5, -0.5, -0.5), new Vector3d(-1, 0, 0), true);
     }
 
     public static void init() {
         try {
             Texture texture = new Texture("/texture/terrain.png");
-            Material material = new Material(texture, 1f);
-            meshes = new Mesh[10];
-            int[][] face = {
-                    {0, 0, 0, 0, 0, 0},
-                    {0, 0, 0, 0, 0, 0},
-                    {1, 3, 2, 2, 2, 2},
-                    {3, 3, 3, 3, 3, 3},
-                    {4, 4, 4, 4, 4, 4},
-                    {5, 5, 5, 5, 5, 5}
-            };
-            for (int i = 0; i < 36; ++i) indices[i] = i;
-            for (int i = 0; i < 6; ++i) {
-                norm = tex = pos = 0;
-                genArray(face[i]);
-                meshes[i] = new Mesh(position, textureCoord, normal, indices, material);
-            }
+            material = new Material(texture, 1f);
         } catch (Exception e) {
             System.err.println("[ERROR] TextureManager.init():\r\n" + e);
             System.exit(-1);
+        }
+    }
+
+    public static int getType(int blockID) {
+        if (blockID < face.length) {
+            return face[blockID][6];
+        } else {
+            return -1;
         }
     }
 }

@@ -2,7 +2,12 @@ package engine.world;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
+
+import engine.graphics.Mesh;
+import javafx.util.Pair;
+import org.joml.Vector2d;
+import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import static engine.world.TextureManager.*;
 
@@ -10,13 +15,14 @@ public class Chunk {
 
     private int x, z; // the chunk coordinates of current chunk
     private Block[][][] blocks;
-    public List<Block> renderList; // stores the block list that should be rendered
+    private Mesh mesh;
+    private int pos, tex, norm;
     private static final int X = 16;
     private static final int Y = 16;
     private static final int Z = 16;
-    private static final int[] dx = {1, -1, 0,  0, 0,  0};
-    private static final int[] dy = {0,  0, 1, -1, 0,  0};
-    private static final int[] dz = {0,  0, 0,  0, 1, -1};
+    private static final int[] dx = {0,  0,  0, 0, 1, -1};
+    private static final int[] dy = {1, -1,  0, 0, 0,  0};
+    private static final int[] dz = {0,  0, -1, 1, 0,  0};
 
     public Chunk() {
         this.x = 0;
@@ -27,27 +33,6 @@ public class Chunk {
         this.x = x;
         this.z = y;
         blocks = new Block[X][Y][Z]; // retrieve data through (x, y, z)
-        renderList = new LinkedList<>();
-    }
-
-    public void init() {
-        Random rand = new Random();
-        try {
-            for (int x = 0; x < X; ++x) for (int y = 0; y < Y; ++y) for (int z = 0; z < Z; ++z) blocks[x][y][z] = new Block(AIR, (this.x << 4) + x, y, (this.z << 4) + z);
-            for (int x = 0; x < X; ++x) {
-                for (int z = 0; z < Z; ++z) {
-                    for (int y = 0; y < 6 + rand.nextInt(5); ++y) {
-                        blocks[x][y][z] = new Block(1 + rand.nextInt(5), (this.x << 4) + x, y, (this.z << 4) + z);
-                    }
-                }
-            }
-            for (int y = 0; y < Y; ++y) {
-                blocks[5][y][5] = new Block(PLANKS, (this.x << 4) + x, y, (this.z << 4) + z);
-            }
-        } catch (Exception e) {
-            System.err.println("[ERROR] Chunk.init():\r\n" + e);
-            System.exit(-1);
-        }
     }
 
     private boolean valid(int x, int y, int z) {
@@ -56,46 +41,178 @@ public class Chunk {
                0 <= z && z < Z;
     }
 
-    /**
-     * this method generates the block list that would be loaded and
-     * rendered, in order to improve the performance
-     */
-    public void genBlockList() {
-        boolean flag;
-        int x, y, z, nx, ny, nz, d;
-        for (x = 0; x < X; ++x) {
-            for (y = 0; y < Y; ++y) {
-                for (z = 0; z < Z; ++z) {
+    private void genFace(int textureID, Vector3d a, Vector3d b, Vector3d c, Vector3d d, Vector3d normalVector,
+                                boolean flag, float[] position, float[] textureCoord, float[] normal) {
+        float x1 = (textureID / 16) / 16.0f, y1 = (textureID % 16) / 16.0f;
+        float x2 = x1 + 1 / 16.0f, y2 = y1 + 1 / 16.0f;
+        Vector2d e = new Vector2d(y1, x1), f = new Vector2d(y2, x1), g = new Vector2d(y1, x2), h = new Vector2d(y2, x2);
+        if (flag) {
+            position[pos++] = (float) d.x;
+            position[pos++] = (float) d.y;
+            position[pos++] = (float) d.z;
+            position[pos++] = (float) c.x;
+            position[pos++] = (float) c.y;
+            position[pos++] = (float) c.z;
+            position[pos++] = (float) a.x;
+            position[pos++] = (float) a.y;
+            position[pos++] = (float) a.z;
+            position[pos++] = (float) b.x;
+            position[pos++] = (float) b.y;
+            position[pos++] = (float) b.z;
+            position[pos++] = (float) d.x;
+            position[pos++] = (float) d.y;
+            position[pos++] = (float) d.z;
+            position[pos++] = (float) a.x;
+            position[pos++] = (float) a.y;
+            position[pos++] = (float) a.z;
+            textureCoord[tex++] = (float) h.x;
+            textureCoord[tex++] = (float) h.y;
+            textureCoord[tex++] = (float) g.x;
+            textureCoord[tex++] = (float) g.y;
+            textureCoord[tex++] = (float) e.x;
+            textureCoord[tex++] = (float) e.y;
+            textureCoord[tex++] = (float) f.x;
+            textureCoord[tex++] = (float) f.y;
+            textureCoord[tex++] = (float) h.x;
+            textureCoord[tex++] = (float) h.y;
+            textureCoord[tex++] = (float) e.x;
+            textureCoord[tex++] = (float) e.y;
+            normal[norm++] = (float) normalVector.x;
+            normal[norm++] = (float) normalVector.y;
+            normal[norm++] = (float) normalVector.z;
+            normal[norm++] = (float) normalVector.x;
+            normal[norm++] = (float) normalVector.y;
+            normal[norm++] = (float) normalVector.z;
+            normal[norm++] = (float) normalVector.x;
+            normal[norm++] = (float) normalVector.y;
+            normal[norm++] = (float) normalVector.z;
+            normal[norm++] = (float) normalVector.x;
+            normal[norm++] = (float) normalVector.y;
+            normal[norm++] = (float) normalVector.z;
+            normal[norm++] = (float) normalVector.x;
+            normal[norm++] = (float) normalVector.y;
+            normal[norm++] = (float) normalVector.z;
+            normal[norm++] = (float) normalVector.x;
+            normal[norm++] = (float) normalVector.y;
+            normal[norm++] = (float) normalVector.z;
+        } else {
+            position[pos++] = (float) a.x;
+            position[pos++] = (float) a.y;
+            position[pos++] = (float) a.z;
+            position[pos++] = (float) c.x;
+            position[pos++] = (float) c.y;
+            position[pos++] = (float) c.z;
+            position[pos++] = (float) d.x;
+            position[pos++] = (float) d.y;
+            position[pos++] = (float) d.z;
+            position[pos++] = (float) a.x;
+            position[pos++] = (float) a.y;
+            position[pos++] = (float) a.z;
+            position[pos++] = (float) d.x;
+            position[pos++] = (float) d.y;
+            position[pos++] = (float) d.z;
+            position[pos++] = (float) b.x;
+            position[pos++] = (float) b.y;
+            position[pos++] = (float) b.z;
+            textureCoord[tex++] = (float) e.x;
+            textureCoord[tex++] = (float) e.y;
+            textureCoord[tex++] = (float) g.x;
+            textureCoord[tex++] = (float) g.y;
+            textureCoord[tex++] = (float) h.x;
+            textureCoord[tex++] = (float) h.y;
+            textureCoord[tex++] = (float) e.x;
+            textureCoord[tex++] = (float) e.y;
+            textureCoord[tex++] = (float) h.x;
+            textureCoord[tex++] = (float) h.y;
+            textureCoord[tex++] = (float) f.x;
+            textureCoord[tex++] = (float) f.y;
+            normal[norm++] = (float) normalVector.x;
+            normal[norm++] = (float) normalVector.y;
+            normal[norm++] = (float) normalVector.z;
+            normal[norm++] = (float) normalVector.x;
+            normal[norm++] = (float) normalVector.y;
+            normal[norm++] = (float) normalVector.z;
+            normal[norm++] = (float) normalVector.x;
+            normal[norm++] = (float) normalVector.y;
+            normal[norm++] = (float) normalVector.z;
+            normal[norm++] = (float) normalVector.x;
+            normal[norm++] = (float) normalVector.y;
+            normal[norm++] = (float) normalVector.z;
+            normal[norm++] = (float) normalVector.x;
+            normal[norm++] = (float) normalVector.y;
+            normal[norm++] = (float) normalVector.z;
+            normal[norm++] = (float) normalVector.x;
+            normal[norm++] = (float) normalVector.y;
+            normal[norm++] = (float) normalVector.z;
+        }
+    }
+
+    private void addFace(Block block, int faceID, float[] position, float[] textureCoord, float[] normal) {
+        switch (faceID) {
+            case 0:
+                genFace(block.face[0], new Vector3d(block.x + 1, block.y + 1, block.z + 1), new Vector3d(block.x , block.y + 1, block.z + 1), new Vector3d(block.x + 1, block.y + 1, block.z ), new Vector3d(block.x , block.y + 1, block.z ), new Vector3d(0, 1, 0), false, position, textureCoord, normal);
+                break;
+            case 1:
+                genFace(block.face[1], new Vector3d(block.x , block.y , block.z ), new Vector3d(block.x , block.y , block.z + 1), new Vector3d(block.x + 1, block.y , block.z ), new Vector3d(block.x + 1, block.y , block.z + 1), new Vector3d(0, -1, 0), false, position, textureCoord, normal);
+                break;
+            case 2:
+                genFace(block.face[2], new Vector3d(block.x + 1, block.y + 1, block.z ), new Vector3d(block.x , block.y + 1, block.z ), new Vector3d(block.x + 1, block.y , block.z ), new Vector3d(block.x , block.y , block.z ), new Vector3d(0, 0, -1), false, position, textureCoord, normal);
+                break;
+            case 3:
+                genFace(block.face[3], new Vector3d(block.x + 1, block.y + 1, block.z + 1), new Vector3d(block.x , block.y + 1, block.z + 1), new Vector3d(block.x + 1, block.y , block.z + 1), new Vector3d(block.x , block.y , block.z + 1), new Vector3d(0, 0, 1), true, position, textureCoord, normal);
+                break;
+            case 4:
+                genFace(block.face[4], new Vector3d(block.x + 1, block.y + 1, block.z + 1), new Vector3d(block.x + 1, block.y + 1, block.z ), new Vector3d(block.x + 1, block.y , block.z + 1), new Vector3d(block.x + 1, block.y , block.z ), new Vector3d(1, 0, 0), false, position, textureCoord, normal);
+                break;
+            case 5:
+                genFace(block.face[5], new Vector3d(block.x , block.y + 1, block.z + 1), new Vector3d(block.x , block.y + 1, block.z ), new Vector3d(block.x , block.y , block.z + 1), new Vector3d(block.x , block.y , block.z ), new Vector3d(-1, 0, 0), true, position, textureCoord, normal);
+                break;
+            default:
+                System.err.println("[ERROR] Chunk.addFace(): Invalid faceID!");
+                System.exit(-1);
+        }
+    }
+
+    public void generateMesh(ChunkManager chunkManager) {
+        List<Pair<Block, Integer>> l = new LinkedList<>();
+        for (int x = 0; x < X; ++x) {
+            for (int y = 0; y < Y; ++y) {
+                for (int z = 0; z < Z; ++z) {
                     if (blocks[x][y][z].equals(AIR)) continue;
-                    flag = false; // flag: whether this block will be rendered or not
-                    for (d = 0; d < 6 && !flag; ++d) {
-                        nx = x + dx[d];
-                        ny = y + dy[d];
-                        nz = z + dz[d];
-                        if (valid(nx, ny, nz)) {
-                            if (blocks[nx][ny][nz].equals(AIR)) {
-                                flag = true;
+                    for (int d = 0; d < 6; ++d) {
+                        int nx = x + dx[d], ny = y + dy[d], nz = z + dz[d];
+                        Block temp = null;
+                        if (!valid(nx, ny, nz)) {
+                            if (d >= 2) {
+                                temp = chunkManager.getBlock(
+                                        (this.x << 4) + nx,
+                                        ny,
+                                        (this.z << 4) + nz
+                                );
                             }
                         } else {
-                            flag = true;
+                            temp = blocks[nx][ny][nz];
                         }
-                    }
-                    if (flag) {
-                        renderList.add(blocks[x][y][z]);
+                        if (temp == null || blocks[x][y][z].getType() != temp.getType()) {
+                            l.add(new Pair<>(blocks[x][y][z], d));
+                        }
                     }
                 }
             }
         }
-    }
-
-    public void generateMesh() {
-        
+        float[] position = new float[18 * l.size()];
+        float[] textureCoord = new float[12 * l.size()];
+        float[] normal = new float[18 * l.size()];
+        int[] indices = new int[6 * l.size()];
+        for (int i = 0; i < indices.length; ++i) indices[i] = i;
+        for (Pair<Block, Integer> p : l) {
+            addFace(p.getKey(), p.getValue(), position, textureCoord, normal);
+        }
+        mesh = new Mesh(position, textureCoord, normal, indices, TextureManager.material);
     }
 
     public void clear() {
-        for (Block cur : renderList) {
-            cur.clear();
-        }
+        mesh.clear();
     }
 
     public int getx() {
@@ -119,10 +236,22 @@ public class Chunk {
     }
     
     public void setBlocks(int blockID,int x,int y,int z) {
-        blocks[x][y][z]=new Block(blockID, (this.x << 4) + x, y, (this.z << 4) + z);
+        blocks[x][y][z] = new Block(blockID, (this.x << 4) + x, y, (this.z << 4) + z);
     }
     
     public Block getBlock(int x,int y,int z) {
-        return blocks[x][y][z];
+        if (valid(x, y, z)) {
+            return blocks[x][y][z];
+        } else {
+            return null;
+        }
+    }
+
+    public Vector3f getPosition() {
+        return new Vector3f(0, 0, 0);
+    }
+
+    public void render() {
+        mesh.render();
     }
 }

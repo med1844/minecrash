@@ -1,7 +1,7 @@
 package engine.maths;
 
 import engine.Camera;
-import engine.world.Block;
+import engine.world.Chunk;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -13,11 +13,13 @@ public class Transformations {
     private Matrix4f projectionMatrix;
     private Matrix4f viewMatrix;
     private Matrix4f lightViewMatrix;
+    private Matrix4f modelMatrix;
 
     public Transformations() {
         projectionMatrix = new Matrix4f().identity();
         viewMatrix = new Matrix4f().identity();
         lightViewMatrix = new Matrix4f().identity();
+        modelMatrix = new Matrix4f().identity();
     }
 
     public final Matrix4f getProjectionMatrix(float FOV, float width, float height,
@@ -31,9 +33,9 @@ public class Transformations {
         return projectionMatrix;
     }
 
-    public Matrix4f getModelMatrix(Block block) {
-        Matrix4f modelMatrix = new Matrix4f().identity();
-        modelMatrix.translate(block.getPosition());
+    public Matrix4f getModelMatrix(Chunk chunk) {
+        modelMatrix.identity();
+        modelMatrix.translate(chunk.getPosition());
         return modelMatrix;
     }
 
@@ -57,11 +59,11 @@ public class Transformations {
         return lightViewMatrix;
     }
 
-    public Matrix4f buildModelViewMatrix(Block block, Matrix4f matrix) {
-        return new Matrix4f(matrix).mul(getModelMatrix(block));
+    public Matrix4f buildModelViewMatrix(Chunk chunk, Matrix4f matrix) {
+        return new Matrix4f(matrix).mul(getModelMatrix(chunk));
     }
 
-    public Matrix4f buildModelLightViewMatrix(Block block, Matrix4f matrix) {
-        return new Matrix4f(matrix).mul(getModelMatrix(block));
+    public Matrix4f buildModelLightViewMatrix(Chunk chunk, Matrix4f matrix) {
+        return new Matrix4f(matrix).mul(getModelMatrix(chunk));
     }
 }
