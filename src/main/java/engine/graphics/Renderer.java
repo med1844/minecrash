@@ -51,7 +51,7 @@ public class Renderer {
         shadowMap = new ShadowMap();
 
         setupSceneShader();
-        // setupDepthShader();
+        setupDepthShader();
     }
 
     private void setupSceneShader() throws Exception {
@@ -102,7 +102,7 @@ public class Renderer {
 
         renderDayNightCycle(window, scene.light, timer);
 
-        // renderShadowMap(scene, camera);
+        renderShadowMap(scene, camera);
 
         glViewport(0, 0, window.getWidth(), window.getHeight());
 
