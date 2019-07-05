@@ -5,6 +5,7 @@ import engine.graphics.DirectionalLight;
 import engine.graphics.Renderer;
 import engine.IO.Input;
 import engine.world.Chunk;
+import engine.world.Scene;
 import engine.world.TextureManager;
 import engine.world.Timer;
 import org.joml.Vector3f;
@@ -20,10 +21,9 @@ public class MainEngine implements Runnable {
     private Thread game;
     private Window window;
     private Renderer renderer;
-    private Chunk[] chunks;
     private Input input; // this controls Camera
     private Camera camera;
-    private DirectionalLight directionalLight;
+    private Scene scene;
     private Timer timer;
 
     public MainEngine(int width, int height, String windowTitle, boolean vSync) {
@@ -32,27 +32,28 @@ public class MainEngine implements Runnable {
         renderer = new Renderer();
         input = new Input();
         camera = new Camera();
-        chunks = new Chunk[3];
+        Chunk[] chunks = new Chunk[3];
         chunks[0] = new Chunk(0, 0);
         chunks[1] = new Chunk(1, 0);
         chunks[2] = new Chunk(2, 2);
-        directionalLight = new DirectionalLight(new Vector3f(1, 1, 1),
-                new Vector3f(0, 5, 0), 0.65f);
-        timer = new Timer(10.0);
+        DirectionalLight directionalLight = new DirectionalLight(
+                new Vector3f(1, 1, 1),
+                new Vector3f(0, 1, 1),
+                0.65f
+        );
+        scene = new Scene(chunks, directionalLight);
+        timer = new Timer(3.0);
     }
 
     public void init() throws Exception {
+        // the order shouldn't be changed
         window.init();
-        renderer.init(camera);
+        renderer.init();
         input.init(window, camera);
         TextureManager.init();
-
-        for (Chunk chunk : chunks) {
-            chunk.init();
-            chunk.genBlockList();
-        }
-
+        scene.init();
         timer.init();
+        scene.light.setOrthoCoords(-50, 50, -50, 50, -50, 50);
     }
 
     @Override
@@ -76,15 +77,13 @@ public class MainEngine implements Runnable {
 
     public void render() {
         window.clear(); // clear up existing data
-        renderer.render(window, chunks, directionalLight, timer);
+        renderer.render(window, camera, scene, timer);
         window.swapBuffers();
     }
 
     public void clear() {
         renderer.clear();
-        for (Chunk chunk : chunks) {
-            chunk.clear();
-        }
+        scene.clear();
     }
 
 }
