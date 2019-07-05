@@ -25,12 +25,16 @@ public class World {
         }
     }
 
-    public void render(Renderer renderer, Window window, DirectionalLight directionalLight, Timer timer) {
-        for (int i = 0; i < chunks.length; i++) {
-            for (int j=0;j<chunks[i].length;j++) {
-                renderer.render(window, chunks[i][j], directionalLight, timer);
-            }
-        }
+//    public void render(Renderer renderer, Window window, DirectionalLight directionalLight, Timer timer) {
+//        for (int i = 0; i < chunks.length; i++) {
+//            for (int j=0;j<chunks[i].length;j++) {
+//                renderer.render(window, , directionalLight, timer);
+//            }
+//        }
+//    }
+
+    public Chunk[][] getChunks() {
+        return chunks;
     }
 
     public void clear() {
