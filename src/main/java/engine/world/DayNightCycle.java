@@ -33,7 +33,7 @@ public class DayNightCycle {
                 new Vector3f(
                         (float) -Math.cos(currentTimeRatioRad),
                         (float) Math.sin(currentTimeRatioRad),
-                        0.27f
+                        0.27f * (float) Math.sin(currentTimeRatioRad)
                 )
         );
         double tempIntensity = (Math.sin(currentTimeRatioRad) + 0.35) / (1 + 0.35);
