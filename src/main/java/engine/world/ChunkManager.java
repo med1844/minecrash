@@ -3,8 +3,8 @@ package engine.world;
 import engine.world.gen.ChunkGeneratorOverWorld;
 
 public class ChunkManager {
-    private final int WORLD_MAX_WIDTH = 4;
-    private final int WORLD_MAX_LENGTH = 4;
+    private final int WORLD_MAX_WIDTH = 5;
+    private final int WORLD_MAX_LENGTH = 5;
     private Chunk[][] chunks;
 
     public ChunkManager() {
