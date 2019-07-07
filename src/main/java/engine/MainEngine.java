@@ -34,7 +34,7 @@ public class MainEngine implements Runnable {
         renderer = new Renderer();
         input = new Input();
         camera = new Camera();
-        timer = new Timer(05.0);
+        timer = new Timer(1.0);
     }
 
     public void init() throws Exception {
@@ -49,7 +49,7 @@ public class MainEngine implements Runnable {
                 new Vector3f(0, 5, 0), 0.65f
         );
         directionalLight.setOrthoCoords(
-                -100, 100, -100, 100, -100, 100
+                -200, 200, -200, 200, -200, 200
         );
         scene = new Scene(
                 chunkManager, directionalLight

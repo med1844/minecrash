@@ -54,10 +54,7 @@ public class Transformations {
         lightViewMatrix.lookAt(
                 camera.getPosition().add(direction),
                 camera.getPosition(),
-//                new Vector3f(0, 0, 0),
                 new Vector3f(0, 1, 0)
-//                camera.getPosition().add(camera.getDirection()),
-//                direction.x < 0 ? new Vector3f(0, 1, 0) : new Vector3f(0, -1, 0)
         );
         return lightViewMatrix;
     }

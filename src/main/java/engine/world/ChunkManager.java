@@ -15,11 +15,13 @@ public class ChunkManager {
         ChunkGeneratorOverWorld chunkGenerator = new ChunkGeneratorOverWorld();
         for (int i = 0; i < chunks.length; ++i) {
             for (int j = 0; j < chunks[i].length; ++j) {
+                System.out.println("[INFO] Generating Chunk [" + i + ", " + j + "]");
                 chunks[i][j] = chunkGenerator.generateChunk(i, j);
             }
         }
         for (Chunk[] chunkList : chunks) {
             for (Chunk chunk : chunkList) {
+                System.out.println("[INFO] Generating Chunk Mesh [" + chunk.getx() + ", " + chunk.getz() + "]");
                 chunk.generateMesh(this);
             }
         }
