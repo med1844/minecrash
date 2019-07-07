@@ -197,8 +197,6 @@ public class Renderer {
 
         Matrix4f lightViewMatrix = transformations.getLightViewMatrix(
                 lightDirection, camera
-//                new vector3f(lightdirection).mul(5),
-//                new vector3f(lightanglex, lightangley, lightanglez)
         );
 
         OrthoCoords orthoCoords = scene.light.getOrthoCoords();
@@ -216,7 +214,6 @@ public class Renderer {
             for (Chunk chunk : chunkList) {
                 depthShader.setUniform("modelLightViewMatrix",
                         transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
-//                        lightViewMatrix
                 );
                 chunk.render();
             }

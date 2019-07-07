@@ -44,6 +44,7 @@ public class TextureManager {
             material = new Material(texture, 1f);
         } catch (Exception e) {
             System.err.println("[ERROR] TextureManager.init():\r\n" + e);
+            e.printStackTrace();
             System.exit(-1);
         }
     }
