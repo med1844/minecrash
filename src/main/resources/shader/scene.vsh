@@ -3,12 +3,14 @@
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec2 textureCoord;
 layout(location = 2) in vec3 vertexNormalVector;
+layout(location = 3) in float inAdjacentFaceCount;
 
 out vec2 outTextureCoord;
 out vec3 vertexNormal;
 out vec3 vertexPos;
 out vec3 originVertexNormal;
 out vec4 lightViewVertexPos;
+out float ambientOcclusion;
 
 uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
@@ -24,5 +26,6 @@ void main() {
     vertexPos = modelViewPos.xyz;
     originVertexNormal = vertexNormalVector;
     lightViewVertexPos = orthoProjectionMatrix * modelLightViewMatrix * vec4(position, 1.0);
+    ambientOcclusion = inAdjacentFaceCount;
 //    gl_Position = lightViewVertexPos;
 }

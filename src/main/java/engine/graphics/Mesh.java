@@ -26,12 +26,13 @@ public class Mesh {
      *                  it also contains data that determines how it looks like
      * Usage can be found in MainEngine.java
      */
-    public Mesh(float[] positions, float[] textureCoord, float[] normals, int[] indices,
+    public Mesh(float[] positions, float[] textureCoord, float[] normals, int[] indices, float[] adjacentFaceCount,
                 Material material) {
         FloatBuffer posBuffer = null;
         FloatBuffer textCoordsBuffer = null;
         FloatBuffer vecNormalsBuffer = null;
         IntBuffer indicesBuffer = null;
+        FloatBuffer adjacentFaceBuffer = null;
         try {
             this.material = material;
             vertexCount = positions.length;
@@ -67,6 +68,15 @@ public class Mesh {
             glBufferData(GL_ARRAY_BUFFER, vecNormalsBuffer, GL_DYNAMIC_DRAW);
             glVertexAttribPointer(2, 3, GL_FLOAT, false, 0, 0);
 
+            // Adjacent face count VBO
+            vboId = glGenBuffers();
+            vboIdList.add(vboId);
+            adjacentFaceBuffer = MemoryUtil.memAllocFloat(adjacentFaceCount.length);
+            adjacentFaceBuffer.put(adjacentFaceCount).flip();
+            glBindBuffer(GL_ARRAY_BUFFER, vboId);
+            glBufferData(GL_ARRAY_BUFFER, adjacentFaceBuffer, GL_DYNAMIC_DRAW);
+            glVertexAttribPointer(3, 1, GL_FLOAT, false, 0, 0);
+
             // Index VBO
             vboId = glGenBuffers();
             vboIdList.add(vboId);
@@ -89,6 +99,9 @@ public class Mesh {
             }
             if (indicesBuffer != null) {
                 MemoryUtil.memFree(indicesBuffer);
+            }
+            if (adjacentFaceBuffer != null) {
+                MemoryUtil.memFree(adjacentFaceBuffer);
             }
         }
     }
@@ -118,6 +131,7 @@ public class Mesh {
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
         glEnableVertexAttribArray(2);
+        glEnableVertexAttribArray(3);
     }
 
     private void endRender() {
@@ -125,6 +139,7 @@ public class Mesh {
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
         glDisableVertexAttribArray(2);
+        glDisableVertexAttribArray(3);
         glBindVertexArray(0);
     }
 
