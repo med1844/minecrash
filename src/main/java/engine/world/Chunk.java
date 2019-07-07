@@ -16,10 +16,10 @@ public class Chunk {
 
     private int x, z; // the chunk coordinates of current chunk
     private Block[][][] blocks;
-    private Mesh mesh;
+    private Mesh[] meshes;
     private int pos, tex, norm, adj;
     private static final int X = 16;
-    private static final int Y = 16;
+    private static final int Y = 64;
     private static final int Z = 16;
     private static final int[] dx = {0, 0, 0, 0, 1, -1};
     private static final int[] dy = {1, -1, 0, 0, 0, 0};
@@ -31,6 +31,7 @@ public class Chunk {
         this.z = y;
         blocks = new Block[X][Y][Z]; // retrieve data through (x, y, z)
         m = new HashMap<>();
+        meshes = new Mesh[Y >> 4];
     }
 
     private boolean valid(int x, int y, int z) {
@@ -168,7 +169,7 @@ public class Chunk {
     }
 
     private void addFace(Block block, int faceID, float[] position, float[] textureCoord, float[] normal, float[] adjacentFaceCount) {
-        int x = block.x & 15, y = block.y & 15, z = block.z & 15;
+        int x = block.x & 15, y = block.y, z = block.z & 15;
         switch (faceID) {
             case 0:
                 genFace(block.face[0], new Vector3f(x + 1, y + 1, z + 1), new Vector3f(x, y + 1, z + 1), new Vector3f(x + 1, y + 1, z), new Vector3f(x, y + 1, z), new Vector3f(0, 1, 0), false, position, textureCoord, normal, adjacentFaceCount, 0);
@@ -275,25 +276,23 @@ public class Chunk {
         }
     }
 
-    public void generateMesh(ChunkManager chunkManager) {
+    public void generatePartMesh(ChunkManager chunkManager, int index) {
         List<Pair<Block, Integer>> l = new LinkedList<>();
         m.clear();
         pos = tex = norm = adj = 0;
         for (int x = 0; x < X; ++x) {
-            for (int y = 0; y < Y; ++y) {
+            for (int y = index << 4; y < (index + 1) << 4; ++y) {
                 for (int z = 0; z < Z; ++z) {
                     if (blocks[x][y][z].equals(AIR)) continue;
                     for (int d = 0; d < 6; ++d) {
                         int nx = x + dx[d], ny = y + dy[d], nz = z + dz[d];
-                        Block temp = null;
+                        Block temp;
                         if (!valid(nx, ny, nz)) {
-                            if (d >= 2) {
-                                temp = chunkManager.getBlock(
-                                        (this.x << 4) + nx,
-                                        ny,
-                                        (this.z << 4) + nz
-                                );
-                            }
+                            temp = chunkManager.getBlock(
+                                    (this.x << 4) + nx,
+                                    ny,
+                                    (this.z << 4) + nz
+                            );
                         } else {
                             temp = blocks[nx][ny][nz];
                         }
@@ -311,15 +310,22 @@ public class Chunk {
         float[] adjacentFaceCount = new float[6 * l.size()];
         int[] indices = new int[6 * l.size()];
         for (int i = 0; i < indices.length; ++i) indices[i] = i;
-        int cnt = 0;
         for (Pair<Block, Integer> p : l) {
             addFace(p.getKey(), p.getValue(), position, textureCoord, normal, adjacentFaceCount);
         }
-        mesh = new Mesh(position, textureCoord, normal, indices, adjacentFaceCount, TextureManager.material);
+        meshes[index] = new Mesh(position, textureCoord, normal, indices, adjacentFaceCount, TextureManager.material);
+    }
+
+    public void generateMesh(ChunkManager chunkManager) {
+        for (int i = 0; i < (Y >> 4); ++i) {
+            generatePartMesh(chunkManager, i);
+        }
     }
 
     public void clear() {
-        mesh.clear();
+        for (int i = 0; i < (Y >> 4); ++i) {
+            meshes[i].clear();
+        }
     }
 
     public int getx() {
@@ -342,7 +348,7 @@ public class Chunk {
         return Z;
     }
     
-    public void setBlocks(int blockID,int x,int y,int z) {
+    public void setBlock(int blockID,int x,int y,int z) {
         blocks[x][y][z] = new Block(blockID, (this.x << 4) + x, y, (this.z << 4) + z);
     }
     
@@ -359,6 +365,8 @@ public class Chunk {
     }
 
     public void render() {
-        mesh.render();
+        for (int i = 0; i < (Y >> 4); ++i) {
+            meshes[i].render();
+        }
     }
 }

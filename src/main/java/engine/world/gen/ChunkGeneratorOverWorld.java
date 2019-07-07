@@ -1,14 +1,12 @@
 package engine.world.gen;
 
-import static engine.world.TextureManager.AIR;
-import static engine.world.TextureManager.GRASS;
-import static engine.world.TextureManager.STONE;
-
 import java.util.Random;
 
 import engine.maths.Perlin;
+import engine.maths.SimplexNoise;
 import engine.world.Block;
 import engine.world.Chunk;
+import static engine.world.TextureManager.*;
 
 public class ChunkGeneratorOverWorld implements ChunkGenerator {
     Random rand;
@@ -45,7 +43,7 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
     @Override
     public Chunk generateChunk(int x, int z) {
         rand = new Random();
-        rand.setSeed((long) x * 341873128712L + (long) z * 132897987541L);
+        rand.setSeed(((long) x * 341873128712L + (long) z * 132897987541L) * System.nanoTime());
         // 用于存储chunk数据
         depthNoise = new NoiseGeneratorOctaves(rand, 4);
         mainPerlinNoise = new NoiseGeneratorOctaves(rand, 4);
@@ -59,67 +57,82 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
     }
 
     public void setBlocksInChunk(int x, int z, Chunk chunk) {
-        for (int i = 0; i < chunk.getX(); ++i)
-            for (int j = 0; j < Chunk.getY(); ++j) for (int k = 0; k < Chunk.getZ(); ++k) chunk.setBlocks(AIR, i, j, k);
-//        this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, x * 4 - 2, z * 4 - 2, 10, 10);
-        // 生成地形高度图 5x5x31
-        heightMap = new double[5 * 5 * 33];
-//        for (int i=0;i<heightMap.length;i++) System.out.println(heightMap[i]);
-        this.generateHeightmap(x * 4, 0, z * 4);
-        // 插值部分(看着很复杂，实际很简单，不细讲)
-        for (int i = 0; i < 4; ++i) {
-            int j = i * 5;
-            int k = (i + 1) * 5;
-
-            for (int l = 0; l < 4; ++l) {
-                int i1 = (j + l) * 33;
-                int j1 = (j + l + 1) * 33;
-                int k1 = (k + l) * 33;
-                int l1 = (k + l + 1) * 33;
-
-                for (int i2 = 0; i2 < 4; ++i2) {
-                    double d0 = 0.125D;
-                    double d1 = this.heightMap[i1 + i2];
-                    double d2 = this.heightMap[j1 + i2];
-                    double d3 = this.heightMap[k1 + i2];
-                    double d4 = this.heightMap[l1 + i2];
-                    double d5 = (this.heightMap[i1 + i2 + 1] - d1) * 0.125D;
-                    double d6 = (this.heightMap[j1 + i2 + 1] - d2) * 0.125D;
-                    double d7 = (this.heightMap[k1 + i2 + 1] - d3) * 0.125D;
-                    double d8 = (this.heightMap[l1 + i2 + 1] - d4) * 0.125D;
-
-                    for (int j2 = 0; j2 < 4; ++j2) {
-                        double d9 = 0.25D;
-                        double d10 = d1;
-                        double d11 = d2;
-                        double d12 = (d3 - d1) * 0.25D;
-                        double d13 = (d4 - d2) * 0.25D;
-
-                        for (int k2 = 0; k2 < 4; ++k2) {
-                            double d14 = 0.25D;
-                            double d16 = (d11 - d10) * 0.25D;
-                            double lvt_45_1_ = d10 - d16;
-
-                            for (int l2 = 0; l2 < 4; ++l2) {
-                                if ((lvt_45_1_ += d16) > 0.0D) {
-                                    chunk.setBlocks(GRASS, i * 4 + k2, (i2 * 4 + j2), l * 4 + l2); //should be stone
-                                } else if ((i2 * 8 + j2) < seaLevel) {
-                                    chunk.setBlocks(STONE, i * 4 + k2, (i2 * 4 + j2), l * 4 + l2);//should be ocean
-                                }
-                            }
-
-                            d10 += d12;
-                            d11 += d13;
-                        }
-
-                        d1 += d5;
-                        d2 += d6;
-                        d3 += d7;
-                        d4 += d8;
+        SimplexNoise noise = new SimplexNoise(0.5, System.nanoTime() + 998244353 * x * z);
+        for (int i = 0; i < Chunk.getX(); ++i) {
+            for (int j = 0; j < Chunk.getY(); ++j) {
+                for (int k = 0; k < Chunk.getZ(); ++k) {
+                    double result = Math.abs(noise.get((chunk.getx() << 4) + i, j, (chunk.getz() << 4) + k)) * 5;
+                    if (result <= 1.0) {
+                        chunk.setBlock(AIR, i, j, k);
+                    } else if (result <= 1.9) {
+                        chunk.setBlock(STONE, i, j, k);
+                    } else {
+                        chunk.setBlock(AIR, i, j, k);
                     }
                 }
             }
         }
+//        for (int i = 0; i < Chunk.getX(); ++i)
+//            for (int j = 0; j < Chunk.getY(); ++j) for (int k = 0; k < Chunk.getZ(); ++k) chunk.setBlocks(AIR, i, j, k);
+////        this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, x * 4 - 2, z * 4 - 2, 10, 10);
+//        // 生成地形高度图 5x5x31
+//        heightMap = new double[5 * 5 * 33];
+////        for (int i=0;i<heightMap.length;i++) System.out.println(heightMap[i]);
+//        this.generateHeightmap(x * 4, 0, z * 4);
+//        // 插值部分(看着很复杂，实际很简单，不细讲)
+//        for (int i = 0; i < 4; ++i) {
+//            int j = i * 5;
+//            int k = (i + 1) * 5;
+//
+//            for (int l = 0; l < 4; ++l) {
+//                int i1 = (j + l) * 33;
+//                int j1 = (j + l + 1) * 33;
+//                int k1 = (k + l) * 33;
+//                int l1 = (k + l + 1) * 33;
+//
+//                for (int i2 = 0; i2 < 4; ++i2) {
+//                    double d0 = 0.125D;
+//                    double d1 = this.heightMap[i1 + i2];
+//                    double d2 = this.heightMap[j1 + i2];
+//                    double d3 = this.heightMap[k1 + i2];
+//                    double d4 = this.heightMap[l1 + i2];
+//                    double d5 = (this.heightMap[i1 + i2 + 1] - d1) * 0.125D;
+//                    double d6 = (this.heightMap[j1 + i2 + 1] - d2) * 0.125D;
+//                    double d7 = (this.heightMap[k1 + i2 + 1] - d3) * 0.125D;
+//                    double d8 = (this.heightMap[l1 + i2 + 1] - d4) * 0.125D;
+//
+//                    for (int j2 = 0; j2 < 4; ++j2) {
+//                        double d9 = 0.25D;
+//                        double d10 = d1;
+//                        double d11 = d2;
+//                        double d12 = (d3 - d1) * 0.25D;
+//                        double d13 = (d4 - d2) * 0.25D;
+//
+//                        for (int k2 = 0; k2 < 4; ++k2) {
+//                            double d14 = 0.25D;
+//                            double d16 = (d11 - d10) * 0.25D;
+//                            double lvt_45_1_ = d10 - d16;
+//
+//                            for (int l2 = 0; l2 < 4; ++l2) {
+//                                if ((lvt_45_1_ += d16) > 0.0D) {
+//                                    chunk.setBlocks(GRASS, i * 4 + k2, (i2 * 4 + j2), l * 4 + l2); //should be stone
+//                                } else if ((i2 * 8 + j2) < seaLevel) {
+//                                    chunk.setBlocks(STONE, i * 4 + k2, (i2 * 4 + j2), l * 4 + l2);//should be ocean
+//                                }
+//                            }
+//
+//                            d10 += d12;
+//                            d11 += d13;
+//                        }
+//
+//                        d1 += d5;
+//                        d2 += d6;
+//                        d3 += d7;
+//                        d4 += d8;
+//                    }
+//                }
+//            }
+//        }
     }
 
     private void generateHeightmap(int x, int y, int z) {
