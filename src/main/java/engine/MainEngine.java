@@ -34,7 +34,7 @@ public class MainEngine implements Runnable {
         renderer = new Renderer();
         input = new Input();
         camera = new Camera();
-        timer = new Timer(15.0);
+        timer = new Timer(05.0);
     }
 
     public void init() throws Exception {
