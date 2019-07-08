@@ -10,6 +10,7 @@ import static engine.world.TextureManager.*;
 
 public class ChunkGeneratorOverWorld implements ChunkGenerator {
     Random rand;
+    private long seed;
     private double[] heightMap;
     public static final int seaLevel = 5;
     NoiseGeneratorOctaves depthNoise;
@@ -39,6 +40,9 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
     public static final float stretchY = 1;
     public static final float baseSize = 1;
 
+    public ChunkGeneratorOverWorld(long seed) {
+        this.seed = seed;
+    }
 
     @Override
     public Chunk generateChunk(int x, int z) {
@@ -57,17 +61,19 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
     }
 
     public void setBlocksInChunk(int x, int z, Chunk chunk) {
-        SimplexNoise noise = new SimplexNoise(0.5, System.nanoTime() + 998244353 * x * z);
+        SimplexNoise noise = new SimplexNoise(0.5, seed);
         for (int i = 0; i < Chunk.getX(); ++i) {
             for (int j = 0; j < Chunk.getY(); ++j) {
                 for (int k = 0; k < Chunk.getZ(); ++k) {
                     double result = Math.abs(noise.get((chunk.getx() << 4) + i, j, (chunk.getz() << 4) + k)) * 5;
-                    if (result <= 1.0) {
+                    if (result <= 0.7) {
                         chunk.setBlock(AIR, i, j, k);
                     } else if (result <= 1.9) {
                         chunk.setBlock(STONE, i, j, k);
-                    } else {
+                    } else if (result <= 20){
                         chunk.setBlock(AIR, i, j, k);
+                    } else {
+                        chunk.setBlock(PLANKS, i, j, k);
                     }
                 }
             }

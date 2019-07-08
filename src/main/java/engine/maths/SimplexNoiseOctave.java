@@ -53,6 +53,7 @@ public class SimplexNoiseOctave {  // Simplex noise in 2D, 3D and 4D
     public SimplexNoiseOctave(long seed) {
         Random rand = new Random(seed);
         short[] p = new short[p_origin.length];
+        for (int i = 0; i < 256; ++i) p[i] = p_origin[i];
         for (int i = 0; i < 256; ++i) {
             int a = rand.nextInt(256);
             int b = rand.nextInt(256);
