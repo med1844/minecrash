@@ -62,6 +62,7 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
 
     public void setBlocksInChunk(int x, int z, Chunk chunk) {
         SimplexNoise noise = new SimplexNoise(0.5, seed);
+        Random rand = new Random(seed);
         for (int i = 0; i < Chunk.getX(); ++i) {
             for (int j = 0; j < Chunk.getY(); ++j) {
                 for (int k = 0; k < Chunk.getZ(); ++k) {
@@ -69,11 +70,11 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
                     if (result <= 0.7) {
                         chunk.setBlock(AIR, i, j, k);
                     } else if (result <= 1.9) {
-                        chunk.setBlock(STONE, i, j, k);
-                    } else if (result <= 20){
-                        chunk.setBlock(AIR, i, j, k);
+                        int blockID = rand.nextInt(24) + 1;
+                        if (blockID == 6) blockID = 1;
+                        chunk.setBlock(blockID, i, j, k);
                     } else {
-                        chunk.setBlock(PLANKS, i, j, k);
+                        chunk.setBlock(AIR, i, j, k);
                     }
                 }
             }
