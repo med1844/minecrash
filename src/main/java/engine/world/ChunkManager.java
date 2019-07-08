@@ -12,7 +12,8 @@ public class ChunkManager {
     }
 
     public void init() {
-        ChunkGeneratorOverWorld chunkGenerator = new ChunkGeneratorOverWorld();
+        ChunkGeneratorOverWorld chunkGenerator = new ChunkGeneratorOverWorld(998442353L * System.nanoTime());
+
         for (int i = 0; i < chunks.length; ++i) {
             for (int j = 0; j < chunks[i].length; ++j) {
                 System.out.println("[INFO] Generating Chunk [" + i + ", " + j + "]");

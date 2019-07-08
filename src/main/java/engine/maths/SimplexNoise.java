@@ -9,7 +9,7 @@ public class SimplexNoise {
     private SimplexNoiseOctave[] octaves;
     private double[] freqs;
     private double[] amps;
-    private final int OCTAVE_COUNT = 8;
+    private final int OCTAVE_COUNT = 1 << 3;
 
     public SimplexNoise(double persistence, long seed) {
         this.persistence = persistence;
@@ -19,7 +19,7 @@ public class SimplexNoise {
         freqs = new double[OCTAVE_COUNT];
         amps = new double[OCTAVE_COUNT];
 
-        Random rand = new Random(System.nanoTime());
+        Random rand = new Random(seed);
 
         for (int i = 0; i < OCTAVE_COUNT; ++i) {
             octaves[i] = new SimplexNoiseOctave(rand.nextLong());

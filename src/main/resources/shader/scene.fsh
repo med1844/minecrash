@@ -108,6 +108,12 @@ float calcShadow(vec4 position) {
     return result;
 }
 
+vec4 fog(vec4 color, vec4 fogColor, float depth, float density) {
+    const float e = 2.71828182845904523536028747135266249;
+    float f = pow(e, -pow(depth * density, 2));
+    return mix(fogColor, color, f);
+}
+
 void main() {
     setupColours(material, outTextureCoord);
 
@@ -122,6 +128,7 @@ void main() {
 
     float shadow = calcShadow(lightViewVertexPos);
     fragColor = mix(clamp(ambientC * vec4(vec3(ambientOcclusion), 1) * vec4(ambientLight, 1) + diffuseSpecular * shadow, 0, 1), vec4(0, 0, 0, 1), mixRatio);
+    fragColor = fog(fragColor, vec4(directionalLight.colour * 0.8, 1), length(vertexPos), 0.005);
 //    fragColor = vec4(vec3(texture(shadowMap, (lightViewVertexPos * 0.5 + 0.5).xy).r), 1);
 //    fragColor = vec4(vec3(shadow), 1);
 }
