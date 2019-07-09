@@ -69,14 +69,17 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
             for (int j = 0; j < Chunk.getY(); ++j) {
                 for (int k = 0; k < Chunk.getZ(); ++k) {
                     double result = Math.abs(noise.get((chunk.getx() << 4) + i, j, (chunk.getz() << 4) + k)) * 5;
-                    if (result <= 0.7) {
-                        chunk.setBlock(AIR, i, j, k);
-                    } else if (result <= 1.9) {
-                        int blockID = rand.nextInt(24) + 1;
-                        if (TextureManager.getType(blockID) != SOLID) blockID = 1;
-                        chunk.setBlock(blockID, i, j, k);
-                    } else {
-                        chunk.setBlock(AIR, i, j, k);
+                    if (j == 0) chunk.setBlock(STONE, i, j, k);
+                    else {
+                        if (result <= 0.7) {
+                            chunk.setBlock(AIR, i, j, k);
+                        } else if (result <= 1.9) {
+                            int blockID = rand.nextInt(24) + 1;
+                            if (TextureManager.getType(blockID) != SOLID) blockID = 1;
+                            chunk.setBlock(blockID, i, j, k);
+                        } else {
+                            chunk.setBlock(AIR, i, j, k);
+                        }
                     }
                 }
             }

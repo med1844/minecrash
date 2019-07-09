@@ -68,6 +68,10 @@ public class Shader {
         glUniform4f(uniformTable.get(uniformName), value.x, value.y, value.z, value.w);
     }
 
+    public void setUniform(String uniformName, boolean value) {
+        glUniform1i(uniformTable.get(uniformName), value ? 1 : 0);
+    }
+
     public void setUniform(String uniformName, float value) {
         glUniform1f(uniformTable.get(uniformName), value);
     }

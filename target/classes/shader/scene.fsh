@@ -1,5 +1,6 @@
 # version 330
 
+in vec3 worldCoord;
 in vec2 outTextureCoord;
 in vec3 vertexPos;
 in vec3 vertexNormal;
@@ -23,6 +24,8 @@ struct DirectionalLight {
     float intensity;
 };
 
+uniform int selected;
+uniform vec3 selectedBlock;
 uniform sampler2D texture_sampler;
 uniform sampler2DShadow shadowMap;
 uniform Material material;
@@ -114,6 +117,13 @@ vec4 fog(vec4 color, vec4 fogColor, float depth, float density) {
     return mix(fogColor, color, f);
 }
 
+bool check(vec3 sourcePos, vec3 targetPos) {
+    // this checks whether source postion is the targetPos
+    return (targetPos.x <= sourcePos.x && sourcePos.x <= targetPos.x + 1) &&
+           (targetPos.y <= sourcePos.y && sourcePos.y <= targetPos.y + 1) &&
+           (targetPos.z <= sourcePos.z && sourcePos.z <= targetPos.z + 1);
+}
+
 void main() {
     setupColours(material, outTextureCoord);
 
@@ -129,6 +139,9 @@ void main() {
     float shadow = calcShadow(lightViewVertexPos);
     fragColor = mix(clamp(ambientC * vec4(vec3(ambientOcclusion), 1) * vec4(ambientLight, 1) + diffuseSpecular * shadow, 0, 1), vec4(0, 0, 0, 1), mixRatio);
     fragColor = fog(fragColor, vec4(directionalLight.colour * 0.8, 1), length(vertexPos), 0.005);
+    if (selected == 1 && check(worldCoord, selectedBlock)) {
+        fragColor = vec4(1, 1, 1, 2) - fragColor;
+    }
 //    fragColor = vec4(vec3(texture(shadowMap, (lightViewVertexPos * 0.5 + 0.5).xy).r), 1);
 //    fragColor = vec4(vec3(shadow), 1);
 }

@@ -3,6 +3,8 @@ package engine.graphics;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
 import static engine.graphics.DirectionalLight.OrthoCoords;
+
+import engine.CameraSelectionDetector;
 import engine.IO.Window;
 import engine.Utils;
 import engine.maths.Transformations;
@@ -28,6 +30,7 @@ public class Renderer {
     private Shader sceneShader, depthShader;
     private ShadowMap shadowMap;
     private final Transformations transformations;
+    private CameraSelectionDetector cameraSelectionDetector;
     private float FOV = (float)Math.toRadians(60.0f);
     private float Z_NEAR = 0.1f;
     private float Z_FAR = 1000.0f;
@@ -49,6 +52,7 @@ public class Renderer {
      */
     public void init() throws Exception {
         shadowMap = new ShadowMap();
+        cameraSelectionDetector = new CameraSelectionDetector();
 
         setupSceneShader();
         setupDepthShader();
@@ -63,6 +67,10 @@ public class Renderer {
         sceneShader.createUniform("texture_sampler");
         sceneShader.createUniform("shadowMap");
 
+        sceneShader.createUniform("selected");
+        sceneShader.createUniform("selectedBlock");
+
+        sceneShader.createUniform("modelMatrix");
         sceneShader.createUniform("projectionMatrix");
         sceneShader.createUniform("modelViewMatrix");
         sceneShader.createUniform("orthoProjectionMatrix");
@@ -112,6 +120,11 @@ public class Renderer {
     private void renderScene(Window window, Camera camera, Scene scene) {
         sceneShader.bind();
 
+        Vector3f selectedBlockPos = cameraSelectionDetector.selectBlock(scene.chunkManager.getChunks(), camera, transformations);
+        sceneShader.setUniform("selected", selectedBlockPos != null);
+        if (selectedBlockPos != null) sceneShader.setUniform("selectedBlock", selectedBlockPos);
+        else sceneShader.setUniform("selectedBlock", new Vector3f(0, 0, 0));
+
         OrthoCoords orthoCoords = scene.light.getOrthoCoords();
 
         Matrix4f orthoProjectionMatrix = new Matrix4f().identity().ortho(
@@ -159,6 +172,7 @@ public class Renderer {
         sceneShader.setUniform("material", TextureManager.material);
         for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
             for (Chunk chunk : chunkList) {
+                sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
                 sceneShader.setUniform("modelViewMatrix",
                         transformations.buildModelViewMatrix(chunk, viewMatrix)
                 );
@@ -170,6 +184,7 @@ public class Renderer {
         }
         for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
             for (Chunk chunk : chunkList) {
+                sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
                 sceneShader.setUniform("modelViewMatrix",
                         transformations.buildModelViewMatrix(chunk, viewMatrix)
                 );
@@ -181,6 +196,7 @@ public class Renderer {
         }
         for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
             for (Chunk chunk : chunkList) {
+                sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
                 sceneShader.setUniform("modelViewMatrix",
                         transformations.buildModelViewMatrix(chunk, viewMatrix)
                 );
