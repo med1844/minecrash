@@ -30,10 +30,10 @@ public class TextureManager {
     public static int DISPENSER = 23;
     public static int SANDSTONE = 24;
 
-    private static int EMPTY = 0;
-    private static int SOLID = 1;
-    private static int TRANSPARENT = 2;
-    private static int MOVABLE = 3; // this means you can move around in this type of block.
+    public static int EMPTY = 0;
+    public static int SOLID = 1;
+    public static int TRANSPARENT = 2;
+    public static int MOVABLE = 3; // this means you can move around in this type of block.
 
     private static int[][] face = {
             {0, 0, 0, 0, 0, 0, EMPTY}, // air
@@ -42,7 +42,7 @@ public class TextureManager {
             {3, 3, 3, 3, 3, 3, SOLID}, // dirt
             {4, 4, 4, 4, 4, 4, SOLID}, // cobblestone
             {5, 5, 5, 5, 5, 5, SOLID}, // planks
-            {6, 6, 6, 6, 6, 6, SOLID}, // oak sampling
+            {6, 6, 6, 6, 6, 6, MOVABLE}, // oak sampling
             {7, 7, 7, 7, 7, 7, SOLID}, // bedrock
             {8, 8, 8, 8, 8, 8, MOVABLE}, // flow water
             {9, 9, 9, 9, 9, 9, MOVABLE}, // still water
