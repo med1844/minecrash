@@ -315,7 +315,6 @@ public class Chunk {
         float[] adjacentFaceCount = new float[6 * l.size()];
         int[] indices = new int[6 * l.size()];
         for (int i = 0; i < indices.length; ++i) indices[i] = i;
-        System.out.println(l.size());
         for (Pair<Block, Integer> p : l) {
             addFace(p.getKey(), p.getValue(), position, textureCoord, normal, adjacentFaceCount);
         }
@@ -356,7 +355,7 @@ public class Chunk {
         return Z;
     }
     
-    public void setBlock(int blockID,int x,int y,int z) {
+    public void setBlock(int blockID, int x,int y, int z) {
         blocks[x][y][z] = new Block(blockID, (this.x << 4) + x, y, (this.z << 4) + z);
     }
     
