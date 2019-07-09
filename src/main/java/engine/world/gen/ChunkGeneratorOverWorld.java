@@ -6,6 +6,8 @@ import engine.maths.Perlin;
 import engine.maths.SimplexNoise;
 import engine.world.Block;
 import engine.world.Chunk;
+import engine.world.TextureManager;
+
 import static engine.world.TextureManager.*;
 
 public class ChunkGeneratorOverWorld implements ChunkGenerator {
@@ -71,7 +73,7 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
                         chunk.setBlock(AIR, i, j, k);
                     } else if (result <= 1.9) {
                         int blockID = rand.nextInt(24) + 1;
-                        if (blockID == 6) blockID = 1;
+                        if (TextureManager.getType(blockID) != SOLID) blockID = 1;
                         chunk.setBlock(blockID, i, j, k);
                     } else {
                         chunk.setBlock(AIR, i, j, k);

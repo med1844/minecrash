@@ -121,11 +121,6 @@ public class Mesh {
     }
 
     private void initRender() {
-        // Activate firs texture bank
-        glActiveTexture(GL_TEXTURE0);
-        // Bind the texture
-        glBindTexture(GL_TEXTURE_2D, material.getTexture().getId());
-
         // Draw the mesh
         glBindVertexArray(getVaoId());
         glEnableVertexAttribArray(0);

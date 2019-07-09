@@ -34,7 +34,7 @@ public class MainEngine implements Runnable {
         renderer = new Renderer();
         input = new Input();
         camera = new Camera();
-        timer = new Timer(1.0);
+        timer = new Timer(10.0);
     }
 
     public void init() throws Exception {
@@ -43,7 +43,6 @@ public class MainEngine implements Runnable {
         input.init(window, camera);
         TextureManager.init();
         ChunkManager chunkManager = new ChunkManager();
-        chunkManager.init();
         directionalLight = new DirectionalLight(
                 new Vector3f(1, 1, 1),
                 new Vector3f(0, 5, 0), 0.65f

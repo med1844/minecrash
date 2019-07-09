@@ -150,8 +150,12 @@ public class Renderer {
         sceneShader.setUniform("texture_sampler", 0);
         sceneShader.setUniform("shadowMap", 2);
 
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, TextureManager.material.getTexture().getId());
+
         glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, shadowMap.getDepthMap().getId());
+
         sceneShader.setUniform("material", TextureManager.material);
         for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
             for (Chunk chunk : chunkList) {
@@ -161,7 +165,29 @@ public class Renderer {
                 sceneShader.setUniform("modelLightViewMatrix",
                         transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
                 );
-                chunk.render();
+                chunk.renderSolid();
+            }
+        }
+        for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
+            for (Chunk chunk : chunkList) {
+                sceneShader.setUniform("modelViewMatrix",
+                        transformations.buildModelViewMatrix(chunk, viewMatrix)
+                );
+                sceneShader.setUniform("modelLightViewMatrix",
+                        transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
+                );
+                chunk.renderMovable();
+            }
+        }
+        for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
+            for (Chunk chunk : chunkList) {
+                sceneShader.setUniform("modelViewMatrix",
+                        transformations.buildModelViewMatrix(chunk, viewMatrix)
+                );
+                sceneShader.setUniform("modelLightViewMatrix",
+                        transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
+                );
+                chunk.renderTransparencies();
             }
         }
         sceneShader.unbind();
@@ -210,12 +236,31 @@ public class Renderer {
         );
         depthShader.setUniform("orthoProjectionMatrix", orthoProjectionMatrix);
 
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, TextureManager.material.getTexture().getId());
+
         for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
             for (Chunk chunk : chunkList) {
                 depthShader.setUniform("modelLightViewMatrix",
                         transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
                 );
-                chunk.render();
+                chunk.renderSolid();
+            }
+        }
+        for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
+            for (Chunk chunk : chunkList) {
+                depthShader.setUniform("modelLightViewMatrix",
+                        transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
+                );
+                chunk.renderMovable();
+            }
+        }
+        for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
+            for (Chunk chunk : chunkList) {
+                depthShader.setUniform("modelLightViewMatrix",
+                        transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
+                );
+                chunk.renderTransparencies();
             }
         }
 

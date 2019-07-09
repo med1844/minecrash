@@ -16,7 +16,7 @@ public class Chunk {
 
     private int x, z; // the chunk coordinates of current chunk
     private Block[][][] blocks;
-    private Mesh[] meshes;
+    private Mesh[] solid, transparencies, movable;
     private int pos, tex, norm, adj;
     private static final int X = 16;
     private static final int Y = 64;
@@ -31,7 +31,9 @@ public class Chunk {
         this.z = y;
         blocks = new Block[X][Y][Z]; // retrieve data through (x, y, z)
         m = new HashMap<>();
-        meshes = new Mesh[Y >> 4];
+        solid = new Mesh[Y >> 4];
+        transparencies = new Mesh[Y >> 4];
+        movable = new Mesh[Y >> 4];
     }
 
     private boolean valid(int x, int y, int z) {
@@ -276,7 +278,7 @@ public class Chunk {
         }
     }
 
-    public void generatePartMesh(ChunkManager chunkManager, int index) {
+    public void generatePartMesh(ChunkManager chunkManager, int index, int type, Mesh[] target) {
         List<Pair<Block, Integer>> l = new LinkedList<>();
         m.clear();
         pos = tex = norm = adj = 0;
@@ -284,21 +286,24 @@ public class Chunk {
             for (int y = index << 4; y < (index + 1) << 4; ++y) {
                 for (int z = 0; z < Z; ++z) {
                     if (blocks[x][y][z].equals(AIR)) continue;
-                    for (int d = 0; d < 6; ++d) {
-                        int nx = x + dx[d], ny = y + dy[d], nz = z + dz[d];
-                        Block temp;
-                        if (!valid(nx, ny, nz)) {
-                            temp = chunkManager.getBlock(
-                                    (this.x << 4) + nx,
-                                    ny,
-                                    (this.z << 4) + nz
-                            );
-                        } else {
-                            temp = blocks[nx][ny][nz];
-                        }
-                        if (temp == null || blocks[x][y][z].getType() != temp.getType()) {
-                            l.add(new Pair<>(blocks[x][y][z], d));
-                            addAO(x, y, z, d, chunkManager);
+                    if (blocks[x][y][z].getType() == type) {
+                        for (int d = 0; d < 6; ++d) {
+                            int nx = x + dx[d], ny = y + dy[d], nz = z + dz[d];
+                            Block temp;
+                            if (!valid(nx, ny, nz)) {
+                                temp = chunkManager.getBlock(
+                                        (this.x << 4) + nx,
+                                        ny,
+                                        (this.z << 4) + nz
+                                );
+                            } else {
+                                temp = blocks[nx][ny][nz];
+                            }
+//                            if (temp == null) continue;
+                            if (temp == null || blocks[x][y][z].getType() != temp.getType()) {
+                                l.add(new Pair<>(blocks[x][y][z], d));
+                                addAO(x, y, z, d, chunkManager);
+                            }
                         }
                     }
                 }
@@ -310,21 +315,24 @@ public class Chunk {
         float[] adjacentFaceCount = new float[6 * l.size()];
         int[] indices = new int[6 * l.size()];
         for (int i = 0; i < indices.length; ++i) indices[i] = i;
+        System.out.println(l.size());
         for (Pair<Block, Integer> p : l) {
             addFace(p.getKey(), p.getValue(), position, textureCoord, normal, adjacentFaceCount);
         }
-        meshes[index] = new Mesh(position, textureCoord, normal, indices, adjacentFaceCount, TextureManager.material);
+        target[index] = new Mesh(position, textureCoord, normal, indices, adjacentFaceCount, TextureManager.material);
     }
 
     public void generateMesh(ChunkManager chunkManager) {
         for (int i = 0; i < (Y >> 4); ++i) {
-            generatePartMesh(chunkManager, i);
+            generatePartMesh(chunkManager, i, SOLID, solid);
+            generatePartMesh(chunkManager, i, TRANSPARENT, transparencies);
+            generatePartMesh(chunkManager, i, MOVABLE, movable);
         }
     }
 
     public void clear() {
         for (int i = 0; i < (Y >> 4); ++i) {
-            meshes[i].clear();
+            solid[i].clear();
         }
     }
 
@@ -364,9 +372,23 @@ public class Chunk {
         return new Vector3f(x << 4, 0, z << 4);
     }
 
-    public void render() {
+    public void renderSolid() {
         for (int i = 0; i < (Y >> 4); ++i) {
-            meshes[i].render();
+            solid[i].render();
         }
     }
+
+    public void renderMovable() {
+        for (int i = 0; i < (Y >> 4); ++i) {
+            movable[i].render();
+        }
+
+    }
+
+    public void renderTransparencies() {
+        for (int i = 0; i < (Y >> 4); ++i) {
+            transparencies[i].render();
+        }
+    }
+
 }
