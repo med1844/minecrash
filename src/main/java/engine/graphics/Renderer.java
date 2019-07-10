@@ -115,6 +115,8 @@ public class Renderer {
         glViewport(0, 0, window.getWidth(), window.getHeight());
 
         renderScene(window, camera, scene);
+
+        renderCrossHair(window);
     }
 
     private void renderScene(Window window, Camera camera, Scene scene) {
@@ -283,6 +285,32 @@ public class Renderer {
         // Unbind
         depthShader.unbind();
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
+    private void renderCrossHair(Window window) {
+        glPushMatrix();
+        glLoadIdentity();
+
+        float vertical = 0.05f;
+        float horizontal = (float) (window.getHeight()) / window.getWidth() * vertical;
+        glLineWidth(2.0f);
+
+        glBegin(GL_LINES);
+
+        glColor3f(1.0f, 1.0f, 1.0f);
+
+        // Horizontal line
+        glVertex3f(-horizontal, 0.0f, 0.0f);
+        glVertex3f(+horizontal, 0.0f, 0.0f);
+        glEnd();
+
+        // Vertical line
+        glBegin(GL_LINES);
+        glVertex3f(0.0f, -vertical, 0.0f);
+        glVertex3f(0.0f, +vertical, 0.0f);
+        glEnd();
+
+        glPopMatrix();
     }
 
     /**

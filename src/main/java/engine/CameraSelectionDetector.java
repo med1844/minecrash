@@ -1,13 +1,10 @@
 package engine;
 
-import engine.Camera;
 import engine.world.Block;
 import engine.world.Chunk;
 import engine.world.TextureManager;
-import javafx.scene.transform.Transform;
 import org.joml.Intersectionf;
 import org.joml.Vector2f;
-import org.joml.Vector3d;
 import org.joml.Vector3f;
 import engine.maths.Transformations;
 
@@ -33,65 +30,51 @@ public class CameraSelectionDetector {
         return selectBlock(chunks, camera.getPosition(), dir);
     }
 
-    private Vector3f selectBlock(Chunk[][] chunks, Vector3f center, Vector3f dir) {
-        Chunk selectedChunk = null;
-        float blockClosestDistance = Float.POSITIVE_INFINITY;
-        float chunkClosestDistance = Float.POSITIVE_INFINITY;
+    private float manhattan_distance(float x1, float z1, float x2, float z2) {
+        return Math.abs(x1 - x2) + Math.abs(z1 - z2);
+    }
 
+    private Vector3f selectBlock(Chunk[][] chunks, Vector3f center, Vector3f dir) {
+        Block block;
+        Block selectedBlock = null;
+        float blockClosestDistance = Float.POSITIVE_INFINITY;
+
+        int cnt = 0;
         for (Chunk[] chunkList : chunks) {
             for (Chunk chunk : chunkList) {
                 min.set(chunk.getPosition());
                 max.set(chunk.getPosition());
                 max.add(Chunk.getX(), Chunk.getY(), Chunk.getZ()); // the size of chunk
-                if (Intersectionf.intersectRayAab(center, dir, min, max, nearFar) && nearFar.x < chunkClosestDistance) {
-                    chunkClosestDistance = nearFar.x;
-                    selectedChunk = chunk;
-                }
-            }
-        }
-
-        if (selectedChunk != null) {
-            Block block;
-            Block selectedBlock = null;
-            for (int i = 0; i < Chunk.getX(); ++i) {
-                for (int j = 0; j < Chunk.getY(); ++j) {
-                    for (int k = 0; k < Chunk.getZ(); ++k) {
-                        block = selectedChunk.getBlock(i, j, k);
-                        if (block == null) {
-                            return null;
-                        }
-                        if (block.getType() != TextureManager.SOLID) continue;
-                        min.set(block.getPosition());
-                        max.set(block.getPosition());
-                        max.add(1, 1, 1);
-                        if (Intersectionf.intersectRayAab(center, dir, min, max, nearFar) && nearFar.x < blockClosestDistance) {
-                            blockClosestDistance = nearFar.x;
-                            selectedBlock = block;
+                if (Intersectionf.intersectRayAab(center, dir, min, max, nearFar)) {
+                    float dist = ((chunk.getx() << 4) + 8 - center.x) * ((chunk.getx() << 4) + 8 - center.x) +
+                                 ((chunk.getz() << 4) + 8 - center.z) * ((chunk.getz() << 4) + 8 - center.z);
+                    if (dist > 266.13708498984755) continue; // (8 * (2 ** .5) + 5) ** 2
+                    for (int i = 0; i < Chunk.getX(); ++i) {
+                        for (int j = (int) Math.max(center.y - 6, 0); j < (int) Math.min(center.y + 6, Chunk.getY()); ++j) {
+                            for (int k = 0; k < Chunk.getZ(); ++k) {
+                                if (manhattan_distance((chunk.getx() << 4) + i, (chunk.getz() << 4) + k, center.x, center.z) > 5) continue;
+                                block = chunk.getBlock(i, j, k);
+                                ++cnt;
+                                if (block == null) {
+                                    return null;
+                                }
+                                if (block.getType() != TextureManager.SOLID) continue;
+                                min.set(block.getPosition());
+                                max.set(block.getPosition());
+                                max.add(1, 1, 1);
+                                if (Intersectionf.intersectRayAab(center, dir, min, max, nearFar) && nearFar.x <= 5 && nearFar.x < blockClosestDistance) {
+                                    blockClosestDistance = nearFar.x;
+                                    selectedBlock = block;
+                                }
+                            }
                         }
                     }
                 }
             }
-            if (selectedBlock == null || blockClosestDistance >= 5) return null;
-            else return selectedBlock.getPosition();
-        } else {
-            return null;
         }
-
-//        for (Chunk[] gameItem : gameItems) {
-//            gameItem.setSelected(false);
-//            min.set(gameItem.getPosition());
-//            max.set(gameItem.getPosition());
-//            min.add(-gameItem.getScale(), -gameItem.getScale(), -gameItem.getScale());
-//            max.add(gameItem.getScale(), gameItem.getScale(), gameItem.getScale());
-//            if (Intersectionf.intersectRayAab(center, dir, min, max, nearFar) && nearFar.x < closestDistance) {
-//                closestDistance = nearFar.x;
-//                selectedGameItem = gameItem;
-//            }
-//        }
-//
-//        if (selectedGameItem != null) {
-//            selectedGameItem.setSelected(true);
-//        }
+        System.out.println(cnt);
+        if (selectedBlock == null) return null;
+        else return selectedBlock.getPosition();
     }
 
 }

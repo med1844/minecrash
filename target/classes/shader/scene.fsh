@@ -118,10 +118,23 @@ vec4 fog(vec4 color, vec4 fogColor, float depth, float density) {
 }
 
 bool check(vec3 sourcePos, vec3 targetPos) {
-    // this checks whether source postion is the targetPos
-    return (targetPos.x <= sourcePos.x && sourcePos.x <= targetPos.x + 1) &&
-           (targetPos.y <= sourcePos.y && sourcePos.y <= targetPos.y + 1) &&
-           (targetPos.z <= sourcePos.z && sourcePos.z <= targetPos.z + 1);
+    // this checks whether source postion is the edge of targetPos
+    float eps = 0.0075;
+    return
+    (abs(sourcePos.x - targetPos.x    ) < eps && abs(sourcePos.y - targetPos.y    ) < eps && targetPos.z <= sourcePos.z && sourcePos.z <= targetPos.z + 1) ||
+    (abs(sourcePos.x - targetPos.x    ) < eps && abs(sourcePos.y - targetPos.y - 1) < eps && targetPos.z <= sourcePos.z && sourcePos.z <= targetPos.z + 1) ||
+    (abs(sourcePos.x - targetPos.x - 1) < eps && abs(sourcePos.y - targetPos.y    ) < eps && targetPos.z <= sourcePos.z && sourcePos.z <= targetPos.z + 1) ||
+    (abs(sourcePos.x - targetPos.x - 1) < eps && abs(sourcePos.y - targetPos.y - 1) < eps && targetPos.z <= sourcePos.z && sourcePos.z <= targetPos.z + 1) ||
+
+    (abs(sourcePos.x - targetPos.x    ) < eps && abs(sourcePos.z - targetPos.z    ) < eps && targetPos.y <= sourcePos.y && sourcePos.y <= targetPos.y + 1) ||
+    (abs(sourcePos.x - targetPos.x    ) < eps && abs(sourcePos.z - targetPos.z - 1) < eps && targetPos.y <= sourcePos.y && sourcePos.y <= targetPos.y + 1) ||
+    (abs(sourcePos.x - targetPos.x - 1) < eps && abs(sourcePos.z - targetPos.z    ) < eps && targetPos.y <= sourcePos.y && sourcePos.y <= targetPos.y + 1) ||
+    (abs(sourcePos.x - targetPos.x - 1) < eps && abs(sourcePos.z - targetPos.z - 1) < eps && targetPos.y <= sourcePos.y && sourcePos.y <= targetPos.y + 1) ||
+
+    (abs(sourcePos.y - targetPos.y    ) < eps && abs(sourcePos.z - targetPos.z    ) < eps && targetPos.x <= sourcePos.x && sourcePos.x <= targetPos.x + 1) ||
+    (abs(sourcePos.y - targetPos.y    ) < eps && abs(sourcePos.z - targetPos.z - 1) < eps && targetPos.x <= sourcePos.x && sourcePos.x <= targetPos.x + 1) ||
+    (abs(sourcePos.y - targetPos.y - 1) < eps && abs(sourcePos.z - targetPos.z    ) < eps && targetPos.x <= sourcePos.x && sourcePos.x <= targetPos.x + 1) ||
+    (abs(sourcePos.y - targetPos.y - 1) < eps && abs(sourcePos.z - targetPos.z - 1) < eps && targetPos.x <= sourcePos.x && sourcePos.x <= targetPos.x + 1);
 }
 
 void main() {
