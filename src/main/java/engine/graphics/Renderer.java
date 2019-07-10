@@ -291,9 +291,9 @@ public class Renderer {
         glPushMatrix();
         glLoadIdentity();
 
-        float vertical = 0.05f;
-        float horizontal = (float) (window.getHeight()) / window.getWidth() * vertical;
-        glLineWidth(2.0f);
+        float vertical = 0.03f;
+        float horizontal = vertical * (float) (window.getHeight()) / window.getWidth();
+        glLineWidth(2);
 
         glBegin(GL_LINES);
 
