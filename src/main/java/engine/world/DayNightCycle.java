@@ -57,6 +57,7 @@ public class DayNightCycle {
             window.setBackgroundColor(resultColor.x, resultColor.y, resultColor.z, 1.0f);
         } else if (currentTimeRatio > 0.5) {
 //            directionalLight.setIntensity(0); // there should be little light in night
+            directionalLight.setColour(nightColor);
             window.setBackgroundColor(nightColor.x, nightColor.y, nightColor.z, 1.0f);
         } else {
             directionalLight.setColour(dayLight);
