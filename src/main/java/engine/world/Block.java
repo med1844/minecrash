@@ -32,4 +32,8 @@ public class Block {
     public String toString() {
         return "[" + x + ", " + y + ", " + z + "]: " + blockID;
     }
+
+    public int getBlockID() {
+        return blockID;
+    }
 }

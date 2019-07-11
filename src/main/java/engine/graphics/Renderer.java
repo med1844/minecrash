@@ -14,6 +14,8 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
+import java.util.List;
+
 /**
  * This class mainly handles the process of rendering,
  * including managing components and the order of rendering.
@@ -27,7 +29,7 @@ import org.joml.Vector4f;
  * - shadow mapping
  */
 public class Renderer {
-    private Shader sceneShader, depthShader;
+    private Shader sceneShader, depthShader, particleShader;
     private ShadowMap shadowMap;
     private final Transformations transformations;
     private float FOV = (float)Math.toRadians(60.0f);
@@ -54,6 +56,7 @@ public class Renderer {
 
         setupSceneShader();
         setupDepthShader();
+        setupParticleShader();
     }
 
     private void setupSceneShader() throws Exception {
@@ -91,6 +94,21 @@ public class Renderer {
         depthShader.createUniform("modelLightViewMatrix");
     }
 
+    private void setupParticleShader() throws Exception {
+        particleShader = new Shader();
+        particleShader.createVertexShader(Utils.loadResource("/shader/particle.vsh"));
+        particleShader.createFragmentShader(Utils.loadResource("/shader/particle.fsh"));
+        particleShader.link();
+
+        particleShader.createUniform("projectionMatrix");
+        particleShader.createUniform("modelViewMatrix");
+        particleShader.createUniform("texture_sampler");
+
+        particleShader.createUniform("specularPower");
+        particleShader.createUniform("ambientLight");
+        particleShader.createDirectionalLightUniform("directionalLight");
+    }
+
     /**
      * This method renders meshes using the shader that has been
      * initialized in the function init();
@@ -108,11 +126,13 @@ public class Renderer {
 
         renderDayNightCycle(window, scene.light, timer);
 
-        renderShadowMap(scene, camera);
+        renderShadowMap(camera, scene);
 
         glViewport(0, 0, window.getWidth(), window.getHeight());
 
         renderScene(window, camera, scene, selectedBlockPos);
+
+        renderParticles(window, camera, scene);
 
         renderCrossHair(window);
     }
@@ -157,7 +177,7 @@ public class Renderer {
         Matrix4f viewMatrix = transformations.getViewMatrix(camera);
 
         // Update Light Uniforms
-        renderLight(viewMatrix, ambientLight, scene.light);
+        renderLight(viewMatrix, ambientLight, scene.light, sceneShader);
 
         sceneShader.setUniform("texture_sampler", 0);
         sceneShader.setUniform("shadowMap", 2);
@@ -209,25 +229,24 @@ public class Renderer {
 
     }
 
-    private void renderLight(Matrix4f viewMatrix, Vector3f ambientLight, DirectionalLight directionalLight) {
-        sceneShader.setUniform("specularPower", specularPower);
-        sceneShader.setUniform("ambientLight", ambientLight);
+    private void renderLight(Matrix4f viewMatrix, Vector3f ambientLight, DirectionalLight directionalLight, Shader shader) {
+        shader.setUniform("specularPower", specularPower);
+        shader.setUniform("ambientLight", ambientLight);
 
         // Get a copy of the directional light object and transform its position to view coordinates
         DirectionalLight cur = new DirectionalLight(directionalLight);
         Vector4f dir = new Vector4f(cur.getDirection(), 0);
         dir.mul(viewMatrix);
         cur.setDirection(new Vector3f(dir.x, dir.y, dir.z));
-        sceneShader.setUniform("directionalLight", cur);
+        shader.setUniform("directionalLight", cur);
     }
 
     private void renderDayNightCycle(Window window, DirectionalLight directionalLight, Timer timer) {
         // this part adjusts the angle and light color according to current time.
         DayNightCycle.setDirectionalLight(timer.getTimeRatio(), directionalLight, window);
-//        DayNightCycle.setDirectionalLight(0.4, directionalLight, window);
     }
 
-    private void renderShadowMap(Scene scene, Camera camera) {
+    private void renderShadowMap(Camera camera, Scene scene) {
         glBindFramebuffer(GL_FRAMEBUFFER, shadowMap.getDepthMapFBO());
         glViewport(0, 0, ShadowMap.SHADOW_MAP_WIDTH, ShadowMap.SHADOW_MAP_HEIGHT);
         glClear(GL_DEPTH_BUFFER_BIT);
@@ -308,6 +327,43 @@ public class Renderer {
         glEnd();
 
         glPopMatrix();
+    }
+
+    private void renderParticles(Window window, Camera camera, Scene scene) {
+        particleShader.bind();
+
+        glDepthMask(false);
+
+        particleShader.setUniform("texture_sampler", 0);
+
+        particleShader.setUniform("projectionMatrix",
+                transformations.getProjectionMatrix(
+                        FOV,
+                        window.getWidth(),
+                        window.getHeight(),
+                        Z_NEAR,
+                        Z_FAR
+                )
+        );
+
+        Matrix4f viewMatrix = transformations.getViewMatrix(camera);
+        List<ParticleEmitterInterface> emitters = scene.particleEmitters;
+
+        renderLight(viewMatrix, ambientLight, scene.light, particleShader);
+
+        if (emitters != null) {
+            for (ParticleEmitterInterface emitter : emitters) {
+                for (Particle particle : emitter.getParticles()) {
+                    Matrix4f modelViewMatrix = transformations.buildModelViewMatrix(particle, viewMatrix);
+                    particleShader.setUniform("modelViewMatrix", modelViewMatrix);
+                    particle.render();
+                }
+            }
+        }
+
+        glDepthMask(true);
+
+        particleShader.unbind();
     }
 
     /**
