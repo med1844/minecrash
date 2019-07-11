@@ -27,6 +27,9 @@ public class MainEngine implements Runnable {
     private Camera camera;
     private DirectionalLight directionalLight;
     private Timer timer;
+    private CameraSelectionDetector cameraSelectionDetector;
+    private Vector3f selectedBlockPos;
+    private Vector3f normalVector;
 
     public MainEngine(int width, int height, String windowTitle, boolean vSync) {
         game = new Thread(this, "minecrash");
@@ -35,6 +38,8 @@ public class MainEngine implements Runnable {
         input = new Input();
         camera = new Camera();
         timer = new Timer(10.0);
+        cameraSelectionDetector = new CameraSelectionDetector();
+        normalVector = null;
     }
 
     public void init() throws Exception {
@@ -62,6 +67,8 @@ public class MainEngine implements Runnable {
         try {
             init();
             while (!window.shouldClose()) {
+                selectedBlockPos = cameraSelectionDetector.selectBlock(scene.chunkManager.getChunks(), camera, renderer.getTransformations());
+                if (selectedBlockPos != null) normalVector = cameraSelectionDetector.getNormalVector(selectedBlockPos, camera, renderer.getTransformations());
                 update();
                 render();
             }
@@ -73,14 +80,14 @@ public class MainEngine implements Runnable {
     }
 
     public void update() {
-        input.update(); // the input class would update camera.
+        input.update(selectedBlockPos, scene, normalVector); // the input class would update camera.
         timer.update();
         window.update();
     }
 
     public void render() {
         window.clear(); // clear up existing data
-        renderer.render(window, camera, scene, timer);
+        renderer.render(window, camera, scene, timer, selectedBlockPos);
         window.swapBuffers();
     }
 
