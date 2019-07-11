@@ -82,6 +82,8 @@ public class Input {
         if (coolDownLeft < 0) coolDownLeft = 0;
         if (coolDownRight < 0) coolDownRight = 0;
 
+        scene.update(deltaTime);
+
         camera.rotate(dx * deltaTime * mouseSpeed, dy * deltaTime * mouseSpeed);
         dx = 0;
         dy = 0;
