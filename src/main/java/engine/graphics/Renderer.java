@@ -30,7 +30,6 @@ public class Renderer {
     private Shader sceneShader, depthShader;
     private ShadowMap shadowMap;
     private final Transformations transformations;
-    private CameraSelectionDetector cameraSelectionDetector;
     private float FOV = (float)Math.toRadians(60.0f);
     private float Z_NEAR = 0.1f;
     private float Z_FAR = 1000.0f;
@@ -52,7 +51,6 @@ public class Renderer {
      */
     public void init() throws Exception {
         shadowMap = new ShadowMap();
-        cameraSelectionDetector = new CameraSelectionDetector();
 
         setupSceneShader();
         setupDepthShader();
@@ -105,7 +103,7 @@ public class Renderer {
      * @param scene the scene to render
      * @param timer the time tick provider that controls directionalLight behavior
      */
-    public void render(Window window, Camera camera, Scene scene, Timer timer) {
+    public void render(Window window, Camera camera, Scene scene, Timer timer, Vector3f selectedBlockPos) {
         // the window's buffer has been cleaned, in MainEngine.update();
 
         renderDayNightCycle(window, scene.light, timer);
@@ -114,15 +112,14 @@ public class Renderer {
 
         glViewport(0, 0, window.getWidth(), window.getHeight());
 
-        renderScene(window, camera, scene);
+        renderScene(window, camera, scene, selectedBlockPos);
 
         renderCrossHair(window);
     }
 
-    private void renderScene(Window window, Camera camera, Scene scene) {
+    private void renderScene(Window window, Camera camera, Scene scene, Vector3f selectedBlockPos) {
         sceneShader.bind();
 
-        Vector3f selectedBlockPos = cameraSelectionDetector.selectBlock(scene.chunkManager.getChunks(), camera, transformations);
         sceneShader.setUniform("selected", selectedBlockPos != null);
         if (selectedBlockPos != null) sceneShader.setUniform("selectedBlock", selectedBlockPos);
         else sceneShader.setUniform("selectedBlock", new Vector3f(0, 0, 0));
@@ -324,4 +321,9 @@ public class Renderer {
             depthShader.clear();
         }
     }
+
+    public Transformations getTransformations() {
+        return transformations;
+    }
+
 }

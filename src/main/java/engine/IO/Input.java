@@ -2,7 +2,11 @@ package engine.IO;
 
 import engine.Camera;
 
+import static engine.world.TextureManager.*;
 import static org.lwjgl.glfw.GLFW.*;
+
+import engine.CameraSelectionDetector;
+import engine.world.Scene;
 import org.joml.Vector3f;
 
 public class Input {
@@ -17,6 +21,8 @@ public class Input {
     private static final float PI = (float)Math.acos(-1);
     private static float keyboardSpeed = 0.008f;
     private static float mouseSpeed = 0.0005f;
+    private int coolDownLeft = 0;
+    private int coolDownRight = 0;
 
     public Input() {
     }
@@ -69,8 +75,12 @@ public class Input {
          return glfwGetKey(window.getWindowHandle(), scancode) == GLFW_PRESS;
     }
 
-    public void update() {
+    public void update(Vector3f selectedBlockPos, Scene scene, Vector3f normalVector) {
         long deltaTime = System.currentTimeMillis() - lastUpdateTime;
+        coolDownLeft -= deltaTime;
+        coolDownRight -= deltaTime;
+        if (coolDownLeft < 0) coolDownLeft = 0;
+        if (coolDownRight < 0) coolDownRight = 0;
 
         camera.rotate(dx * deltaTime * mouseSpeed, dy * deltaTime * mouseSpeed);
         dx = 0;
@@ -109,6 +119,16 @@ public class Input {
 
         if (isKeyDown(GLFW_KEY_ESCAPE)) {
             window.setShouldClose(true);
+        }
+
+        if (leftButtonPressed && selectedBlockPos != null && coolDownLeft == 0) {
+            scene.destroyBlock(selectedBlockPos);
+            coolDownLeft = 200;
+        }
+
+        if (rightButtonPressed && selectedBlockPos != null && normalVector != null && coolDownRight == 0) {
+            scene.putBlock(selectedBlockPos.add(normalVector), STONE);
+            coolDownRight = 200;
         }
 
         lastUpdateTime = System.currentTimeMillis();

@@ -329,6 +329,14 @@ public class Chunk {
         }
     }
 
+    public void updateMesh(int i, ChunkManager chunkManager) {
+        if (0 <= i && i < (Y >> 4)) {
+            generatePartMesh(chunkManager, i, SOLID, solid);
+            generatePartMesh(chunkManager, i, TRANSPARENT, transparencies);
+            generatePartMesh(chunkManager, i, MOVABLE, movable);
+        }
+    }
+
     public void clear() {
         for (int i = 0; i < (Y >> 4); ++i) {
             solid[i].clear();
@@ -354,9 +362,11 @@ public class Chunk {
     public static int getZ() {
         return Z;
     }
-    
-    public void setBlock(int blockID, int x,int y, int z) {
-        blocks[x][y][z] = new Block(blockID, (this.x << 4) + x, y, (this.z << 4) + z);
+
+    public void setBlock(int blockID, int x, int y, int z) {
+        if (0 <= x && x < X && 0 <= y && y < Y  && 0 <= z && z < Z) {
+            blocks[x][y][z] = new Block(blockID, (this.x << 4) + x, y, (this.z << 4) + z);
+        }
     }
     
     public Block getBlock(int x,int y,int z) {
