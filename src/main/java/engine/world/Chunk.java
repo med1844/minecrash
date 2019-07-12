@@ -16,7 +16,7 @@ public class Chunk {
 
     private int x, z; // the chunk coordinates of current chunk
     private Block[][][] blocks;
-    private Mesh[] solid, transparencies, movable;
+    private Mesh[] solid, transparencies;
     private int pos, tex, norm, adj;
     private static final int X = 16;
     private static final int Y = 256;
@@ -33,7 +33,6 @@ public class Chunk {
         m = new HashMap<>();
         solid = new Mesh[Y >> 4];
         transparencies = new Mesh[Y >> 4];
-        movable = new Mesh[Y >> 4];
     }
 
     private boolean valid(int x, int y, int z) {
@@ -299,8 +298,7 @@ public class Chunk {
                             } else {
                                 temp = blocks[nx][ny][nz];
                             }
-//                            if (temp == null) continue;
-                            if (temp == null || blocks[x][y][z].getType() != temp.getType()) {
+                            if (temp == null || (blocks[x][y][z].getType() & 3) != (temp.getType() & 3)) {
                                 l.add(new Pair<>(blocks[x][y][z], d));
                                 addAO(x, y, z, d, chunkManager);
                             }
@@ -325,7 +323,6 @@ public class Chunk {
         for (int i = 0; i < (Y >> 4); ++i) {
             generatePartMesh(chunkManager, i, SOLID, solid);
             generatePartMesh(chunkManager, i, TRANSPARENT, transparencies);
-            generatePartMesh(chunkManager, i, MOVABLE, movable);
         }
     }
 
@@ -333,7 +330,6 @@ public class Chunk {
         if (0 <= i && i < (Y >> 4)) {
             generatePartMesh(chunkManager, i, SOLID, solid);
             generatePartMesh(chunkManager, i, TRANSPARENT, transparencies);
-            generatePartMesh(chunkManager, i, MOVABLE, movable);
         }
     }
 
@@ -385,13 +381,6 @@ public class Chunk {
         for (int i = 0; i < (Y >> 4); ++i) {
             solid[i].render();
         }
-    }
-
-    public void renderMovable() {
-        for (int i = 0; i < (Y >> 4); ++i) {
-            movable[i].render();
-        }
-
     }
 
     public void renderTransparencies() {

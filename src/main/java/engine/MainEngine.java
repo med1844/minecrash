@@ -50,7 +50,8 @@ public class MainEngine implements Runnable {
         ChunkManager chunkManager = new ChunkManager();
         directionalLight = new DirectionalLight(
                 new Vector3f(1, 1, 1),
-                new Vector3f(0, 5, 0), 0.65f
+                new Vector3f(0, 5, 0),
+                0.65f
         );
         directionalLight.setOrthoCoords(
                 -200, 200, -200, 200, -200, 200

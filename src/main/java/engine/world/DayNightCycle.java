@@ -2,6 +2,7 @@ package engine.world;
 
 import engine.IO.Window;
 import engine.graphics.DirectionalLight;
+import engine.graphics.Fog;
 import org.joml.Vector3f;
 
 /**
@@ -18,12 +19,16 @@ public class DayNightCycle {
     private static Vector3f duskColor = new Vector3f((float) 254.0 / 255, (float) 133.0 / 255, (float) 88.0 / 255);
     private static Vector3f dayLight = new Vector3f(1, 1, 1);
 
-    public static Vector3f mixColor(Vector3f colorA, Vector3f colorB, double mixRatio) {
+    private static Vector3f mixColor(Vector3f colorA, Vector3f colorB, double mixRatio) {
         assert 0 <= mixRatio && mixRatio <= 1;
         float r = (float) (colorA.x + (colorB.x - colorA.x) * mixRatio);
         float g = (float) (colorA.y + (colorB.y - colorA.y) * mixRatio);
         float b = (float) (colorA.z + (colorB.z - colorA.z) * mixRatio);
         return new Vector3f(r, g, b);
+    }
+
+    private static float mix(float a, float b, double mixRatio) {
+        return a + (b - a) * (float) mixRatio;
     }
 
     public static void setDirectionalLight(double currentTimeRatio, DirectionalLight directionalLight,
@@ -56,12 +61,36 @@ public class DayNightCycle {
             directionalLight.setColour(resultLight);
             window.setBackgroundColor(resultColor.x, resultColor.y, resultColor.z, 1.0f);
         } else if (currentTimeRatio > 0.5) {
-//            directionalLight.setIntensity(0); // there should be little light in night
             directionalLight.setColour(nightColor);
             window.setBackgroundColor(nightColor.x, nightColor.y, nightColor.z, 1.0f);
         } else {
             directionalLight.setColour(dayLight);
             window.setBackgroundColor(dayColor.x, dayColor.y, dayColor.z, 1.0f);
+        }
+    }
+
+    public static void setFog(double currentTimeRatio, Fog fog) {
+        float nightDensity = 0.01f;
+        float dawnDensity = 0.0125f;
+        float dayDensity = 0.005f;
+        float duskDensity = 0.0075f;
+        double backupRatio = currentTimeRatio;
+        if ((1 - THRESHOLD <= currentTimeRatio || currentTimeRatio <= THRESHOLD) ||
+                (0.5 - THRESHOLD <= currentTimeRatio && currentTimeRatio <= 0.5 + THRESHOLD)) {
+            if (currentTimeRatio >= 1 - THRESHOLD) currentTimeRatio -= 1;
+            if (currentTimeRatio >= 0.5 - THRESHOLD) currentTimeRatio = 0.5 - currentTimeRatio;
+            currentTimeRatio *= (1 / THRESHOLD); // currentTimeRatio in [-1, 1]
+            if (currentTimeRatio < 0) {
+                if (backupRatio >= 1 - THRESHOLD) fog.setDensity(mix(nightDensity, dawnDensity, currentTimeRatio + 1));
+                else fog.setDensity(mix(nightDensity, duskDensity, currentTimeRatio + 1));
+            } else {
+                if (backupRatio <= THRESHOLD) fog.setDensity(mix(dawnDensity, dayDensity, currentTimeRatio));
+                else fog.setDensity(mix(duskDensity, dayDensity, currentTimeRatio));
+            }
+        } else if (currentTimeRatio > 0.5) {
+            fog.setDensity(nightDensity);
+        } else {
+            fog.setDensity(dayDensity);
         }
     }
 }

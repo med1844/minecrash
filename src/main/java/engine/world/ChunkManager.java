@@ -54,7 +54,7 @@ public class ChunkManager {
         }
     }
 
-    public Block getBlock(int x, int y, int z) {//x y z are world coord
+    public Block getBlock(int x, int y, int z) { //x y z are world coord
         int chunkX = x >> 4;
         int chunkZ = z >> 4;
 
@@ -90,9 +90,3 @@ public class ChunkManager {
     }
 
 }
-
-/*
- * 01234
- * 56789
- *
- * */
