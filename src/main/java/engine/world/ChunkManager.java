@@ -1,52 +1,59 @@
 package engine.world;
 
+import java.util.Collection;
+import java.util.HashMap;
+
+import com.sun.accessibility.internal.resources.accessibility;
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 import engine.world.gen.ChunkGeneratorOverWorld;
 
 public class ChunkManager {
     private final int WORLD_MAX_WIDTH = 8;
     private final int WORLD_MAX_LENGTH = 8;
-    private Chunk[][] chunks;
-    private int[] dx = {1, 0, -1, 0};
-    private int[] dz = {0, -1, 0, 1};
-
+    private HashMap<Position2D, Chunk> chunkMap;
+    private int[] dx = { 1, 0, -1, 0 };
+    private int[] dz = { 0, -1, 0, 1 };
+    private ChunkGeneratorOverWorld chunkGenerator;
+    
     public ChunkManager() {
-        chunks = new Chunk[WORLD_MAX_WIDTH][WORLD_MAX_LENGTH];
+        chunkMap = new HashMap<Position2D, Chunk>();
+        chunkGenerator = new ChunkGeneratorOverWorld();
     }
 
     public void init() {
-        ChunkGeneratorOverWorld chunkGenerator = new ChunkGeneratorOverWorld();
-        for (int i = 0; i < chunks.length; ++i) {
-            for (int j = 0; j < chunks[i].length; ++j) {
+        for (int i = 0; i < WORLD_MAX_WIDTH; ++i) {
+            for (int j = 0; j < WORLD_MAX_LENGTH; ++j) {
                 System.out.println("[INFO] Generating Chunk [" + i + ", " + j + "]");
-                chunks[i][j] = chunkGenerator.generateChunk(i, j);
+                chunkMap.put(new Position2D(i, j), chunkGenerator.generateChunk(i, j));
             }
         }
-        for (Chunk[] chunkList : chunks) {
-            for (Chunk chunk : chunkList) {
-                System.out.println("[INFO] Generating Chunk Mesh [" + chunk.getx() + ", " + chunk.getz() + "]");
-                chunk.generateMesh(this);
-            }
+        for (Chunk chunk : chunkMap.values()) {
+            System.out.println("[INFO] Generating Chunk Mesh [" + chunk.getx() + ", " + chunk.getz() + "]");
+            chunk.generateMesh(this);
         }
     }
 
-    public Chunk[][] getChunks() {
-        return chunks;
+    public Collection<Chunk> getChunks() {
+        return chunkMap.values();
     }
 
     public void clear() {
-        for (Chunk[] chunk : chunks) {
-            for (Chunk value : chunk) {
-                value.clear();
-            }
+        for (Chunk chunk : chunkMap.values()) {
+            chunk.clear();
         }
     }
 
-    public Block getBlock(int x, int y, int z) { //x y z are world coord
+    public Block getBlock(int x, int y, int z) { // x y z are world coord
         int chunkX = x >> 4;
         int chunkZ = z >> 4;
 
         if (0 <= chunkX && chunkX < WORLD_MAX_WIDTH && 0 <= chunkZ && chunkZ < WORLD_MAX_LENGTH) {
-            return chunks[chunkX][chunkZ].getBlock(x & 15, y, z & 15);
+            Chunk curChunk=chunkMap.get(new Position2D(x,z));
+            if (curChunk==null) {
+                return null;
+            }
+            return curChunk.getBlock(x & 15, y, z & 15);
         } else {
             return null;
         }
@@ -61,16 +68,26 @@ public class ChunkManager {
         int chunkZ = z >> 4;
 
         if (valid(chunkX, chunkZ)) {
-            chunks[chunkX][chunkZ].setBlock(blockID, x & 15, y, z & 15);
-            chunks[chunkX][chunkZ].updateMesh(y >> 4, this);
-            if ((y & 15) == 0) chunks[chunkX][chunkZ].updateMesh((y >> 4) - 1, this);
-            if ((y & 15) == 15) chunks[chunkX][chunkZ].updateMesh((y >> 4) + 1, this);
+            Chunk curChunk=chunkMap.get(new Position2D(chunkX,chunkZ));
+            if (curChunk==null) {
+                return;
+            }
+            curChunk.setBlock(blockID, x & 15, y, z & 15);
+            curChunk.updateMesh(y >> 4, this);
+            if ((y & 15) == 0)
+                curChunk.updateMesh((y >> 4) - 1, this);
+            if ((y & 15) == 15)
+                curChunk.updateMesh((y >> 4) + 1, this);
             for (int d = 0; d < 4; ++d) {
                 int nx = x + dx[d], nz = z + dz[d];
                 int nX = nx >> 4, nZ = nz >> 4;
                 if (valid(nX, nZ)) {
-                    if (nX != chunkX) chunks[nX][nZ].updateMesh(y >> 4, this);
-                    if (nZ != chunkZ) chunks[nX][nZ].updateMesh(y >> 4, this);
+                    curChunk=chunkMap.get(new Position2D(nX,nZ));
+                    if (curChunk==null) continue;
+                    if (nX != chunkX)
+                        curChunk.updateMesh(y >> 4, this);
+                    if (nZ != chunkZ)
+                        curChunk.updateMesh(y >> 4, this);
                 }
             }
         }
