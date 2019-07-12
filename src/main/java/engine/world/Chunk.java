@@ -365,7 +365,7 @@ public class Chunk {
         }
     }
     
-    public Block getBlock(int x,int y,int z) {
+    public Block getBlock(int x, int y, int z) {
         if (valid(x, y, z)) {
             return blocks[x][y][z];
         } else {

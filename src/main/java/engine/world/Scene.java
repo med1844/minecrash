@@ -34,7 +34,7 @@ public class Scene {
     public void destroyBlock(Vector3f selectedBlockPos) {
         int x = (int) selectedBlockPos.x, y = (int) selectedBlockPos.y, z = (int) selectedBlockPos.z;
         particleEmitters.add(new BlockDebrisParticleEmitter(x, y, z, chunkManager.getBlock(x, y, z).getBlockID()));
-        chunkManager.updateBlock((int) selectedBlockPos.x, (int) selectedBlockPos.y, (int) selectedBlockPos.z, AIR);
+        chunkManager.updateBlock(x, y, z, AIR);
     }
 
     public void putBlock(Vector3f selectedBlockPos, int blockID) {
