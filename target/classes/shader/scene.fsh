@@ -140,6 +140,7 @@ bool check(vec3 sourcePos, vec3 targetPos) {
 
 void main() {
     setupColours(material, outTextureCoord);
+    float alpha = ambientC.a;
 
     vec4 diffuseSpecular = calcDirectionalLight(directionalLight, vertexPos, vertexNormal) * 0.8;
 
@@ -156,6 +157,7 @@ void main() {
     if (selected == 1 && check(worldCoord, selectedBlock)) {
         fragColor = vec4(1, 1, 1, 2) - fragColor;
     }
+    fragColor.a = alpha;
 //    fragColor = vec4(vec3(texture(shadowMap, (lightViewVertexPos * 0.5 + 0.5).xy).r), 1);
 //    fragColor = vec4(vec3(shadow), 1);
 }
