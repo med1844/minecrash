@@ -15,7 +15,6 @@ public class ParticleShader extends Shader {
         createUniform("modelViewMatrix");
         createUniform("texture_sampler");
 
-        createUniform("specularPower");
         createUniform("ambientLight");
         createDirectionalLightUniform("directionalLight");
     }
