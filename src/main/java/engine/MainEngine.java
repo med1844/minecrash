@@ -28,7 +28,7 @@ public class MainEngine implements Runnable {
     private DirectionalLight directionalLight;
     private Timer timer;
     private CameraSelectionDetector cameraSelectionDetector;
-    private Vector3f selectedBlockPos;
+    private Vector3f selectedBlockPos = null;
     private Vector3f normalVector;
 
     public MainEngine(int width, int height, String windowTitle, boolean vSync) {
@@ -87,9 +87,12 @@ public class MainEngine implements Runnable {
     }
 
     public void render() {
-        window.clear(); // clear up existing data
-        renderer.render(window, camera, scene, timer, selectedBlockPos);
-        window.swapBuffers();
+        if (!renderer.isRunning()) {
+            window.clear(); // clear up existing data
+            renderer.setParameter(window, camera, scene, timer, selectedBlockPos);
+            renderer.run();
+            window.swapBuffers();
+        }
     }
 
     public void clear() {
