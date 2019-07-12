@@ -3,6 +3,9 @@ package engine.world;
 import engine.graphics.Material;
 import engine.graphics.Mesh;
 import engine.graphics.Texture;
+
+import java.util.Random;
+
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -69,17 +72,12 @@ public class TextureManager {
 
     public static Material material;
 
-    private static float[] position = new float[6 * 3];
-    private static float[] textureCoord = new float[6 * 2];
-    private static float[] normal = new float[6 * 3];
-    private static int[] indices = new int[6];
-    private static float[] adjacentFaceCount = new float[6];
     private static int pos, tex, norm;
 
     public static Mesh[] meshes = new Mesh[face.length];
 
     private static void genFace(int textureID, Vector3f a, Vector3f b, Vector3f c, Vector3f d, Vector3f normalVector,
-                                boolean flag) {
+                                boolean flag, float[] position, float[] textureCoord, float[] normal) {
         float x1 = (textureID / 16) / 16.0f, y1 = (textureID % 16) / 16.0f;
         float x2 = x1 + 1 / 16.0f, y2 = y1 + 1 / 16.0f;
         Vector2f e = new Vector2f(y1, x1), f = new Vector2f(y2, x1), g = new Vector2f(y1, x2), h = new Vector2f(y2, x2);
@@ -184,13 +182,128 @@ public class TextureManager {
         }
     }
 
-    private static void genArray(int[] face) {
-//        genFace(face[0], new Vector3f(0.5f, 0.5f, 0.5f), new Vector3f(-0.5f, 0.5f, 0.5f), new Vector3f(0.5f, 0.5f, -0.5f), new Vector3f(-0.5f, 0.5f, -0.5f), new Vector3f(0, 1, 0), false);
-//        genFace(face[1], new Vector3f(-0.5f, -0.5f, -0.5f), new Vector3f(-0.5f, -0.5f, 0.5f), new Vector3f(0.5f, -0.5f, -0.5f), new Vector3f(0.5f, -0.5f, 0.5f), new Vector3f(0, -1, 0), false);
-//        genFace(face[2], new Vector3f(0.5f, 0.5f, -0.5f), new Vector3f(-0.5f, 0.5f, -0.5f), new Vector3f(0.5f, -0.5f, -0.5f), new Vector3f(-0.5f, -0.5f, -0.5f), new Vector3f(0, 0, -1), false);
-        genFace(face[3], new Vector3f(1.0f, 1.0f, 0.0f), new Vector3f(0.0f, 1.0f, 0.0f), new Vector3f(1.0f, 0.0f, 0.0f), new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(0, 0, 1), true);
-//        genFace(face[4], new Vector3f(0.5f, 0.5f, 0.5f), new Vector3f(0.5f, 0.5f, -0.5f), new Vector3f(0.5f, -0.5f, 0.5f), new Vector3f(0.5f, -0.5f, -0.5f), new Vector3f(1, 0, 0), false);
-//        genFace(face[5], new Vector3f(-0.5f, 0.5f, 0.5f), new Vector3f(-0.5f, 0.5f, -0.5f), new Vector3f(-0.5f, -0.5f, 0.5f), new Vector3f(-0.5f, -0.5f, -0.5f), new Vector3f(-1, 0, 0), true);
+    private static float random(float l, float r) {
+        Random rand = new Random();
+        return l + (r - l) * rand.nextFloat();
+    }
+
+    private static void genRandomFace(int textureID, Vector3f a, Vector3f b, Vector3f c, Vector3f d, Vector3f normalVector,
+                                boolean flag, float[] position, float[] textureCoord, float[] normal) {
+        float x1 = (textureID / 16) / 16.0f, y1 = (textureID % 16) / 16.0f;
+        float x2 = x1 + 1 / 16.0f, y2 = y1 + 1 / 16.0f;
+        float x3 = random(x1, x2 - 1 / 64.0f);
+        float y3 = random(y1, y2 - 1 / 64.0f);
+        float x4 = x3 + 1 / 64.0f;
+        float y4 = y3 + 1 / 64.0f;
+        Vector2f e = new Vector2f(y3, x3), f = new Vector2f(y4, x3), g = new Vector2f(y3, x4), h = new Vector2f(y4, x4);
+        if (flag) {
+            position[pos++] = d.x;
+            position[pos++] = d.y;
+            position[pos++] = d.z;
+            position[pos++] = c.x;
+            position[pos++] = c.y;
+            position[pos++] = c.z;
+            position[pos++] = a.x;
+            position[pos++] = a.y;
+            position[pos++] = a.z;
+            position[pos++] = b.x;
+            position[pos++] = b.y;
+            position[pos++] = b.z;
+            position[pos++] = d.x;
+            position[pos++] = d.y;
+            position[pos++] = d.z;
+            position[pos++] = a.x;
+            position[pos++] = a.y;
+            position[pos++] = a.z;
+            textureCoord[tex++] = h.x;
+            textureCoord[tex++] = h.y;
+            textureCoord[tex++] = g.x;
+            textureCoord[tex++] = g.y;
+            textureCoord[tex++] = e.x;
+            textureCoord[tex++] = e.y;
+            textureCoord[tex++] = f.x;
+            textureCoord[tex++] = f.y;
+            textureCoord[tex++] = h.x;
+            textureCoord[tex++] = h.y;
+            textureCoord[tex++] = e.x;
+            textureCoord[tex++] = e.y;
+            normal[norm++] = normalVector.x;
+            normal[norm++] = normalVector.y;
+            normal[norm++] = normalVector.z;
+            normal[norm++] = normalVector.x;
+            normal[norm++] = normalVector.y;
+            normal[norm++] = normalVector.z;
+            normal[norm++] = normalVector.x;
+            normal[norm++] = normalVector.y;
+            normal[norm++] = normalVector.z;
+            normal[norm++] = normalVector.x;
+            normal[norm++] = normalVector.y;
+            normal[norm++] = normalVector.z;
+            normal[norm++] = normalVector.x;
+            normal[norm++] = normalVector.y;
+            normal[norm++] = normalVector.z;
+            normal[norm++] = normalVector.x;
+            normal[norm++] = normalVector.y;
+            normal[norm++] = normalVector.z;
+        } else {
+            position[pos++] = a.x;
+            position[pos++] = a.y;
+            position[pos++] = a.z;
+            position[pos++] = c.x;
+            position[pos++] = c.y;
+            position[pos++] = c.z;
+            position[pos++] = d.x;
+            position[pos++] = d.y;
+            position[pos++] = d.z;
+            position[pos++] = a.x;
+            position[pos++] = a.y;
+            position[pos++] = a.z;
+            position[pos++] = d.x;
+            position[pos++] = d.y;
+            position[pos++] = d.z;
+            position[pos++] = b.x;
+            position[pos++] = b.y;
+            position[pos++] = b.z;
+            textureCoord[tex++] = e.x;
+            textureCoord[tex++] = e.y;
+            textureCoord[tex++] = g.x;
+            textureCoord[tex++] = g.y;
+            textureCoord[tex++] = h.x;
+            textureCoord[tex++] = h.y;
+            textureCoord[tex++] = e.x;
+            textureCoord[tex++] = e.y;
+            textureCoord[tex++] = h.x;
+            textureCoord[tex++] = h.y;
+            textureCoord[tex++] = f.x;
+            textureCoord[tex++] = f.y;
+            normal[norm++] = normalVector.x;
+            normal[norm++] = normalVector.y;
+            normal[norm++] = normalVector.z;
+            normal[norm++] = normalVector.x;
+            normal[norm++] = normalVector.y;
+            normal[norm++] = normalVector.z;
+            normal[norm++] = normalVector.x;
+            normal[norm++] = normalVector.y;
+            normal[norm++] = normalVector.z;
+            normal[norm++] = normalVector.x;
+            normal[norm++] = normalVector.y;
+            normal[norm++] = normalVector.z;
+            normal[norm++] = normalVector.x;
+            normal[norm++] = normalVector.y;
+            normal[norm++] = normalVector.z;
+            normal[norm++] = normalVector.x;
+            normal[norm++] = normalVector.y;
+            normal[norm++] = normalVector.z;
+        }
+    }
+
+    private static void genArray(int[] face, float[] position, float[] textureCoord, float[] normal) {
+        genFace(face[0], new Vector3f(0.5f, 0.5f, 0.5f), new Vector3f(-0.5f, 0.5f, 0.5f), new Vector3f(0.5f, 0.5f, -0.5f), new Vector3f(-0.5f, 0.5f, -0.5f), new Vector3f(0, 1, 0), false, position, textureCoord, normal);
+        genFace(face[1], new Vector3f(-0.5f, -0.5f, -0.5f), new Vector3f(-0.5f, -0.5f, 0.5f), new Vector3f(0.5f, -0.5f, -0.5f), new Vector3f(0.5f, -0.5f, 0.5f), new Vector3f(0, -1, 0), false, position, textureCoord, normal);
+        genFace(face[2], new Vector3f(0.5f, 0.5f, -0.5f), new Vector3f(-0.5f, 0.5f, -0.5f), new Vector3f(0.5f, -0.5f, -0.5f), new Vector3f(-0.5f, -0.5f, -0.5f), new Vector3f(0, 0, -1), false, position, textureCoord, normal);
+        genFace(face[3], new Vector3f(0.5f, 0.5f, 0.5f), new Vector3f(-0.5f, 0.5f, 0.5f), new Vector3f(0.5f, -0.5f, 0.5f), new Vector3f(-0.5f, -0.5f, 0.5f), new Vector3f(0, 0, 1), true, position, textureCoord, normal);
+        genFace(face[4], new Vector3f(0.5f, 0.5f, 0.5f), new Vector3f(0.5f, 0.5f, -0.5f), new Vector3f(0.5f, -0.5f, 0.5f), new Vector3f(0.5f, -0.5f, -0.5f), new Vector3f(1, 0, 0), false, position, textureCoord, normal);
+        genFace(face[5], new Vector3f(-0.5f, 0.5f, 0.5f), new Vector3f(-0.5f, 0.5f, -0.5f), new Vector3f(-0.5f, -0.5f, 0.5f), new Vector3f(-0.5f, -0.5f, -0.5f), new Vector3f(-1, 0, 0), true, position, textureCoord, normal);
     }
 
 
@@ -206,10 +319,15 @@ public class TextureManager {
         try {
             Texture texture = new Texture("/texture/terrain.png");
             material = new Material(texture, 1f);
+            float[] position = new float[36 * 3];
+            float[] textureCoord = new float[36 * 2];
+            float[] normal = new float[36 * 3];
+            int[] indices = new int[36];
+            float[] adjacentFaceCount = new float[36];
             for (int i = 0; i < 6; ++i) indices[i] = i;
             for (int i = 0; i < face.length; ++i) {
                 norm = tex = pos = 0;
-                genArray(face[i]);
+                genArray(face[i], position, textureCoord, normal);
                 meshes[i] = new Mesh(position, textureCoord, normal, indices, adjacentFaceCount, material);
             }
         } catch (Exception e) {
@@ -232,5 +350,17 @@ public class TextureManager {
         for (Mesh mesh : meshes) {
             mesh.clear();
         }
+    }
+
+    public static Mesh newParticleMesh(int blockID) {
+        norm = tex = pos = 0;
+        float[] position = new float[6 * 3];
+        float[] textureCoord = new float[6 * 2];
+        float[] normal = new float[6 * 3];
+        int[] indices = new int[6];
+        float[] adjacentFaceCount = new float[6];
+        for (int i = 0; i < 6; ++i) indices[i] = i;
+        genRandomFace(face[blockID][3], new Vector3f(1.0f, 1.0f, 0.0f), new Vector3f(0.0f, 1.0f, 0.0f), new Vector3f(1.0f, 0.0f, 0.0f), new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(0, 0, 1), true, position, textureCoord, normal);
+        return new Mesh(position, textureCoord, normal, indices, adjacentFaceCount, material);
     }
 }

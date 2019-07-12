@@ -1,9 +1,9 @@
 package engine.world;
 
-import engine.graphics.BlockDebrisParticleEmitter;
+import engine.graphics.particles.BlockDebrisParticleEmitter;
 import engine.graphics.DirectionalLight;
-import engine.graphics.ParticleEmitterInterface;
-import engine.world.ChunkManager;
+import engine.graphics.particles.ParticleEmitterInterface;
+
 import static engine.world.TextureManager.*;
 
 import org.joml.Vector3f;
@@ -42,11 +42,10 @@ public class Scene {
     }
 
     public void update(long elapsedTime) {
-
         Iterator<ParticleEmitterInterface> iter = particleEmitters.iterator();
         while (iter.hasNext()) {
             ParticleEmitterInterface emitter = iter.next();
-            emitter.update(elapsedTime);
+            emitter.update(elapsedTime, chunkManager);
 
             // remove empty particle emitters
             if (emitter.getParticles().size() == 0) {

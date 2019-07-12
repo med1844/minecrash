@@ -1,5 +1,6 @@
-package engine.graphics;
+package engine.graphics.particles;
 
+import engine.world.ChunkManager;
 import engine.world.TextureManager;
 import org.joml.Vector3f;
 
@@ -17,26 +18,24 @@ public class BlockDebrisParticleEmitter implements ParticleEmitterInterface {
         for (int i = 0; i < 4; ++i ) {
             for (int j = 0; j < 4; ++j) {
                 for (int k = 0; k < 4; ++k) {
-                    Particle particle = new Particle(TextureManager.meshes[blockID],
+                    Particle particle = new Particle(TextureManager.newParticleMesh(blockID),
                             new Vector3f(x + i / 4.0f + 0.125f, y + j / 4.0f + 0.125f, z + k / 4.0f + 0.125f),
                             new Vector3f(x + i / 4.0f + 0.125f, y + j / 4.0f + 0.125f, z + k / 4.0f + 0.125f).
                                     sub(x + 0.5f, y + 0.5f, z + 0.5f).
                                     add((float) (Math.random() * 2 - 1) * RANDOM_FACTOR, (float) (Math.random() * 2 - 1) * RANDOM_FACTOR, (float) (Math.random() * 2 - 1) * RANDOM_FACTOR),
-                            (long) (Math.random() * 2000)
+                            (long) (Math.pow(Math.random(), 5) * 3000)
                     );
                     particles.add(particle);
-                    System.out.println(particle.getPosition());
                 }
             }
         }
     }
 
-    @Override
-    public void update(long elapsedTime) {
+    public void update(long elapsedTime, ChunkManager chunkManager) {
         Iterator<Particle> iter = particles.iterator();
         while (iter.hasNext()) {
             Particle particle = iter.next();
-            particle.update(elapsedTime);
+            particle.update(elapsedTime, chunkManager);
 
             // remove dead particles
             if (particle.getTTL() <= 0) {

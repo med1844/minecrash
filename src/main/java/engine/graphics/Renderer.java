@@ -4,9 +4,10 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
 import static engine.graphics.DirectionalLight.OrthoCoords;
 
-import engine.CameraSelectionDetector;
 import engine.IO.Window;
 import engine.Utils;
+import engine.graphics.particles.Particle;
+import engine.graphics.particles.ParticleEmitterInterface;
 import engine.maths.Transformations;
 import engine.Camera;
 import engine.world.*;
