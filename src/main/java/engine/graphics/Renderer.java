@@ -7,6 +7,7 @@ import static engine.graphics.DirectionalLight.OrthoCoords;
 import engine.IO.Window;
 import engine.graphics.particles.Particle;
 import engine.graphics.particles.ParticleEmitterInterface;
+import engine.graphics.shaders.ParticleShader;
 import engine.graphics.shaders.Shader;
 import engine.graphics.shaders.ShaderFactory;
 import engine.maths.Transformations;
@@ -182,7 +183,7 @@ public class Renderer implements Runnable {
     }
 
     private void renderLight(Matrix4f viewMatrix, Vector3f ambientLight, DirectionalLight directionalLight, Shader shader) {
-        shader.setUniform("specularPower", specularPower);
+        if (!(shader instanceof ParticleShader)) shader.setUniform("specularPower", specularPower);
         shader.setUniform("ambientLight", ambientLight);
 
         // Get a copy of the directional light object and transform its position to view coordinates

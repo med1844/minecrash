@@ -13,7 +13,6 @@ struct DirectionalLight {
 
 uniform sampler2D texture_sampler;
 uniform DirectionalLight directionalLight;
-uniform float specularPower;
 uniform vec3 ambientLight;
 
 vec4 ambientC;
@@ -25,7 +24,6 @@ vec4 calcLightColour(vec3 light_colour, float light_intensity, vec3 position, ve
     // Diffuse Light
     float diffuseFactor = max(dot(normal, to_light_dir), 0.0);
     diffuseColour = diffuseC * vec4(light_colour, 1.0) * light_intensity * diffuseFactor;
-    specularPower;
 
     return diffuseColour;
 }
