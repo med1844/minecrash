@@ -19,7 +19,7 @@ public class Chunk {
     private Mesh[] solid, transparencies, movable;
     private int pos, tex, norm, adj;
     private static final int X = 16;
-    private static final int Y = 64;
+    private static final int Y = 256;
     private static final int Z = 16;
     private static final int[] dx = {0, 0, 0, 0, 1, -1};
     private static final int[] dy = {1, -1, 0, 0, 0, 0};
