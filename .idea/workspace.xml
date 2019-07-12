@@ -7,11 +7,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fd199bd0-17de-4e96-8139-258e73d17526" name="Default Changelist" comment="V">
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/ParticleShader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/ParticleShader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/Chunk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/world/Chunk.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/ChunkManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/world/ChunkManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/game/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/game/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/shader/particle.fsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/shader/particle.fsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/Position2D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/world/Position2D.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/world/Scene.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -26,7 +27,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/game/Main.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="120">
@@ -38,8 +39,53 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="6" column="42" selection-start-line="6" selection-start-column="42" selection-end-line="6" selection-end-column="42" />
+            <state relative-caret-position="1480">
+              <caret line="74" column="45" selection-start-line="74" selection-start-column="45" selection-end-line="74" selection-end-column="45" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1199#1200#0" expanded="true" />
+                <element signature="e#1239#1240#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Position2D.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="380">
+              <caret line="19" column="4" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
+              <folding>
+                <element signature="e#261#262#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Chunk.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="520">
+              <caret line="367" column="44" selection-start-line="367" selection-start-column="44" selection-end-line="367" selection-end-column="44" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Scene.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="580">
+              <caret line="35" column="86" selection-start-line="35" selection-start-column="86" selection-end-line="35" selection-end-column="86" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#710#711#0" expanded="true" />
+                <element signature="e#745#746#0" expanded="true" />
+                <element signature="e#772#773#0" expanded="true" />
+                <element signature="e#808#809#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -48,39 +94,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/BiomeBase.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1400">
-              <caret line="74" column="46" lean-forward="true" selection-start-line="74" selection-start-column="46" selection-end-line="74" selection-end-column="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3231">
-              <caret line="185" column="49" selection-start-line="185" selection-start-column="49" selection-end-line="185" selection-end-column="49" />
-              <folding>
-                <element signature="method#renderCrossHair#0;class#Renderer#0" />
-                <element signature="method#clear#0;class#Renderer#0" />
-                <element signature="e#11465#11466#0" expanded="true" />
-                <element signature="e#11641#11642#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/shaders/Shader.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="77" selection-start-line="77" selection-end-line="77" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2054#2055#0" expanded="true" />
-                <element signature="e#2119#2120#0" expanded="true" />
-                <element signature="e#2696#2697#0" expanded="true" />
-                <element signature="docComment;method#link#0;class#Shader#0" />
-                <element signature="method#clear#0;class#Shader#0" />
-              </folding>
+              <caret line="74" column="46" selection-start-line="74" selection-start-column="46" selection-end-line="74" selection-end-column="46" />
             </state>
           </provider>
         </entry>
@@ -95,19 +109,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/shader/particle.fsh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="14" column="42" lean-forward="true" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/engine/MainEngine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="23" column="13" lean-forward="true" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+            <state relative-caret-position="1280">
+              <caret line="70" column="38" selection-start-line="70" selection-start-column="38" selection-end-line="70" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -140,7 +145,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
         <option value="$PROJECT_DIR$/src/main/java/engine/Utils.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/world/Timer.java" />
         <option value="$PROJECT_DIR$/src/main/resources/texture/TextureParser.py" />
@@ -172,7 +176,6 @@
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/particles/ParticleEmitterInterface.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/particles/Particle.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/particles/BlockDebrisParticleEmitter.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/world/Scene.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/Fog.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/world/gen/ChunkGeneratorOverWorld.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/world/TextureManager.java" />
@@ -181,7 +184,6 @@
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/DepthShader.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/ShaderFactory.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/IO/Input.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/world/Chunk.java" />
         <option value="$PROJECT_DIR$/src/main/resources/shader/scene.fsh" />
         <option value="$PROJECT_DIR$/src/main/java/engine/world/DayNightCycle.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/world/BiomeBase.java" />
@@ -189,8 +191,11 @@
         <option value="$PROJECT_DIR$/src/main/resources/shader/particle.fsh" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/ParticleShader.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/world/ChunkManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/game/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/engine/world/Chunk.java" />
+        <option value="$PROJECT_DIR$/src/main/java/engine/world/Scene.java" />
+        <option value="$PROJECT_DIR$/src/main/java/engine/world/Position2D.java" />
+        <option value="$PROJECT_DIR$/src/main/java/engine/world/ChunkManager.java" />
       </list>
     </option>
   </component>
@@ -440,7 +445,7 @@
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20202559" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20202559" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -449,7 +454,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3295583" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4976651" visible="true" weight="0.22949117" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4976651" visible="true" weight="0.22949117" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39875388" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -501,17 +506,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/maths/Perlin.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/Utils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkProvider.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/gen/ChunkGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -653,20 +647,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Scene.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1040">
-          <caret line="52" column="12" lean-forward="true" selection-start-line="52" selection-start-column="12" selection-end-line="52" selection-end-column="12" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#710#711#0" expanded="true" />
-            <element signature="e#745#746#0" expanded="true" />
-            <element signature="e#772#773#0" expanded="true" />
-            <element signature="e#808#809#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/particles/ParticleEmitterInterface.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
@@ -754,16 +734,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Chunk.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="287" column="62" selection-start-line="287" selection-start-column="62" selection-end-line="287" selection-end-column="62" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/shader/scene.fsh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3180">
@@ -777,19 +747,6 @@
           <caret line="77" column="46" lean-forward="true" selection-start-line="77" selection-start-column="46" selection-end-line="77" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/IO/Input.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="494">
-          <caret line="160" column="20" selection-start-line="160" selection-start-column="20" selection-end-line="160" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#setCenter#0;class#Input#0" />
-            <element signature="e#3182#3183#0" expanded="true" />
-            <element signature="e#3246#3247#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -861,27 +818,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/MainEngine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="23" column="13" lean-forward="true" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/shader/particle.fsh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
-          <caret line="14" column="42" lean-forward="true" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/shaders/ParticleShader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
+          <caret line="14" column="42" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
         </state>
       </provider>
     </entry>
@@ -902,10 +842,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3231">
-          <caret line="185" column="49" selection-start-line="185" selection-start-column="49" selection-end-line="185" selection-end-column="49" />
+        <state relative-caret-position="2711">
+          <caret line="157" column="49" selection-start-line="157" selection-start-column="49" selection-end-line="157" selection-end-column="49" />
           <folding>
-            <element signature="method#renderCrossHair#0;class#Renderer#0" />
             <element signature="method#clear#0;class#Renderer#0" />
             <element signature="e#11465#11466#0" expanded="true" />
             <element signature="e#11641#11642#0" expanded="true" />
@@ -913,17 +852,55 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/BiomeBase.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/MainEngine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1400">
-          <caret line="74" column="46" lean-forward="true" selection-start-line="74" selection-start-column="46" selection-end-line="74" selection-end-column="46" />
+        <state relative-caret-position="1280">
+          <caret line="70" column="38" selection-start-line="70" selection-start-column="38" selection-end-line="70" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkManager.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/shaders/ParticleShader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="6" column="42" selection-start-line="6" selection-start-column="42" selection-end-line="6" selection-end-column="42" />
+        <state relative-caret-position="340">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/BiomeBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1400">
+          <caret line="74" column="46" selection-start-line="74" selection-start-column="46" selection-end-line="74" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Chunk.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="520">
+          <caret line="367" column="44" selection-start-line="367" selection-start-column="44" selection-end-line="367" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-12.0.1/lib/src.zip!/java.base/java/util/Map.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1321">
+          <caret line="242" column="6" selection-start-line="242" selection-start-column="6" selection-end-line="242" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/IO/Input.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1389">
+          <caret line="14" column="20" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#setCenter#0;class#Input#0" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -931,6 +908,42 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="6" column="70" selection-start-line="6" selection-start-column="70" selection-end-line="6" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Scene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="580">
+          <caret line="35" column="86" selection-start-line="35" selection-start-column="86" selection-end-line="35" selection-end-column="86" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#710#711#0" expanded="true" />
+            <element signature="e#745#746#0" expanded="true" />
+            <element signature="e#772#773#0" expanded="true" />
+            <element signature="e#808#809#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1480">
+          <caret line="74" column="45" selection-start-line="74" selection-start-column="45" selection-end-line="74" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1199#1200#0" expanded="true" />
+            <element signature="e#1239#1240#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Position2D.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="19" column="4" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
+          <folding>
+            <element signature="e#261#262#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

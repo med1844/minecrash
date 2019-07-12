@@ -104,7 +104,7 @@ float calcShadow(vec4 position) {
     if (directionalLight.intensity < 1e-4) return 0;
     vec4 shadowCoord = position * 0.5 + 0.5;
     float result = 0.0;
-    const float SAMPLE = 4;
+    const float SAMPLE = 8;
     for (int i = 0; i < SAMPLE; ++i) {
         int index = int(16.0 * random(floor(position.xyz * 1000.0), i)) % 16;
         result += (1.0 / SAMPLE) * texture(shadowMap, vec3(shadowCoord.xy + poissonDisk[index] / 5000.0, shadowCoord.z - 1e-3));
