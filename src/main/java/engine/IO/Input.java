@@ -5,7 +5,6 @@ import engine.Camera;
 import static engine.world.TextureManager.*;
 import static org.lwjgl.glfw.GLFW.*;
 
-import engine.CameraSelectionDetector;
 import engine.world.Scene;
 import org.joml.Vector3f;
 
@@ -21,8 +20,12 @@ public class Input {
     private static final float PI = (float)Math.acos(-1);
     private static float keyboardSpeed = 0.008f;
     private static float mouseSpeed = 0.0005f;
+    private static final float DECAY_FACTOR = 0.85f;
+    private static final float ACCELERATION_FACTOR = 0.3f;
     private int coolDownLeft = 0;
     private int coolDownRight = 0;
+    private float frontSpeed = 0, upSpeed = 0, rightSpeed = 0;
+    private Vector3f speed = new Vector3f(0);
 
     public Input() {
     }
@@ -75,6 +78,16 @@ public class Input {
          return glfwGetKey(window.getWindowHandle(), scancode) == GLFW_PRESS;
     }
 
+    private void limit(Vector3f v, float keyboardSpeed) {
+        v.x = limit(v.x, 25 * keyboardSpeed);
+        v.y = limit(v.y, 25 * keyboardSpeed);
+        v.z = limit(v.z, 25 * keyboardSpeed);
+    }
+
+    private float limit(float a, float threshold) {
+        return Math.max(Math.min(a, threshold), -threshold);
+    }
+
     public void update(Vector3f selectedBlockPos, Scene scene, Vector3f normalVector) {
         long deltaTime = System.currentTimeMillis() - lastUpdateTime;
         coolDownLeft -= deltaTime;
@@ -100,23 +113,31 @@ public class Input {
         right = camera.getRight(deltaTime * keyboardSpeed);
         up = new Vector3f(0, deltaTime * keyboardSpeed, 0);
 
+        frontSpeed *= DECAY_FACTOR;
+        upSpeed *= DECAY_FACTOR;
+        rightSpeed *= DECAY_FACTOR;
+
         if (isKeyDown(GLFW_KEY_E)) {
-            camera.move(horizontalDirection);
+            frontSpeed += ACCELERATION_FACTOR;
+//            speed.add(horizontalDirection);
         }
         if (isKeyDown(GLFW_KEY_D)) {
-            camera.move(horizontalDirection.negate());
+            frontSpeed -= ACCELERATION_FACTOR;
+//            speed.add(horizontalDirection.negate());
         }
         if (isKeyDown(GLFW_KEY_F)) {
-            camera.move(right);
+            rightSpeed += ACCELERATION_FACTOR;
         }
         if (isKeyDown(GLFW_KEY_S)) {
-            camera.move(right.negate());
+            rightSpeed -= ACCELERATION_FACTOR;
         }
         if (isKeyDown(GLFW_KEY_SPACE)) {
-            camera.move(up);
+            upSpeed += ACCELERATION_FACTOR;
+//            speed.add(up);
         }
         if (isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
-            camera.move(up.negate());
+            upSpeed -= ACCELERATION_FACTOR;
+//            speed.add(up.negate());
         }
 
         if (isKeyDown(GLFW_KEY_ESCAPE)) {
@@ -132,6 +153,17 @@ public class Input {
             scene.putBlock(selectedBlockPos.add(normalVector), GLASS);
             coolDownRight = 200;
         }
+
+        frontSpeed = limit(frontSpeed, 2f);
+        rightSpeed = limit(rightSpeed, 2f);
+        upSpeed = limit(upSpeed, 2f);
+
+        speed.zero();
+        speed.add(horizontalDirection.mul(frontSpeed));
+        speed.add(right.mul(rightSpeed));
+        speed.add(up.mul(upSpeed));
+        limit(speed, keyboardSpeed);
+        camera.move(speed);
 
         lastUpdateTime = System.currentTimeMillis();
     }
