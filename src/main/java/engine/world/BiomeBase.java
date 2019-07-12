@@ -7,12 +7,12 @@ import engine.world.gen.ChunkGeneratorOverWorld;
 import static engine.world.TextureManager.*;
 
 public class BiomeBase {
-    Block topBlock;
-    Block fillerBlock;
+    private Block topBlock;
+    private Block fillerBlock;
 
     public BiomeBase() {
-       topBlock=new Block(GRASS, 0, 0, 0);
-       fillerBlock=new Block(STONE, 0, 0, 0);
+        topBlock = new Block(GRASS, 0, 0, 0);
+        fillerBlock = new Block(STONE, 0, 0, 0);
     }
     
     public void genBlocks(Random rand, Chunk chunk, int x, int z, double noise) {
@@ -30,9 +30,9 @@ public class BiomeBase {
 //        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
         for (int y = 255; y >= 0; --y) {
-            if (y <= rand.nextInt(5)) {
-                // y <= 5 COBBLESTONE
-                chunk.setBlock(COBBLESTONE, zLow, y, xLow);
+            if (y <= rand.nextInt(4)) {
+                // y <= 4 COBBLESTONE
+                chunk.setBlock(BEDROCK, zLow, y, xLow);
             } else {
                 Block curBlock = chunk.getBlock(zLow, y, xLow);
 
@@ -42,7 +42,7 @@ public class BiomeBase {
                     if (res == -1) {
                         // y is between air and stone
                         if (cnt <= 0) {
-                            topBlock = null;
+                            topBlock.set(AIR);
                             fillerBlock.set(STONE);
                         } else if (y >= seaLevel - 4 && y <= seaLevel + 1) {
                             // near seaLevel
@@ -70,7 +70,7 @@ public class BiomeBase {
                             chunk.setBlock(topBlock.getBlockID(), zLow, y, xLow);
                         } else if (y < seaLevel - 7 - cnt) {
                             // ocean bottom
-                            topBlock = null;
+                            topBlock.set(GRAVEL);
                             // fill with stone
                             fillerBlock.set(STONE);
                             ;

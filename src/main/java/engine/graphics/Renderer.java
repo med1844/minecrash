@@ -30,7 +30,7 @@ import java.util.List;
  * - light rendering
  * - shadow mapping
  */
-public class Renderer {
+public class Renderer implements Runnable {
     private Shader sceneShader, depthShader, particleShader;
     private ShadowMap shadowMap;
     private Fog fog;
@@ -40,6 +40,12 @@ public class Renderer {
     private float Z_FAR = 1000.0f;
     private final float specularPower = 10f;
     private final Vector3f ambientLight = new Vector3f(.5f, .5f, .5f);
+    private Window window;
+    private Camera camera;
+    private Scene scene;
+    private Timer timer;
+    private Vector3f selectedBlockPos;
+    private boolean running = false;
 
     public Renderer() {
         transformations = new Transformations();
@@ -62,19 +68,22 @@ public class Renderer {
         particleShader = ShaderFactory.newShader("particle");
     }
 
+    public void setParameter(Window window, Camera camera, Scene scene, Timer timer, Vector3f selectedBlockPos) {
+        this.window = window;
+        this.camera = camera;
+        this.scene = scene;
+        this.timer = timer;
+        this.selectedBlockPos = selectedBlockPos;
+    }
+
     /**
      * This method renders meshes using the shader that has been
      * initialized in the function init();
      *
      * This method also updates uniform matrices that is used for
      * transformations.
-     *
-     * @param window Renderer handles events like window resize.
-     * @param camera the perspective
-     * @param scene the scene to render
-     * @param timer the time tick provider that controls directionalLight behavior
      */
-    public void render(Window window, Camera camera, Scene scene, Timer timer, Vector3f selectedBlockPos) {
+    public void render() {
         // the window's buffer has been cleaned, in MainEngine.update();
 
         renderDayNightCycle(window, scene.light, timer);
@@ -316,6 +325,17 @@ public class Renderer {
 
     public Transformations getTransformations() {
         return transformations;
+    }
+
+    @Override
+    public void run() {
+        running = true;
+        render();
+        running = false;
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 
 }
