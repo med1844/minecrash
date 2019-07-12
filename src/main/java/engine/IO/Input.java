@@ -111,19 +111,21 @@ public class Input {
 
         horizontalDirection = camera.getHorizontalDirection(deltaTime * keyboardSpeed);
         right = camera.getRight(deltaTime * keyboardSpeed);
-        up = new Vector3f(0, deltaTime * keyboardSpeed, 0);
+        up = new Vector3f(0, deltaTime * keyboardSpeed * 3, 0);
 
         frontSpeed *= DECAY_FACTOR;
         upSpeed *= DECAY_FACTOR;
         rightSpeed *= DECAY_FACTOR;
 
+        if (Math.abs(frontSpeed) < 1e-5) frontSpeed = 0;
+        if (Math.abs(upSpeed) < 1e-5) upSpeed = 0;
+        if (Math.abs(rightSpeed) < 1e-5) rightSpeed = 0;
+
         if (isKeyDown(GLFW_KEY_E)) {
             frontSpeed += ACCELERATION_FACTOR;
-//            speed.add(horizontalDirection);
         }
         if (isKeyDown(GLFW_KEY_D)) {
             frontSpeed -= ACCELERATION_FACTOR;
-//            speed.add(horizontalDirection.negate());
         }
         if (isKeyDown(GLFW_KEY_F)) {
             rightSpeed += ACCELERATION_FACTOR;
@@ -133,11 +135,9 @@ public class Input {
         }
         if (isKeyDown(GLFW_KEY_SPACE)) {
             upSpeed += ACCELERATION_FACTOR;
-//            speed.add(up);
         }
         if (isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
             upSpeed -= ACCELERATION_FACTOR;
-//            speed.add(up.negate());
         }
 
         if (isKeyDown(GLFW_KEY_ESCAPE)) {
@@ -162,6 +162,7 @@ public class Input {
         speed.add(horizontalDirection.mul(frontSpeed));
         speed.add(right.mul(rightSpeed));
         speed.add(up.mul(upSpeed));
+//        System.out.println(speed);
         limit(speed, keyboardSpeed);
         camera.move(speed);
 
