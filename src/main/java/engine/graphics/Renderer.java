@@ -19,23 +19,20 @@ import org.joml.Vector4f;
 import java.util.List;
 
 /**
- * This class mainly handles the process of rendering,
- * including managing components and the order of rendering.
+ * This class mainly handles the process of rendering, including managing
+ * components and the order of rendering.
  *
- * It doesn't call any GL render function, since these are
- * encapsulated in corresponding classes.
+ * It doesn't call any GL render function, since these are encapsulated in
+ * corresponding classes.
  *
- * It handles:
- * - scene rendering
- * - light rendering
- * - shadow mapping
+ * It handles: - scene rendering - light rendering - shadow mapping
  */
 public class Renderer implements Runnable {
     private Shader sceneShader, depthShader, particleShader;
     private ShadowMap shadowMap;
     private Fog fog;
     private final Transformations transformations;
-    private float FOV = (float)Math.toRadians(60.0f);
+    private float FOV = (float) Math.toRadians(60.0f);
     private float Z_NEAR = 0.1f;
     private float Z_FAR = 1000.0f;
     private final float specularPower = 10f;
@@ -52,12 +49,11 @@ public class Renderer implements Runnable {
     }
 
     /**
-     * This method initializes the shader program, including
-     * loading vsh, fsh shader source code and attach them to
-     * the final shader program.
+     * This method initializes the shader program, including loading vsh, fsh shader
+     * source code and attach them to the final shader program.
      *
-     * @throws Exception when vsh, fsh creation failed or the
-     *                   linking process of shader program failed.
+     * @throws Exception when vsh, fsh creation failed or the linking process of
+     *                   shader program failed.
      */
     public void init() throws Exception {
         shadowMap = new ShadowMap();
@@ -77,11 +73,10 @@ public class Renderer implements Runnable {
     }
 
     /**
-     * This method renders meshes using the shader that has been
-     * initialized in the function init();
+     * This method renders meshes using the shader that has been initialized in the
+     * function init();
      *
-     * This method also updates uniform matrices that is used for
-     * transformations.
+     * This method also updates uniform matrices that is used for transformations.
      */
     public void render() {
         // the window's buffer has been cleaned, in MainEngine.update();
@@ -103,37 +98,24 @@ public class Renderer implements Runnable {
         sceneShader.bind();
 
         sceneShader.setUniform("selected", selectedBlockPos != null);
-        if (selectedBlockPos != null) sceneShader.setUniform("selectedBlock", selectedBlockPos);
-        else sceneShader.setUniform("selectedBlock", new Vector3f(0, 0, 0));
+        if (selectedBlockPos != null)
+            sceneShader.setUniform("selectedBlock", selectedBlockPos);
+        else
+            sceneShader.setUniform("selectedBlock", new Vector3f(0, 0, 0));
 
         OrthoCoords orthoCoords = scene.light.getOrthoCoords();
 
-        Matrix4f orthoProjectionMatrix = new Matrix4f().identity().ortho(
-                orthoCoords.left,
-                orthoCoords.right,
-                orthoCoords.bottom,
-                orthoCoords.top,
-                orthoCoords.front,
-                orthoCoords.back
-        );
+        Matrix4f orthoProjectionMatrix = new Matrix4f().identity().ortho(orthoCoords.left, orthoCoords.right,
+                orthoCoords.bottom, orthoCoords.top, orthoCoords.front, orthoCoords.back);
 
         sceneShader.setUniform("orthoProjectionMatrix", orthoProjectionMatrix);
 
         // update matrices
         sceneShader.setUniform("projectionMatrix",
-                transformations.getProjectionMatrix(
-                        FOV,
-                        window.getWidth(),
-                        window.getHeight(),
-                        Z_NEAR,
-                        Z_FAR
-                )
-        );
+                transformations.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(), Z_NEAR, Z_FAR));
 
         Vector3f lightDirection = scene.light.getDirection();
-        Matrix4f lightViewMatrix = transformations.getLightViewMatrix(
-                lightDirection, camera
-        );
+        Matrix4f lightViewMatrix = transformations.getLightViewMatrix(lightDirection, camera);
 
         // Update view Matrix
         Matrix4f viewMatrix = transformations.getViewMatrix(camera);
@@ -153,39 +135,31 @@ public class Renderer implements Runnable {
         glBindTexture(GL_TEXTURE_2D, shadowMap.getDepthMap().getId());
 
         sceneShader.setUniform("material", TextureManager.material);
-        for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
-            for (Chunk chunk : chunkList) {
-                sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
-                sceneShader.setUniform("modelViewMatrix",
-                        transformations.buildModelViewMatrix(chunk, viewMatrix)
-                );
-                sceneShader.setUniform("modelLightViewMatrix",
-                        transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
-                );
-                chunk.renderSolid();
-            }
+        for (Chunk chunk : scene.chunkManager.getChunks()) {
+            sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
+            sceneShader.setUniform("modelViewMatrix", transformations.buildModelViewMatrix(chunk, viewMatrix));
+            sceneShader.setUniform("modelLightViewMatrix",
+                    transformations.buildModelLightViewMatrix(chunk, lightViewMatrix));
+            chunk.renderSolid();
         }
-        for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
-            for (Chunk chunk : chunkList) {
-                sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
-                sceneShader.setUniform("modelViewMatrix",
-                        transformations.buildModelViewMatrix(chunk, viewMatrix)
-                );
-                sceneShader.setUniform("modelLightViewMatrix",
-                        transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
-                );
-                chunk.renderTransparencies();
-            }
+        for (Chunk chunk : scene.chunkManager.getChunks()) {
+            sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
+            sceneShader.setUniform("modelViewMatrix", transformations.buildModelViewMatrix(chunk, viewMatrix));
+            sceneShader.setUniform("modelLightViewMatrix",
+                    transformations.buildModelLightViewMatrix(chunk, lightViewMatrix));
+            chunk.renderTransparencies();
         }
         sceneShader.unbind();
 
     }
 
-    private void renderLight(Matrix4f viewMatrix, Vector3f ambientLight, DirectionalLight directionalLight, Shader shader) {
+    private void renderLight(Matrix4f viewMatrix, Vector3f ambientLight, DirectionalLight directionalLight,
+            Shader shader) {
         shader.setUniform("specularPower", specularPower);
         shader.setUniform("ambientLight", ambientLight);
 
-        // Get a copy of the directional light object and transform its position to view coordinates
+        // Get a copy of the directional light object and transform its position to view
+        // coordinates
         DirectionalLight cur = new DirectionalLight(directionalLight);
         Vector4f dir = new Vector4f(cur.getDirection(), 0);
         dir.mul(viewMatrix);
@@ -208,39 +182,25 @@ public class Renderer implements Runnable {
 
         Vector3f lightDirection = new Vector3f(scene.light.getDirection());
 
-        Matrix4f lightViewMatrix = transformations.getLightViewMatrix(
-                lightDirection, camera
-        );
+        Matrix4f lightViewMatrix = transformations.getLightViewMatrix(lightDirection, camera);
 
         OrthoCoords orthoCoords = scene.light.getOrthoCoords();
-        Matrix4f orthoProjectionMatrix = new Matrix4f().identity().ortho(
-                orthoCoords.left,
-                orthoCoords.right,
-                orthoCoords.bottom,
-                orthoCoords.top,
-                orthoCoords.front,
-                orthoCoords.back
-        );
+        Matrix4f orthoProjectionMatrix = new Matrix4f().identity().ortho(orthoCoords.left, orthoCoords.right,
+                orthoCoords.bottom, orthoCoords.top, orthoCoords.front, orthoCoords.back);
         depthShader.setUniform("orthoProjectionMatrix", orthoProjectionMatrix);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, TextureManager.material.getTexture().getId());
 
-        for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
-            for (Chunk chunk : chunkList) {
-                depthShader.setUniform("modelLightViewMatrix",
-                        transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
-                );
-                chunk.renderSolid();
-            }
+        for (Chunk chunk : scene.chunkManager.getChunks()) {
+            depthShader.setUniform("modelLightViewMatrix",
+                    transformations.buildModelLightViewMatrix(chunk, lightViewMatrix));
+            chunk.renderSolid();
         }
-        for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
-            for (Chunk chunk : chunkList) {
-                depthShader.setUniform("modelLightViewMatrix",
-                        transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
-                );
-                chunk.renderTransparencies();
-            }
+        for (Chunk chunk : scene.chunkManager.getChunks()) {
+            depthShader.setUniform("modelLightViewMatrix",
+                    transformations.buildModelLightViewMatrix(chunk, lightViewMatrix));
+            chunk.renderTransparencies();
         }
 
         // Unbind
@@ -282,14 +242,7 @@ public class Renderer implements Runnable {
         particleShader.setUniform("texture_sampler", 0);
 
         particleShader.setUniform("projectionMatrix",
-                transformations.getProjectionMatrix(
-                        FOV,
-                        window.getWidth(),
-                        window.getHeight(),
-                        Z_NEAR,
-                        Z_FAR
-                )
-        );
+                transformations.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(), Z_NEAR, Z_FAR));
 
         Matrix4f viewMatrix = transformations.getViewMatrix(camera);
         List<ParticleEmitterInterface> emitters = scene.particleEmitters;
