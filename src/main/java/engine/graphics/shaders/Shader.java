@@ -1,9 +1,11 @@
-package engine.graphics;
+package engine.graphics.shaders;
 
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
+import engine.graphics.DirectionalLight;
+import engine.graphics.Material;
 import org.joml.Matrix4f;
 import static org.lwjgl.opengl.GL20.*;
 

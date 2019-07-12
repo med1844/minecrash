@@ -75,7 +75,7 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
                             chunk.setBlock(AIR, i, j, k);
                         } else if (result <= 1.9) {
                             int blockID = rand.nextInt(24) + 1;
-                            if (TextureManager.getType(blockID) != SOLID) blockID = 1;
+                            if ((TextureManager.getType(blockID) & SOLID) == 0) blockID = 1;
                             chunk.setBlock(blockID, i, j, k);
                         } else {
                             chunk.setBlock(AIR, i, j, k);

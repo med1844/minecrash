@@ -39,7 +39,7 @@ public class TextureManager {
     public static int EMPTY = 0;
     public static int SOLID = 1;
     public static int TRANSPARENT = 2;
-    public static int MOVABLE = 3; // this means you can move around in this type of block.
+    public static int MOVABLE = 4; // this means you can move around in this type of block.
 
     private static int[][] face = {
             {0, 0, 0, 0, 0, 0, EMPTY}, // air
@@ -48,12 +48,12 @@ public class TextureManager {
             {3, 3, 3, 3, 3, 3, SOLID}, // dirt
             {4, 4, 4, 4, 4, 4, SOLID}, // cobblestone
             {5, 5, 5, 5, 5, 5, SOLID}, // planks
-            {6, 6, 6, 6, 6, 6, MOVABLE}, // oak sampling
+            {6, 6, 6, 6, 6, 6, TRANSPARENT | MOVABLE}, // oak sampling
             {7, 7, 7, 7, 7, 7, SOLID}, // bedrock
-            {8, 8, 8, 8, 8, 8, MOVABLE}, // flow water
-            {9, 9, 9, 9, 9, 9, MOVABLE}, // still water
-            {10, 10, 10, 10, 10, 10, MOVABLE}, // flow lava
-            {11, 11, 11, 11, 11, 11, MOVABLE}, // still lava
+            {8, 8, 8, 8, 8, 8, TRANSPARENT | MOVABLE}, // flow water
+            {9, 9, 9, 9, 9, 9, TRANSPARENT | MOVABLE}, // still water
+            {10, 10, 10, 10, 10, 10, TRANSPARENT | MOVABLE}, // flow lava
+            {11, 11, 11, 11, 11, 11, TRANSPARENT | MOVABLE}, // still lava
             {12, 12, 12, 12, 12, 12, SOLID}, // sand
             {13, 13, 13, 13, 13, 13, SOLID}, // gravel
             {14, 14, 14, 14, 14, 14, SOLID}, // gold ore
@@ -360,7 +360,7 @@ public class TextureManager {
         int[] indices = new int[6];
         float[] adjacentFaceCount = new float[6];
         for (int i = 0; i < 6; ++i) indices[i] = i;
-        genRandomFace(face[blockID][3], new Vector3f(1.0f, 1.0f, 0.0f), new Vector3f(0.0f, 1.0f, 0.0f), new Vector3f(1.0f, 0.0f, 0.0f), new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(0, 0, 1), true, position, textureCoord, normal);
+        genRandomFace(face[blockID][(int) (Math.random() * 6)], new Vector3f(1.0f, 1.0f, 0.0f), new Vector3f(0.0f, 1.0f, 0.0f), new Vector3f(1.0f, 0.0f, 0.0f), new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(0, 0, 1), true, position, textureCoord, normal);
         return new Mesh(position, textureCoord, normal, indices, adjacentFaceCount, material);
     }
 }

@@ -56,7 +56,7 @@ public class CameraSelectionDetector {
                                 if (block == null) {
                                     return null;
                                 }
-                                if (block.getType() != TextureManager.SOLID) continue;
+                                if (block.getBlockID() == TextureManager.AIR) continue;
                                 min.set(block.getPosition());
                                 max.set(block.getPosition());
                                 max.add(1, 1, 1);

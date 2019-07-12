@@ -129,7 +129,7 @@ public class Input {
         }
 
         if (rightButtonPressed && selectedBlockPos != null && normalVector != null && coolDownRight == 0) {
-            scene.putBlock(selectedBlockPos.add(normalVector), STONE);
+            scene.putBlock(selectedBlockPos.add(normalVector), GLASS);
             coolDownRight = 200;
         }
 

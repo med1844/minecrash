@@ -5,9 +5,10 @@ import static org.lwjgl.opengl.GL30.*;
 import static engine.graphics.DirectionalLight.OrthoCoords;
 
 import engine.IO.Window;
-import engine.Utils;
 import engine.graphics.particles.Particle;
 import engine.graphics.particles.ParticleEmitterInterface;
+import engine.graphics.shaders.Shader;
+import engine.graphics.shaders.ShaderFactory;
 import engine.maths.Transformations;
 import engine.Camera;
 import engine.world.*;
@@ -32,13 +33,13 @@ import java.util.List;
 public class Renderer {
     private Shader sceneShader, depthShader, particleShader;
     private ShadowMap shadowMap;
+    private Fog fog;
     private final Transformations transformations;
     private float FOV = (float)Math.toRadians(60.0f);
     private float Z_NEAR = 0.1f;
     private float Z_FAR = 1000.0f;
     private final float specularPower = 10f;
     private final Vector3f ambientLight = new Vector3f(.5f, .5f, .5f);
-    private final double PI = Math.acos(-1);
 
     public Renderer() {
         transformations = new Transformations();
@@ -54,60 +55,11 @@ public class Renderer {
      */
     public void init() throws Exception {
         shadowMap = new ShadowMap();
+        fog = new Fog();
 
-        setupSceneShader();
-        setupDepthShader();
-        setupParticleShader();
-    }
-
-    private void setupSceneShader() throws Exception {
-        sceneShader = new Shader();
-        sceneShader.createVertexShader(Utils.loadResource("/shader/scene.vsh"));
-        sceneShader.createFragmentShader(Utils.loadResource("/shader/scene.fsh"));
-        sceneShader.link();
-
-        sceneShader.createUniform("texture_sampler");
-        sceneShader.createUniform("shadowMap");
-
-        sceneShader.createUniform("selected");
-        sceneShader.createUniform("selectedBlock");
-
-        sceneShader.createUniform("modelMatrix");
-        sceneShader.createUniform("projectionMatrix");
-        sceneShader.createUniform("modelViewMatrix");
-        sceneShader.createUniform("orthoProjectionMatrix");
-        sceneShader.createUniform("modelLightViewMatrix");
-
-        sceneShader.createUniform("specularPower");
-        sceneShader.createUniform("ambientLight");
-
-        sceneShader.createMaterialUniform("material");
-        sceneShader.createDirectionalLightUniform("directionalLight");
-    }
-
-    private void setupDepthShader() throws Exception {
-        depthShader = new Shader();
-        depthShader.createVertexShader(Utils.loadResource("/shader/depth.vsh"));
-        depthShader.createFragmentShader(Utils.loadResource("/shader/depth.fsh"));
-        depthShader.link();
-
-        depthShader.createUniform("orthoProjectionMatrix");
-        depthShader.createUniform("modelLightViewMatrix");
-    }
-
-    private void setupParticleShader() throws Exception {
-        particleShader = new Shader();
-        particleShader.createVertexShader(Utils.loadResource("/shader/particle.vsh"));
-        particleShader.createFragmentShader(Utils.loadResource("/shader/particle.fsh"));
-        particleShader.link();
-
-        particleShader.createUniform("projectionMatrix");
-        particleShader.createUniform("modelViewMatrix");
-        particleShader.createUniform("texture_sampler");
-
-        particleShader.createUniform("specularPower");
-        particleShader.createUniform("ambientLight");
-        particleShader.createDirectionalLightUniform("directionalLight");
+        sceneShader = ShaderFactory.newShader("scene");
+        depthShader = ShaderFactory.newShader("depth");
+        particleShader = ShaderFactory.newShader("particle");
     }
 
     /**
@@ -183,6 +135,8 @@ public class Renderer {
         sceneShader.setUniform("texture_sampler", 0);
         sceneShader.setUniform("shadowMap", 2);
 
+        sceneShader.setUniform("fogDensity", fog.getDensity());
+
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, TextureManager.material.getTexture().getId());
 
@@ -200,18 +154,6 @@ public class Renderer {
                         transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
                 );
                 chunk.renderSolid();
-            }
-        }
-        for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
-            for (Chunk chunk : chunkList) {
-                sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
-                sceneShader.setUniform("modelViewMatrix",
-                        transformations.buildModelViewMatrix(chunk, viewMatrix)
-                );
-                sceneShader.setUniform("modelLightViewMatrix",
-                        transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
-                );
-                chunk.renderMovable();
             }
         }
         for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
@@ -245,6 +187,7 @@ public class Renderer {
     private void renderDayNightCycle(Window window, DirectionalLight directionalLight, Timer timer) {
         // this part adjusts the angle and light color according to current time.
         DayNightCycle.setDirectionalLight(timer.getTimeRatio(), directionalLight, window);
+        DayNightCycle.setFog(timer.getTimeRatio(), fog);
     }
 
     private void renderShadowMap(Camera camera, Scene scene) {
@@ -280,14 +223,6 @@ public class Renderer {
                         transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
                 );
                 chunk.renderSolid();
-            }
-        }
-        for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
-            for (Chunk chunk : chunkList) {
-                depthShader.setUniform("modelLightViewMatrix",
-                        transformations.buildModelLightViewMatrix(chunk, lightViewMatrix)
-                );
-                chunk.renderMovable();
             }
         }
         for (Chunk[] chunkList : scene.chunkManager.getChunks()) {
