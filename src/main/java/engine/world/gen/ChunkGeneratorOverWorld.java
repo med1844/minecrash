@@ -1,259 +1,318 @@
 package engine.world.gen;
 
+import static engine.world.TextureManager.AIR;
+import static engine.world.TextureManager.STILL_WATER;
+import static engine.world.TextureManager.STONE;
+
 import java.util.Random;
 
-import engine.maths.Perlin;
-import engine.maths.SimplexNoise;
-import engine.world.Block;
+import engine.maths.NoiseMath;
+import engine.world.BiomeBase;
 import engine.world.Chunk;
-import engine.world.TextureManager;
-
-import static engine.world.TextureManager.*;
 
 public class ChunkGeneratorOverWorld implements ChunkGenerator {
     Random rand;
-    private long seed;
     private double[] heightMap;
-    public static final int seaLevel = 5;
-    NoiseGeneratorOctaves depthNoise;
-    NoiseGeneratorOctaves mainPerlinNoise;
-    NoiseGeneratorOctaves minLimitPerlinNoise;
-    NoiseGeneratorOctaves maxLimitPerlinNoise;
+    public static final int seaLevel = 63;
+    NoiseGeneratorPerlinOctaves depthNoise;
+    NoiseGeneratorPerlinOctaves mainPerlinNoise;
+    NoiseGeneratorPerlinOctaves minLimitPerlinNoise;
+    NoiseGeneratorPerlinOctaves maxLimitPerlinNoise;
+    NoiseGeneratorSimplexOctaves stoneSimplexNoise;
     double[] mainNoiseRegion;
-    double[] depthRegion;
+    double[] depthRegion; // 2D, height-change-scale
     double[] minLimitRegion;
     double[] maxLimitRegion;
+    double[] stoneRegion;
 
-    public static final float coordinateScale = 64;
-    public static final float heightScale = 16;
-    public static final float depthNoiseScaleX = 16;
-    public static final float depthNoiseScaleZ = 16;
-    public static final float depthNoiseScaleExponent = 2;
-    public static final float mainNoiseScaleX = 16;
-    public static final float mainNoiseScaleY = 16;
-    public static final float mainNoiseScaleZ = 16;
-    public static final float biomeDepthOffSet = 0;
+    public static final double coordinateScale = 684.412D;
+    public static final double heightScale = 684.412D;
+    public static final float depthNoiseScaleX = 200;
+    public static final float depthNoiseScaleZ = 200;
+    public static final double mainNoiseScaleX = 80;
+    public static final double mainNoiseScaleY = 160;
+    public static final double mainNoiseScaleZ = 80;
+//    public static final float biomeDepthOffSet = 64;
+//    public static final float heightVariation = 16;
+//    public static final float baseHeight = 1;
 
-    public static final float biomeDepthWeight = 0.7f;
-    public static final float biomeScaleOffset = 0;
-    public static final float biomeScaleWeight = 0.7f;
-    public static final float lowerLimitScale = 64;
-    public static final float upperLimitScale = 64;
-    public static final float stretchY = 1;
-    public static final float baseSize = 1;
+//    public static final float biomeDepthWeight = 0.7f;
+//    public static final float biomeScaleOffset = 0.0f;
+//    public static final float biomeScaleWeight = 0.7f;
+    public static final float lowerLimitScale = 512.0f;
+    public static final float upperLimitScale = 512.0f;
+    public static final float stretchY = 12;
+    public static final float baseSize = 8.5f; // surf average height
+    public static final double persistence = 0.5;
 
-    public ChunkGeneratorOverWorld(long seed) {
-        this.seed = seed;
+    private BiomeBase[] biomesForGeneration;
+
+    public ChunkGeneratorOverWorld() {
+        rand = new Random();
+        long seed = System.nanoTime();
+//        seed=884115298253700L;945874381819300 4 16 16 16 is great
+        rand.setSeed(seed);
+
+        int depthNoiseOctave = 4;
+
+        //
+        int mainNoiseOctave = 16;
+        // minNoiseOctave=maxNoiseOctave, for interpolate
+        int minLimitNoiseOctave = 16;
+        int maxLimitNoiseOctave = 16;
+
+        depthNoise = new NoiseGeneratorPerlinOctaves(rand, depthNoiseOctave);
+        mainPerlinNoise = new NoiseGeneratorPerlinOctaves(rand, mainNoiseOctave);
+        minLimitPerlinNoise = new NoiseGeneratorPerlinOctaves(rand, minLimitNoiseOctave);
+        maxLimitPerlinNoise = new NoiseGeneratorPerlinOctaves(rand, maxLimitNoiseOctave);
+
+        int stoneNoiseOctave = 4;
+        stoneSimplexNoise = new NoiseGeneratorSimplexOctaves(rand, stoneNoiseOctave);
+
+        System.out.println(seed + " " + depthNoiseOctave + " " + mainNoiseOctave + " " + minLimitNoiseOctave + " "
+                + maxLimitNoiseOctave);
+
     }
 
     @Override
     public Chunk generateChunk(int x, int z) {
-        rand = new Random();
-        rand.setSeed(((long) x * 341873128712L + (long) z * 132897987541L) * System.nanoTime());
-        // 用于存储chunk数据
-        depthNoise = new NoiseGeneratorOctaves(rand, 4);
-        mainPerlinNoise = new NoiseGeneratorOctaves(rand, 4);
-        minLimitPerlinNoise = new NoiseGeneratorOctaves(rand, 4);
-        maxLimitPerlinNoise = new NoiseGeneratorOctaves(rand, 4);
         Chunk chunk = new Chunk(x, z);
-        // 生成只有水和石头的基本地形
-        this.setBlocksInChunk(x, z, chunk);
+        // only water and stone
+        setBlocksInChunk(x, z, chunk);
 
+        // 16*16 biomes
+        // biomesForGeneration =
+        // this.worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration,
+        // x * 16, z * 16, 16, 16);
+        biomesForGeneration = new BiomeBase[16 * 16];
+        for (int i = 0; i < 16 * 16; i++)
+            biomesForGeneration[i] = new BiomeBase();
+        replaceBlocksForBiome(x, z, chunk, biomesForGeneration);
         return chunk;
     }
 
     public void setBlocksInChunk(int x, int z, Chunk chunk) {
-        SimplexNoise noise = new SimplexNoise(0.5, seed);
-        Random rand = new Random(seed);
-        for (int i = 0; i < Chunk.getX(); ++i) {
-            for (int j = 0; j < Chunk.getY(); ++j) {
-                for (int k = 0; k < Chunk.getZ(); ++k) {
-                    double result = Math.abs(noise.get((chunk.getx() << 4) + i, j, (chunk.getz() << 4) + k)) * 5;
-                    if (j == 0) chunk.setBlock(STONE, i, j, k);
-                    else {
-                        if (result <= 0.7) {
-                            chunk.setBlock(AIR, i, j, k);
-                        } else if (result <= 1.9) {
-                            int blockID = rand.nextInt(24) + 1;
-                            if (TextureManager.getType(blockID) != SOLID) blockID = 1;
-                            chunk.setBlock(blockID, i, j, k);
-                        } else {
-                            chunk.setBlock(AIR, i, j, k);
+        // init with AIR
+//        for (int i = 0; i < Chunk.getX(); ++i)
+//            for (int j = 0; j < Chunk.getY(); ++j)
+//                for (int k = 0; k < Chunk.getZ(); ++k)
+//                    chunk.setBlock(AIR, i, j, k);
+//        this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, x * 4 - 2, z * 4 - 2, 10, 10);
+        heightMap = new double[5 * 5 * 33];
+
+        this.generateHeightmap(x * 4, 0, z * 4);
+
+        for (int xHigh = 0; xHigh < 4; ++xHigh) {
+            int xIndex = xHigh * 5;
+            int xIndex_1 = (xHigh + 1) * 5;
+
+            for (int zHigh = 0; zHigh < 4; ++zHigh) {
+                int xzIndex = (xIndex + zHigh) * 33;
+                int xz_1Index = (xIndex + zHigh + 1) * 33;
+                int x_1zIndex = (xIndex_1 + zHigh) * 33;
+                int x_1z_1Index = (xIndex_1 + zHigh + 1) * 33;
+
+                for (int yHigh = 0; yHigh < 32; ++yHigh) {
+                    double w0 = 0.125D;
+                    double density = this.heightMap[xzIndex + yHigh];
+                    double densityZ1 = this.heightMap[xz_1Index + yHigh];
+                    double densityX1 = this.heightMap[x_1zIndex + yHigh];
+                    double densityX1Z1 = this.heightMap[x_1z_1Index + yHigh];
+
+                    // step
+                    double densityStep = (this.heightMap[xzIndex + yHigh + 1] - density) * w0;
+                    double densityZ1Step = (this.heightMap[xz_1Index + yHigh + 1] - densityZ1) * w0;
+                    double densityX1Step = (this.heightMap[x_1zIndex + yHigh + 1] - densityX1) * w0;
+                    double densityX1Z1Step = (this.heightMap[x_1z_1Index + yHigh + 1] - densityX1Z1) * w0;
+
+                    for (int yLow = 0; yLow < 8; ++yLow) {
+                        double w1 = 0.25D;
+                        double density2 = density;
+                        double density2Z1 = densityZ1;
+
+                        // step
+                        double density2Step = (densityX1 - density) * w1;
+                        double density2Z1Step = (densityX1Z1 - densityZ1) * w1;
+
+                        for (int xLow = 0; xLow < 4; ++xLow) {
+                            double w3 = 0.25D;
+                            double density3 = density2;
+                            double density3Step = (density2Z1 - density2) * w3;
+
+                            for (int zLow = 0; zLow < 4; ++zLow) {
+                                if (density3 > 0.0D) {
+                                    chunk.setBlock(STONE, xHigh * 4 + xLow, (yHigh * 8 + yLow), zHigh * 4 + zLow); // should
+                                                                                                                   // be
+                                                                                                                   // stone
+                                } else if ((yHigh * 8 + yLow) < seaLevel) {
+                                    chunk.setBlock(STILL_WATER, xHigh * 4 + xLow, (yHigh * 8 + yLow), zHigh * 4 + zLow);// should
+                                                                                                                        // be
+                                                                                                                        // water
+                                } else {
+                                    chunk.setBlock(AIR, xHigh * 4 + xLow, (yHigh * 8 + yLow), zHigh * 4 + zLow);// should
+                                                                                                                // be
+                                                                                                                // air
+                                }
+
+                                density3 += density3Step;
+                            }
+
+                            density2 += density2Step;
+                            density2Z1 += density2Z1Step;
                         }
+
+                        density += densityStep;
+                        densityZ1 += densityZ1Step;
+                        densityX1 += densityX1Step;
+                        densityX1Z1 += densityX1Z1Step;
                     }
                 }
             }
         }
-//        for (int i = 0; i < Chunk.getX(); ++i)
-//            for (int j = 0; j < Chunk.getY(); ++j) for (int k = 0; k < Chunk.getZ(); ++k) chunk.setBlocks(AIR, i, j, k);
-////        this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, x * 4 - 2, z * 4 - 2, 10, 10);
-//        // 生成地形高度图 5x5x31
-//        heightMap = new double[5 * 5 * 33];
-////        for (int i=0;i<heightMap.length;i++) System.out.println(heightMap[i]);
-//        this.generateHeightmap(x * 4, 0, z * 4);
-//        // 插值部分(看着很复杂，实际很简单，不细讲)
-//        for (int i = 0; i < 4; ++i) {
-//            int j = i * 5;
-//            int k = (i + 1) * 5;
-//
-//            for (int l = 0; l < 4; ++l) {
-//                int i1 = (j + l) * 33;
-//                int j1 = (j + l + 1) * 33;
-//                int k1 = (k + l) * 33;
-//                int l1 = (k + l + 1) * 33;
-//
-//                for (int i2 = 0; i2 < 4; ++i2) {
-//                    double d0 = 0.125D;
-//                    double d1 = this.heightMap[i1 + i2];
-//                    double d2 = this.heightMap[j1 + i2];
-//                    double d3 = this.heightMap[k1 + i2];
-//                    double d4 = this.heightMap[l1 + i2];
-//                    double d5 = (this.heightMap[i1 + i2 + 1] - d1) * 0.125D;
-//                    double d6 = (this.heightMap[j1 + i2 + 1] - d2) * 0.125D;
-//                    double d7 = (this.heightMap[k1 + i2 + 1] - d3) * 0.125D;
-//                    double d8 = (this.heightMap[l1 + i2 + 1] - d4) * 0.125D;
-//
-//                    for (int j2 = 0; j2 < 4; ++j2) {
-//                        double d9 = 0.25D;
-//                        double d10 = d1;
-//                        double d11 = d2;
-//                        double d12 = (d3 - d1) * 0.25D;
-//                        double d13 = (d4 - d2) * 0.25D;
-//
-//                        for (int k2 = 0; k2 < 4; ++k2) {
-//                            double d14 = 0.25D;
-//                            double d16 = (d11 - d10) * 0.25D;
-//                            double lvt_45_1_ = d10 - d16;
-//
-//                            for (int l2 = 0; l2 < 4; ++l2) {
-//                                if ((lvt_45_1_ += d16) > 0.0D) {
-//                                    chunk.setBlocks(GRASS, i * 4 + k2, (i2 * 4 + j2), l * 4 + l2); //should be stone
-//                                } else if ((i2 * 8 + j2) < seaLevel) {
-//                                    chunk.setBlocks(STONE, i * 4 + k2, (i2 * 4 + j2), l * 4 + l2);//should be ocean
-//                                }
-//                            }
-//
-//                            d10 += d12;
-//                            d11 += d13;
-//                        }
-//
-//                        d1 += d5;
-//                        d2 += d6;
-//                        d3 += d7;
-//                        d4 += d8;
-//                    }
-//                }
-//            }
-//        }
+
     }
 
     private void generateHeightmap(int x, int y, int z) {
-        // 这里一共用到了四个噪声
-        this.depthRegion = this.depthNoise.generateNoiseOctaves(this.depthRegion, x, z, 5, 5, (double) depthNoiseScaleX, (double) depthNoiseScaleZ, (double) depthNoiseScaleExponent);
-        float f = coordinateScale;
-        float f1 = heightScale;
-        this.mainNoiseRegion = this.mainPerlinNoise.generateNoiseOctaves(this.mainNoiseRegion, x, y, z, 5, 33, 5, (double) (f / mainNoiseScaleX), (double) (f1 / mainNoiseScaleY), (double) (f / mainNoiseScaleZ));
-        this.minLimitRegion = this.minLimitPerlinNoise.generateNoiseOctaves(this.minLimitRegion, x, y, z, 5, 33, 5, (double) f, (double) f1, (double) f);
-        this.maxLimitRegion = this.maxLimitPerlinNoise.generateNoiseOctaves(this.maxLimitRegion, x, y, z, 5, 33, 5, (double) f, (double) f1, (double) f);
-        int i = 0;
-        int j = 0;
-        // 对周围biome的height进行加权平均
-        for (int k = 0; k < 5; ++k) {
-            for (int l = 0; l < 5; ++l) {
-                float f2 = 0.0F; // 平均biome影响的地表起伏
-                float f3 = 0.0F; // 平均biome影响的地表高度
-                float f4 = 0.0F;
-                int i1 = 2;
-                // 获取当前chunk的Biome（中央方块的biome）
-//                Biome biome = this.biomesForGeneration[k + 2 + (l + 2) * 10];
 
-                // 计算chunk内其他方块的biome对当前方块的影响
+        // 5*5*1 noise
+        this.depthRegion = this.depthNoise.generateNoiseOctaves(this.depthRegion, x, z, 5, 5, (double) depthNoiseScaleX,
+                (double) depthNoiseScaleZ, persistence);
+
+        double coordinateScale = this.coordinateScale;
+        double heightScale = this.heightScale;
+        this.mainNoiseRegion = this.mainPerlinNoise.generateNoiseOctaves(this.mainNoiseRegion, x, y, z, 5, 33, 5,
+                (double) (coordinateScale / mainNoiseScaleX), (double) (heightScale / mainNoiseScaleY),
+                (double) (coordinateScale / mainNoiseScaleZ), persistence);
+
+        this.minLimitRegion = this.minLimitPerlinNoise.generateNoiseOctaves(this.minLimitRegion, x, y, z, 5, 33, 5,
+                (double) coordinateScale, (double) heightScale, (double) coordinateScale, persistence);
+        this.maxLimitRegion = this.maxLimitPerlinNoise.generateNoiseOctaves(this.maxLimitRegion, x, y, z, 5, 33, 5,
+                (double) coordinateScale, (double) heightScale, (double) coordinateScale, persistence);
+
+        int index = 0;
+        int xzIndex = 0;
+        // get nearby biome's height
+        for (int x1 = 0; x1 < 5; ++x1) {
+            for (int z1 = 0; z1 < 5; ++z1) {
+                float scale = 0.0F; // up-and-down scale
+                float groundYOffset = 0.0F; // the surface's height
+                float totalWeight = 0.0F;
+                // the current chunk's Biome(center block's biome）
+                // Biome biome = this.biomesForGeneration[k + 2 + (l + 2) * 10];
+
                 for (int j1 = -2; j1 <= 2; ++j1) {
                     for (int k1 = -2; k1 <= 2; ++k1) {
-//                        Biome biome1 = this.biomesForGeneration[k + j1 + 2 + (l + k1 + 2) * 10];
-                        // 地表高度
-//                        float f5 = biomeDepthOffSet + biome1.getBaseHeight() * biomeDepthWeight;
-                        float f5 = biomeDepthOffSet + 1 * biomeDepthWeight;
-                        // 地形起伏
-//                        float f6 = biomeScaleOffset + biome1.getHeightVariation() *biomeScaleWeight;
-                        float f6 = biomeScaleOffset + 16 * biomeScaleWeight;
-
-                        // Biome weight用于平滑地形
-                        // Biome weight为 10 / sqrt(该点到中心点的距离^2 + 0.2)
-                        float biomeweight = 10.0f / (float) Math.sqrt(j1 * j1 + k1 * k1 + 0.2f);
-                        float f7 = biomeweight / (f5 + 2.0F);
+                        // Biome biome1 = this.biomesForGeneration[k + j1 + 2 + (l + k1 + 2) * 10];
+                        // up-and-down scale
+                        // float curScale = biomeScaleOffset + biome1.getHeightVariation()
+                        // *biomeScaleWeight;
+//                        float curScale = biomeScaleOffset + heightVariation * biomeScaleWeight;
+                        float curScale = 0.2f;
+                        // the surface's height
+                        // float curGroundYOffset = biomeDepthOffSet + biome1.getBaseHeight() *
+                        // biomeDepthWeight;
+//                        float curGroundYOffset = biomeDepthOffSet + baseHeight * biomeDepthWeight;
+                        float curGroundYOffset = 0.1f;
+                        // smooth
+                        // Biome weight= 10 / sqrt((the distance to center)^2 + 0.2)
+                        float biomeWeight = 10.0f / (float) Math.sqrt(j1 * j1 + k1 * k1 + 0.2f);
+                        biomeWeight = biomeWeight / (curGroundYOffset + 2.0F);
 
 //                        if (biome1.getBaseHeight() > biome.getBaseHeight())
 //                        {
 //                            f7 /= 2.0F;
 //                        }
 
-                        f2 += f6 * f7;
-                        f3 += f5 * f7;
-                        f4 += f7;
+                        scale += curScale * biomeWeight;
+                        groundYOffset += curGroundYOffset * biomeWeight;
+                        totalWeight += biomeWeight;
                     }
                 }
-                f2 = f2 / f4;
-                f3 = f3 / f4;
-                f2 = f2 * 0.9F + 0.1F;
-                f3 = (f3 * 4.0F - 1.0F) / 8.0F;
-                double d7 = this.depthRegion[j] / 8000.0D;
+                scale = scale / totalWeight;
+                groundYOffset = groundYOffset / totalWeight;
+                scale = scale * 0.9F + 0.1F;
+                groundYOffset = (groundYOffset * 4.0F - 1.0F) / 8.0F;
 
-                if (d7 < 0.0D) {
-                    d7 = -d7 * 0.3D;
+                // random=[-0.36,0.125]
+                double random = this.depthRegion[xzIndex] / 8000.0D;
+
+                if (random < 0.0D) {
+                    random = -random * 0.3D;
                 }
 
-                d7 = d7 * 3.0D - 2.0D;
+                random = random * 3.0D - 2.0D;
 
-                if (d7 < 0.0D) {
-                    d7 = d7 / 2.0D;
+                if (random < 0.0D) {
+                    random = random / 2.0D;
 
-                    if (d7 < -1.0D) {
-                        d7 = -1.0D;
+                    if (random < -1.0D) {
+                        random = -1.0D;
                     }
 
-                    d7 = d7 / 1.4D;
-                    d7 = d7 / 2.0D;
+                    random = random / 1.4D;
+                    random = random / 2.0D;
                 } else {
-                    if (d7 > 1.0D) {
-                        d7 = 1.0D;
+                    if (random > 1.0D) {
+                        random = 1.0D;
                     }
 
-                    d7 = d7 / 8.0D;
+                    random = random / 8.0D;
                 }
 
-                ++j;
-                // 用随机值d7使地表起伏
-                double d8 = (double) f3;
-                double d9 = (double) f2;
-                d8 = d8 + d7 * 0.2D;
-                d8 = d8 * (double) baseSize / 8.0D;
-                // 最终地表y坐标
-                double d0 = (double) baseSize + d8 * 4.0D;
+                ++xzIndex;
 
-                for (int l1 = 0; l1 < 33; ++l1) {
-                    double d1 = ((double) l1 - d0) * (double) stretchY * 128.0D / 256.0D / d9;
+                double _groundYOffset = (double) groundYOffset;
+                double _scale = (double) scale;
+                _groundYOffset = _groundYOffset + random * 0.2D;
+                _groundYOffset = _groundYOffset * (double) baseSize / 8.0D;
+                // final y
+                double groundY = (double) baseSize + _groundYOffset * 4.0D;
 
-                    if (d1 < 0.0D) {
-                        d1 *= 4.0D;
+                for (int yHigh = 0; yHigh < 33; ++yHigh) {
+                    // offset<0 ---> stone , offset>0 ---> water or air
+                    double offset = ((double) yHigh - groundY) * (double) stretchY * 128.0D / 256.0D / _scale;
+
+                    if (offset < 0.0D) {
+                        offset *= 4.0D;
                     }
 
-                    double d2 = this.minLimitRegion[i] / (double) lowerLimitScale;
-                    double d3 = this.maxLimitRegion[i] / (double) upperLimitScale;
-                    double d4 = (this.mainNoiseRegion[i] / 10.0D + 1.0D) / 2.0D;
-                    double d5 = Perlin.Cosine_Interpolate(d2, d3, d4) - d1;
+                    double lowerLimit = this.minLimitRegion[index] / (double) lowerLimitScale;
+                    double upperLimit = this.maxLimitRegion[index] / (double) upperLimitScale;
+                    double tmp = (this.mainNoiseRegion[index] / 10.0D + 1.0D) / 2.0D;
+                    double result;
+                    if (tmp < 0)
+                        result = lowerLimit;
+                    else if (tmp > 1)
+                        result = upperLimit;
+                    else
+                        result = NoiseMath.LinearInterpolateImproved(lowerLimit, upperLimit, tmp) - offset;
 
-                    if (l1 > 29) {
-                        double d6 = (double) ((float) (l1 - 29) / 3.0F);
-                        d5 = d5 * (1.0D - d6) + -10.0D * d6;
+                    if (yHigh > 29) {
+                        double tmp2 = (double) ((float) (yHigh - 29) / 3.0F);
+                        result = result * (1.0D - tmp2) + -10.0D * tmp2;
                     }
 
-                    this.heightMap[i] = d5;
-                    ++i;
+                    this.heightMap[index] = result;
+                    ++index;
                 }
             }
         }
+
     }
 
+    public void replaceBlocksForBiome(int chunkX, int chunkZ, Chunk chunk, BiomeBase[] biomes) {
+
+        double coordinateScale = 0.03125D;
+        // 生成16*16的噪声
+        stoneRegion = stoneSimplexNoise.generateNoiseOctaves(stoneRegion, (double) (chunkX * 16),
+                (double) (chunkZ * 16), 16, 16, coordinateScale * 2.0D, coordinateScale * 2.0D, 1.0D);
+
+        for (int x = 0; x < 16; ++x) {
+            for (int z = 0; z < 16; ++z) {
+                BiomeBase biomebase = biomes[z + x * 16];
+                biomebase.genBlocks(rand, chunk, chunkX * 16 + x, chunkZ * 16 + z, stoneRegion[z + x * 16]);
+            }
+        }
+    }
 
 }

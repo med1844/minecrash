@@ -32,4 +32,14 @@ public class Block {
     public String toString() {
         return "[" + x + ", " + y + ", " + z + "]: " + blockID;
     }
+    
+    public int getBlockID() {
+        return blockID;
+    }
+    
+    public void set(int blockID) {
+        this.blockID=blockID;
+        this.type=TextureManager.getType(blockID);
+        this.face=TextureManager.getFace(blockID);
+    }
 }

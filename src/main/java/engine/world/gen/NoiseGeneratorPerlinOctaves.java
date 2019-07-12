@@ -1,30 +1,35 @@
 package engine.world.gen;
 
+
 import java.util.Random;
 
-//分形叠加多个NoiseGeneratorPerlinBase
-
-public class NoiseGeneratorOctaves {
+public class NoiseGeneratorPerlinOctaves {
     /** Collection of noise generation functions.  Output is combined to produce different octaves of noise. */
-    private NoiseGeneratorPerlinBase[] generatorCollection;
+    private NoiseGeneratorPerlin[] generatorCollection;
     private int octaves;
 
-    public NoiseGeneratorOctaves(Random rand, int octaveCount)
+    public NoiseGeneratorPerlinOctaves(Random rand, int octaveCount)
     {
         this.octaves = octaveCount;
-        this.generatorCollection = new NoiseGeneratorPerlinBase[octaveCount];
+        this.generatorCollection = new NoiseGeneratorPerlin[octaveCount];
 
         for (int i = 0; i < octaveCount; ++i)
         {
-            this.generatorCollection[i] = new NoiseGeneratorPerlinBase(rand);
+            this.generatorCollection[i] = new NoiseGeneratorPerlin(rand);
         }
+    }
+    
+    public static int floor(double f) {
+        int i = (int) f;
+
+        return f < (double) i ? i - 1 : i;
     }
 
     /**
      * pars:(par2,3,4=noiseOffset ; so that adjacent noise segments connect) (pars5,6,7=x,y,zArraySize),(pars8,10,12 =
      * x,y,z noiseScale)
      */
-    public double[] generateNoiseOctaves(double[] result, int x, int y, int z, int xArraySize, int yArraySize, int zArraySize, double xScale, double yScale, double zScale)
+    public double[] generateNoiseOctaves(double[] result, int x, int y, int z, int xArraySize, int yArraySize, int zArraySize, double xScale, double yScale, double zScale,double persistence)
     {
         if (result == null)
         {
@@ -32,7 +37,6 @@ public class NoiseGeneratorOctaves {
         }
         else
         {
-            // 结果清0，因为后面会叠加
             for (int i = 0; i < result.length; ++i)
             {
                 result[i] = 0.0D;
@@ -49,10 +53,9 @@ public class NoiseGeneratorOctaves {
             double y2 = (double)y * scale * yScale;
             double z2 = (double)z * scale * zScale;
 
-            // 这部分大概是防止溢出的
-            // x2Floor为不大于x2的最大整数
-            long x2Floor = (long)Math.floor(x2);
-            long z2Floor = (long)Math.floor(z2);
+            // 防止溢出
+            long x2Floor = (long)floor(x2);
+            long z2Floor = (long)floor(z2);
             x2 = x2 - (double)x2Floor;
             z2 = z2 - (double)z2Floor;
             x2Floor = x2Floor % 0x1000000L;
@@ -63,7 +66,8 @@ public class NoiseGeneratorOctaves {
             // 叠加
             this.generatorCollection[i].populateNoiseArray(result, x2, y2, z2, xArraySize, yArraySize, zArraySize, xScale * scale, yScale * scale, zScale * scale, scale);
             // 频率减半，幅度加倍
-            scale /= 2.0D;
+            scale *= persistence;
+            
         }
 
         return result;
@@ -72,8 +76,8 @@ public class NoiseGeneratorOctaves {
     /**
      * Bouncer function to the main one with some default arguments.
      */
-    public double[] generateNoiseOctaves(double[] result, int x, int z, int xArraySize, int zArraySize, double xScale, double zScale, double p_76305_10_)
+    public double[] generateNoiseOctaves(double[] result, int x, int z, int xArraySize, int zArraySize, double xScale, double zScale,double persistence)
     {
-        return this.generateNoiseOctaves(result, x, 10, z, xArraySize, 1, zArraySize, xScale, 1.0D, zScale);
+        return this.generateNoiseOctaves(result, x, 10, z, xArraySize, 1, zArraySize, xScale, 1.0D, zScale,persistence);
     }
 }
