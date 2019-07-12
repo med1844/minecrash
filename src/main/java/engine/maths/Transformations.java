@@ -1,6 +1,7 @@
 package engine.maths;
 
 import engine.Camera;
+import engine.graphics.particles.Particle;
 import engine.world.Chunk;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -39,6 +40,12 @@ public class Transformations {
         return modelMatrix;
     }
 
+    public Matrix4f getModelMatrix(Particle particle) {
+        modelMatrix.identity();
+        modelMatrix.translate(particle.getPosition()).scaleXY(particle.getScaleX(), particle.getScaleY());
+        return modelMatrix;
+    }
+
     public Matrix4f getViewMatrix(Camera camera) {
         viewMatrix.identity();
         viewMatrix.lookAt(
@@ -61,6 +68,14 @@ public class Transformations {
 
     public Matrix4f buildModelViewMatrix(Chunk chunk, Matrix4f matrix) {
         return new Matrix4f(matrix).mul(getModelMatrix(chunk));
+    }
+
+    public Matrix4f buildModelViewMatrix(Particle particle, Matrix4f matrix) {
+        Matrix4f temp = new Matrix4f(matrix).mul(getModelMatrix(particle));
+        temp.m00(1).m01(0).m02(0).
+             m10(0).m11(1).m12(0).
+             m20(0).m21(0).m22(1).scaleXY(particle.getScaleX(), particle.getScaleY());
+        return temp;
     }
 
     public Matrix4f buildModelLightViewMatrix(Chunk chunk, Matrix4f matrix) {

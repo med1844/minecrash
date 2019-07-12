@@ -34,6 +34,7 @@ uniform float specularPower;
 uniform vec3 ambientLight;
 uniform mat4 orthoProjectionMatrix;
 uniform mat4 lightViewMatrix;
+uniform float fogDensity;
 
 vec4 ambientC;
 vec4 diffuseC;
@@ -151,7 +152,7 @@ void main() {
 
     float shadow = calcShadow(lightViewVertexPos);
     fragColor = mix(clamp(ambientC * vec4(vec3(ambientOcclusion), 1) * vec4(ambientLight, 1) + diffuseSpecular * shadow, 0, 1), vec4(0, 0, 0, 1), mixRatio);
-    fragColor = fog(fragColor, vec4(directionalLight.colour * 0.8, 1), length(vertexPos), 0.005);
+    fragColor = fog(fragColor, vec4(directionalLight.colour * 0.8, 1), length(vertexPos), fogDensity);
     if (selected == 1 && check(worldCoord, selectedBlock)) {
         fragColor = vec4(1, 1, 1, 2) - fragColor;
     }

@@ -38,8 +38,8 @@ public class Block {
     }
     
     public void set(int blockID) {
-        this.blockID=blockID;
-        this.type=TextureManager.getType(blockID);
-        this.face=TextureManager.getFace(blockID);
+        this.blockID = blockID;
+        this.type = TextureManager.getType(blockID);
+        this.face = TextureManager.getFace(blockID);
     }
 }
