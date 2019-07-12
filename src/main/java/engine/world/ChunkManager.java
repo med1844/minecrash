@@ -3,40 +3,27 @@ package engine.world;
 import engine.world.gen.ChunkGeneratorOverWorld;
 
 public class ChunkManager {
-    private final int WORLD_MAX_WIDTH = 16;
-    private final int WORLD_MAX_LENGTH = 16;
+    private final int WORLD_MAX_WIDTH = 8;
+    private final int WORLD_MAX_LENGTH = 8;
     private Chunk[][] chunks;
     private int[] dx = {1, 0, -1, 0};
     private int[] dz = {0, -1, 0, 1};
 
     public ChunkManager() {
         chunks = new Chunk[WORLD_MAX_WIDTH][WORLD_MAX_LENGTH];
-//        chunks=new Chunk[16][];
-//        int l=2,d=2;
-//        for (int i=0;i<16;++i) {
-//            chunks[i]=new Chunk[l];
-//            if (i==7) d=0;
-//            if (i==8) d=-2;
-//            l+=d;
-//        }
     }
 
     public void init() {
         ChunkGeneratorOverWorld chunkGenerator = new ChunkGeneratorOverWorld();
         for (int i = 0; i < chunks.length; ++i) {
             for (int j = 0; j < chunks[i].length; ++j) {
-                int x=i;
-                int y=j;
-//                if (i<=7) y=7-i+j;
-//                else if (i==8) y=0+j;
-//                else y=i-7+j;
-//                System.out.println("[INFO] Generating Chunk [" + i + ", " + j + "]"+" "+x+" "+y);
-                chunks[i][j] = chunkGenerator.generateChunk(x, y);
+                System.out.println("[INFO] Generating Chunk [" + i + ", " + j + "]");
+                chunks[i][j] = chunkGenerator.generateChunk(i, j);
             }
         }
         for (Chunk[] chunkList : chunks) {
             for (Chunk chunk : chunkList) {
-//                System.out.println("[INFO] Generating Chunk Mesh [" + chunk.getx() + ", " + chunk.getz() + "]");
+                System.out.println("[INFO] Generating Chunk Mesh [" + chunk.getx() + ", " + chunk.getz() + "]");
                 chunk.generateMesh(this);
             }
         }

@@ -285,7 +285,7 @@ public class Chunk {
             for (int y = index << 4; y < (index + 1) << 4; ++y) {
                 for (int z = 0; z < Z; ++z) {
                     if (blocks[x][y][z].equals(AIR)) continue;
-                    if (blocks[x][y][z].getType() == type) {
+                    if ((blocks[x][y][z].getType() & type) != 0) {
                         for (int d = 0; d < 6; ++d) {
                             int nx = x + dx[d], ny = y + dy[d], nz = z + dz[d];
                             Block temp;

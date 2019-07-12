@@ -70,8 +70,8 @@ public class DayNightCycle {
     }
 
     public static void setFog(double currentTimeRatio, Fog fog) {
-        float nightDensity = 0.01f;
-        float dawnDensity = 0.0125f;
+        float nightDensity = 0.008f;
+        float dawnDensity = 0.0095f;
         float dayDensity = 0.005f;
         float duskDensity = 0.0075f;
         double backupRatio = currentTimeRatio;
