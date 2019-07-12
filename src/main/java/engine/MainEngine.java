@@ -59,6 +59,7 @@ public class MainEngine implements Runnable {
         scene = new Scene(
                 chunkManager, directionalLight
         );
+
         scene.init();
         timer.init();
     }
@@ -68,7 +69,7 @@ public class MainEngine implements Runnable {
         try {
             init();
             while (!window.shouldClose()) {
-                selectedBlockPos = cameraSelectionDetector.selectBlock(scene.chunkManager.getChunks(), camera, renderer.getTransformations());
+                selectedBlockPos = cameraSelectionDetector.selectBlock(scene.chunkManager.getChunks(camera.getPosition()), camera, renderer.getTransformations());
                 if (selectedBlockPos != null) normalVector = cameraSelectionDetector.getNormalVector(selectedBlockPos, camera, renderer.getTransformations());
                 update();
                 render();

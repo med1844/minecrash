@@ -164,7 +164,9 @@ public class Input {
         speed.add(up.mul(upSpeed));
         limit(speed, keyboardSpeed);
         camera.move(speed);
-
+        
+        scene.chunkManager.update(camera.getPosition());
+        
         lastUpdateTime = System.currentTimeMillis();
     }
 }
