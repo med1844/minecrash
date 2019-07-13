@@ -12,7 +12,7 @@ public class Input {
     private int centerX, centerY;
     private int dx = 0, dy = 0;
     private boolean inWindow = true;
-    private boolean leftButtonPressed = false, rightButtonPressed = false;
+    private boolean leftButtonPressed = false, rightButtonPressed = false, middleButtonPressed = false;
     private boolean[] keys = new boolean[GLFW_KEY_LAST + 1];
     private Window window;
     private Camera camera;
@@ -26,6 +26,7 @@ public class Input {
     private int coolDownRight = 0;
     private float frontSpeed = 0, upSpeed = 0, rightSpeed = 0;
     private Vector3f speed = new Vector3f(0);
+    private int currentChoseBlockID = GLASS;
 
     public Input() {
     }
@@ -64,6 +65,7 @@ public class Input {
         glfwSetMouseButtonCallback(window.getWindowHandle(), (windowHandle, button, action, mode) -> {
             leftButtonPressed = button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS;
             rightButtonPressed = button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS;
+            middleButtonPressed = button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_PRESS;
         });
 
         lastUpdateTime = System.currentTimeMillis();
@@ -149,8 +151,12 @@ public class Input {
             coolDownLeft = 200;
         }
 
+        if (middleButtonPressed && selectedBlockPos != null) {
+            currentChoseBlockID = scene.chunkManager.getBlock((int) selectedBlockPos.x, (int) selectedBlockPos.y, (int) selectedBlockPos.z).getBlockID();
+        }
+
         if (rightButtonPressed && selectedBlockPos != null && normalVector != null && coolDownRight == 0) {
-            scene.putBlock(selectedBlockPos.add(normalVector), GLASS);
+            scene.putBlock(selectedBlockPos.add(normalVector), currentChoseBlockID);
             coolDownRight = 200;
         }
 
