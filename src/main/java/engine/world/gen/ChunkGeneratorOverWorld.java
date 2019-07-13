@@ -4,13 +4,18 @@ import static engine.world.TextureManager.AIR;
 import static engine.world.TextureManager.STILL_WATER;
 import static engine.world.TextureManager.STONE;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
 import org.joml.Vector3f;
 
-import com.sun.org.apache.xml.internal.security.utils.UnsyncBufferedOutputStream;
+import com.sun.org.apache.xalan.internal.xsltc.runtime.Parameter;
 
 import engine.maths.NoiseMath;
 import engine.world.BiomeBase;
@@ -56,11 +61,11 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
     public static final int[] dz = new int[] { 0, 0, 1, 0, 0, -1 };
 
     private BiomeBase[] biomesForGeneration;
-
+    
     public ChunkGeneratorOverWorld() {
         rand = new Random();
         long seed = System.nanoTime();
-//        seed = 1701673008300L;//get the float block between chunk
+        seed = 1701673008300L;//get the float block between chunk
         rand.setSeed(seed);
 
         int depthNoiseOctave = 4;
@@ -78,7 +83,7 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
 
         int stoneNoiseOctave = 4;
         stoneSimplexNoise = new NoiseGeneratorSimplexOctaves(rand, stoneNoiseOctave);
-
+        
         System.out.println(seed + " " + depthNoiseOctave + " " + mainNoiseOctave + " " + minLimitNoiseOctave + " "
                 + maxLimitNoiseOctave);
 
@@ -88,6 +93,7 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
     public Chunk generateChunk(int x, int z) {
         Chunk chunk = new Chunk(x, z);
         // only water and stone
+        
         setBlocksInChunk(x, z, chunk);
         clearFloat(chunk);
         // 16*16 biomes
@@ -102,21 +108,24 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
     }
 
     public void setBlocksInChunk(int x, int z, Chunk chunk) {
-        // init with AIR
-//        for (int i = 0; i < Chunk.getX(); ++i)
-//            for (int j = 0; j < Chunk.getY(); ++j)
-//                for (int k = 0; k < Chunk.getZ(); ++k)
-//                    chunk.setBlock(AIR, i, j, k);
-//        this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, x * 4 - 2, z * 4 - 2, 10, 10);
         heightMap = new double[5 * 5 * 33];
 
         this.generateHeightmap(x * 4, 0, z * 4);
-
+        
+        int xEdge=0;
+        int zEdge=0;
+        
         for (int xHigh = 0; xHigh < 4; ++xHigh) {
+            if (xHigh==3) xEdge=1;
+            else xEdge=0;
+            
             int xIndex = xHigh * 5;
             int xIndex_1 = (xHigh + 1) * 5;
 
             for (int zHigh = 0; zHigh < 4; ++zHigh) {
+                if (zHigh==3) zEdge=1;
+                else zEdge=0;
+                
                 int xzIndex = (xIndex + zHigh) * 33;
                 int xz_1Index = (xIndex + zHigh + 1) * 33;
                 int x_1zIndex = (xIndex_1 + zHigh) * 33;
@@ -144,24 +153,21 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
                         double density2Step = (densityX1 - density) * w1;
                         double density2Z1Step = (densityX1Z1 - densityZ1) * w1;
 
-                        for (int xLow = 0; xLow < 4; ++xLow) {
+                        for (int xLow = 0; xLow < 4+xEdge; ++xLow) {
                             double w3 = 0.25D;
                             double density3 = density2;
                             double density3Step = (density2Z1 - density2) * w3;
 
-                            for (int zLow = 0; zLow < 4; ++zLow) {
+                            for (int zLow = 0; zLow < 4+zEdge; ++zLow) {
                                 if (density3 > 0.0D) {
-                                    chunk.setBlock(STONE, xHigh * 4 + xLow, (yHigh * 8 + yLow), zHigh * 4 + zLow); // should
-                                                                                                                   // be
-                                                                                                                   // stone
+                                    // should be stone
+                                    chunk.setBlock(STONE, xHigh * 4 + xLow, (yHigh * 8 + yLow), zHigh * 4 + zLow); 
                                 } else if ((yHigh * 8 + yLow) < seaLevel) {
-                                    chunk.setBlock(STILL_WATER, xHigh * 4 + xLow, (yHigh * 8 + yLow), zHigh * 4 + zLow);// should
-                                                                                                                        // be
-                                                                                                                        // water
+                                    // should be water
+                                    chunk.setBlock(STILL_WATER, xHigh * 4 + xLow, (yHigh * 8 + yLow), zHigh * 4 + zLow);
                                 } else {
-                                    chunk.setBlock(AIR, xHigh * 4 + xLow, (yHigh * 8 + yLow), zHigh * 4 + zLow);// should
-                                                                                                                // be
-                                                                                                                // air
+                                    // should be air
+                                    chunk.setBlock(AIR, xHigh * 4 + xLow, (yHigh * 8 + yLow), zHigh * 4 + zLow);
                                 }
 
                                 density3 += density3Step;
@@ -181,6 +187,7 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
         }
 
     }
+
 
     private void generateHeightmap(int x, int y, int z) {
 
@@ -359,5 +366,6 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
                     }
                 }
     }
+    
 
 }

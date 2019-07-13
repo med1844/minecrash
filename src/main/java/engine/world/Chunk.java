@@ -297,8 +297,9 @@ public class Chunk {
                                 );
                             } else {
                                 temp = blocks[nx][ny][nz];
-                            }
-                            if (temp == null || (blocks[x][y][z].getType() & 3) != (temp.getType() & 3)) {
+                            } 
+                            if (temp==null) continue;
+                            if ((blocks[x][y][z].getType() & 3) != (temp.getType() & 3)) {
                                 l.add(new Pair<>(blocks[x][y][z], d));
                                 addAO(x, y, z, d, chunkManager);
                             }

@@ -7,31 +7,30 @@ import engine.world.gen.ChunkGeneratorOverWorld;
 import static engine.world.TextureManager.*;
 
 public class BiomeBase {
-    private Block topBlock;
-    private Block fillerBlock;
+    private int topBlockID;
+    private int fillerBlockID;
 
     public BiomeBase() {
-        topBlock = new Block(GRASS, 0, 0, 0);
-        fillerBlock = new Block(STONE, 0, 0, 0);
+        topBlockID = GRASS;
+        fillerBlockID = STONE;
     }
     
     public void genBlocks(Random rand, Chunk chunk, int x, int z, double noise) {
         int seaLevel = ChunkGeneratorOverWorld.seaLevel;
 
-        Block topBlock = this.topBlock; // grass or others
-        Block fillerBlock = this.fillerBlock; // stone or others
+        int topBlockID = this.topBlockID; // grass or others
+        int fillerBlockID = this.fillerBlockID; // stone or others
         // res blocks to fill
         int res = -1;
 
         // blocks needed to fill
         int cnt = (int) (noise / 3.0D + 3.0D + rand.nextDouble() * 0.25D);
-        int xLow = x % 16;
-        int zLow = z % 16;
-//        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        int xLow = x & 15;
+        int zLow = z & 15;
 
         for (int y = 255; y >= 0; --y) {
             if (y <= rand.nextInt(4)) {
-                // y <= 4 COBBLESTONE
+                // y <= 4 BEDROCK
                 chunk.setBlock(BEDROCK, zLow, y, xLow);
             } else {
                 Block curBlock = chunk.getBlock(zLow, y, xLow);
@@ -42,23 +41,23 @@ public class BiomeBase {
                     if (res == -1) {
                         // y is between air and stone
                         if (cnt <= 0) {
-                            topBlock.set(AIR);
-                            fillerBlock.set(STONE);
+                            topBlockID = AIR;
+                            fillerBlockID = STONE;
                         } else if (y >= seaLevel - 4 && y <= seaLevel + 1) {
                             // near seaLevel
-                            topBlock = this.topBlock;
-                            fillerBlock = this.fillerBlock;
+                            topBlockID = this.topBlockID;
+                            fillerBlockID = this.fillerBlockID;
                         } // else under the seaLevel, nothing changed
 
                         // under the seaLevel and don't need to change
-                        if (y < seaLevel && (topBlock == null || topBlock.getBlockID() == AIR)) {
+                        if (y < seaLevel && (topBlockID == AIR)) {
                             // ICE or WATER
 //                            if (this.getFloatTemperature(pos.set(x, y, z)) < 0.15F) {
 //                                topBlock.set(ICE);
 //                            } else {
 //                                topBlock.set(WATER);
 //                            }
-                            topBlock.set(STILL_WATER);
+                            topBlockID=STILL_WATER;
                         }
 
                         // fill the top
@@ -67,30 +66,29 @@ public class BiomeBase {
                         if (y >= seaLevel - 1) {
                             // above seaLevel
                             // fill topBlock
-                            chunk.setBlock(topBlock.getBlockID(), zLow, y, xLow);
+                            chunk.setBlock(topBlockID, zLow, y, xLow);
                         } else if (y < seaLevel - 7 - cnt) {
                             // ocean bottom
-                            topBlock.set(GRAVEL);
+                            topBlockID=GRAVEL;
                             // fill with stone
-                            fillerBlock.set(STONE);
-                            ;
+                            fillerBlockID=STONE;
                             // top with gravel
                             chunk.setBlock(GRAVEL, zLow, y, xLow);
                         } else {
-                            // beblow seaLevel but near seaLevel
-                            // topBlock is null，so fill with fillerBlock
-                            chunk.setBlock(fillerBlock.getBlockID(), zLow, y, xLow);
+                            // below seaLevel but near seaLevel
+                            // fill with fillerBlock
+                            chunk.setBlock(fillerBlockID, zLow, y, xLow);
                         }
                     } else if (res > 0) {
                         //filling
                         --res;
                         //fill with fillerBlock
-                        chunk.setBlock(fillerBlock.getBlockID(),zLow, y, xLow);
+                        chunk.setBlock(fillerBlockID,zLow, y, xLow);
 
                         // if fill sand before, then fill with sandstone
-                        if (res == 0 && fillerBlock.getBlockID() == SAND) {
+                        if (res == 0 && fillerBlockID == SAND) {
                             res = rand.nextInt(4) + Math.max(0, y - 63);
-                            fillerBlock.set(SANDSTONE);
+                            fillerBlockID=SANDSTONE;
                         }
                     } //res=0 finish
                 }
