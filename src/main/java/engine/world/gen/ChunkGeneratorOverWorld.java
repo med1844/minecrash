@@ -4,7 +4,13 @@ import static engine.world.TextureManager.AIR;
 import static engine.world.TextureManager.STILL_WATER;
 import static engine.world.TextureManager.STONE;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
+
+import org.joml.Vector3f;
+
+import com.sun.org.apache.xml.internal.security.utils.UnsyncBufferedOutputStream;
 
 import engine.maths.NoiseMath;
 import engine.world.BiomeBase;
@@ -41,16 +47,20 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
 //    public static final float biomeScaleWeight = 0.7f;
     public static final float lowerLimitScale = 512.0f;
     public static final float upperLimitScale = 512.0f;
-    public static final float stretchY = 12;
+    public static final float stretchY = 1;
     public static final float baseSize = 8.5f; // surf average height
     public static final double persistence = 0.5;
+
+    public static final int[] dx = new int[] { 1, 0, 0, -1, 0, 0 };
+    public static final int[] dy = new int[] { 0, 1, 0, 0, -1, 0 };
+    public static final int[] dz = new int[] { 0, 0, 1, 0, 0, -1 };
 
     private BiomeBase[] biomesForGeneration;
 
     public ChunkGeneratorOverWorld() {
         rand = new Random();
         long seed = System.nanoTime();
-//        seed=884115298253700L;945874381819300 4 16 16 16 is great
+//        seed = 1701673008300L;//get the float block between chunk
         rand.setSeed(seed);
 
         int depthNoiseOctave = 4;
@@ -79,7 +89,7 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
         Chunk chunk = new Chunk(x, z);
         // only water and stone
         setBlocksInChunk(x, z, chunk);
-
+        clearFloat(chunk);
         // 16*16 biomes
         // biomesForGeneration =
         // this.worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration,
@@ -280,12 +290,8 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
                     double upperLimit = this.maxLimitRegion[index] / (double) upperLimitScale;
                     double tmp = (this.mainNoiseRegion[index] / 10.0D + 1.0D) / 2.0D;
                     double result;
-                    if (tmp < 0)
-                        result = lowerLimit;
-                    else if (tmp > 1)
-                        result = upperLimit;
-                    else
-                        result = NoiseMath.LinearInterpolateImproved(lowerLimit, upperLimit, tmp) - offset;
+
+                    result = NoiseMath.LinearInterpolateImproved(lowerLimit, upperLimit, tmp) - offset;
 
                     if (yHigh > 29) {
                         double tmp2 = (double) ((float) (yHigh - 29) / 3.0F);
@@ -313,6 +319,45 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
                 biomebase.genBlocks(rand, chunk, chunkX * 16 + x, chunkZ * 16 + z, stoneRegion[z + x * 16]);
             }
         }
+    }
+
+    public void clearFloat(Chunk chunk) {
+        boolean[][][] vis = new boolean[Chunk.getX()][Chunk.getY()][Chunk.getZ()];
+        Queue<Vector3f> queue = new LinkedList<Vector3f>();
+        for (int i = 0; i < 16; i++)
+            for (int j = 0; j < 256; j++)
+                for (int k = 0; k < 16; k++) {
+                    if ((j == 0 || i == 0 || k == 0 || i == 15 || k == 15)) {
+                        vis[i][j][k] = true;
+                        queue.add(new Vector3f(i, j, k));
+                    }
+                }
+
+        while (!queue.isEmpty()) {
+            Vector3f u = queue.poll();
+            int x = (int) u.x;
+            int y = (int) u.y;
+            int z = (int) u.z;
+            for (int i = 0; i < 6; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+                int nz = z + dz[i];
+                if (nx >= 0 && ny >= 0 && nz >= 0 && nx < 16 && ny < 256 && nz < 16 && !vis[nx][ny][nz]
+                        && chunk.getBlock(nx, ny, nz).getBlockID() != AIR) {
+                    vis[nx][ny][nz] = true;
+                    queue.add(new Vector3f(nx, ny, nz));
+                }
+
+            }
+        }
+
+        for (int i = 0; i < 16; i++)
+            for (int j = 0; j < 256; j++)
+                for (int k = 0; k < 16; k++) {
+                    if (vis[i][j][k] == false && chunk.getBlock(i, j, k).getBlockID() != AIR) {
+                        chunk.setBlock(AIR, i, j, k);
+                    }
+                }
     }
 
 }

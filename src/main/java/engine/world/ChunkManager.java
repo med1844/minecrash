@@ -14,8 +14,8 @@ import javafx.util.Pair;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 
 public class ChunkManager {
-    private final int WORLD_MAX_WIDTH = 200;
-    private final int WORLD_MAX_LENGTH = 200;
+    private final int WORLD_MAX_WIDTH = 500;
+    private final int WORLD_MAX_LENGTH = 500;
     private int generateDistance = 8;
     private Pair<Integer, Integer> generateCenter;
 
@@ -32,8 +32,8 @@ public class ChunkManager {
     public void init() {
         generateCenter=new Pair<Integer, Integer>(0, 0);
         
-        for (int i = 0; i < generateDistance*2; ++i) {
-            for (int j = 0; j < generateDistance*2; ++j) {
+        for (int i = 0; i < 16; ++i) {
+            for (int j = 0; j < 16; ++j) {
                 System.out.println("[INFO] Generating Chunk [" + i + ", " + j + "]");
                 chunkMap.put(new Pair<>(i, j), chunkGenerator.generateChunk(i, j));
             }
@@ -68,10 +68,13 @@ public class ChunkManager {
             return ;
         }
         generateCenter=new Pair<Integer, Integer>((int)position.x/16, (int)position.z/16);
+        System.out.println("centerx:"+generateCenter.getKey()+" centerz:"+generateCenter.getValue()+" centery:"+(int)position.y);
+        
+        
         HashSet<Pair<Integer,Integer> >posSet=new HashSet<Pair<Integer,Integer>>();
         for (Chunk chunk:chunkMap.values()) {
-            if (!(valid(chunk.getx(), chunk.getz()))) {
-                System.out.println("[INFO] removing Chunk [" + chunk.getx() + ", " + chunk.getz() + "]");
+            if (!valid(chunk.getx(), chunk.getz()) || outOfSight(chunk.getx(), chunk.getz())) {
+//                System.out.println("[INFO] removing Chunk [" + chunk.getx() + ", " + chunk.getz() + "]");
                 posSet.add(new Pair<>(chunk.getx(), chunk.getz()));
             }
         }
@@ -80,12 +83,15 @@ public class ChunkManager {
         }
         
         posSet.clear();
-        for (int i = -generateDistance+generateCenter.getKey(); i <= generateDistance+generateCenter.getValue(); ++i) {
+        for (int i = -generateDistance+generateCenter.getKey(); i <= generateDistance+generateCenter.getKey(); ++i) {
             int d=(int)Math.sqrt(generateDistance*generateDistance-(generateCenter.getKey()-i)*(generateCenter.getKey()-i));
             for (int j = -d+generateCenter.getValue(); j <=d+generateCenter.getValue() ; ++j) {
-                if (!valid(i, j)) continue;
+                if (!valid(i, j)) {
+//                    System.out.println("invalid "+i+" "+j+" centerx:"+generateCenter.getKey()+" centery:"+generateCenter.getValue());
+                    continue;
+                }
                 if (chunkMap.get(new Pair<>(i, j))==null) {
-                    System.out.println("[INFO] Generating Chunk [" + i + ", " + j + "]");
+//                    System.out.println("[INFO] Generating Chunk [" + i + ", " + j + "]");
                     chunkMap.put(new Pair<>(i, j), chunkGenerator.generateChunk(i, j));
                     posSet.add(new Pair<>(i,j));
                 }
@@ -109,10 +115,12 @@ public class ChunkManager {
     }
 
     private boolean valid(int chunkX, int chunkZ) {
-//      return 0 <= chunkX && chunkX < WORLD_MAX_WIDTH && 0 <= chunkZ && chunkZ < WORLD_MAX_LENGTH;
-        return 0 <= chunkX && chunkX < WORLD_MAX_WIDTH && 0 <= chunkZ && chunkZ < WORLD_MAX_LENGTH &&
-                (chunkX-generateCenter.getKey())*(chunkX-generateCenter.getKey())+
-                (chunkZ-generateCenter.getValue())*(chunkZ-generateCenter.getValue())<=generateDistance*generateDistance;
+        return 0 <= chunkX && chunkX < WORLD_MAX_WIDTH && 0 <= chunkZ && chunkZ < WORLD_MAX_LENGTH;
+    }
+    
+    private boolean outOfSight(int chunkX,int chunkZ) {
+        return (chunkX-generateCenter.getKey())*(chunkX-generateCenter.getKey())+
+        (chunkZ-generateCenter.getValue())*(chunkZ-generateCenter.getValue())>generateDistance*generateDistance;
     }
 
     public void updateBlock(int x, int y, int z, int blockID) {
