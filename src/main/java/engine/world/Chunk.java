@@ -25,6 +25,7 @@ public class Chunk {
     private static final int[] dy = {1, -1, 0, 0, 0, 0};
     private static final int[] dz = {0, 0, -1, 1, 0, 0};
     private Map<Pair<Vector3f, Integer>, Integer> m;
+    
 
     public Chunk(int x, int y) {
         this.x = x;
