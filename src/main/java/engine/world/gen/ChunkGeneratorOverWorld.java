@@ -281,9 +281,9 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
                     double tmp = (this.mainNoiseRegion[index] / 10.0D + 1.0D) / 2.0D;
                     double result;
                     if (tmp < 0)
-                        result = lowerLimit;
+                        result = lowerLimit - offset;
                     else if (tmp > 1)
-                        result = upperLimit;
+                        result = upperLimit - offset;
                     else
                         result = NoiseMath.LinearInterpolateImproved(lowerLimit, upperLimit, tmp) - offset;
 
