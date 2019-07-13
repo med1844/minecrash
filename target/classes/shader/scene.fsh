@@ -4,9 +4,9 @@ in vec3 worldCoord;
 in vec2 outTextureCoord;
 in vec3 vertexPos;
 in vec3 vertexNormal;
-in vec3 originVertexNormal;
 in vec4 lightViewVertexPos;
 in float ambientOcclusion;
+in float faceOcclusion;
 
 out vec4 fragColor;
 
@@ -144,15 +144,8 @@ void main() {
 
     vec4 diffuseSpecular = calcDirectionalLight(directionalLight, vertexPos, vertexNormal) * 0.8;
 
-    float mixRatio = 0.0f;
-    if (originVertexNormal == vec3(-1, 0, 0) || originVertexNormal == vec3(1, 0, 0))
-        mixRatio = 0.15f;
-    else if (originVertexNormal == vec3(0, 0, -1) || originVertexNormal == vec3(0, 0, 1))
-        mixRatio = 0.3f;
-    else if (originVertexNormal == vec3(0, -1, 0)) mixRatio = 0.45f;
-
     float shadow = calcShadow(lightViewVertexPos);
-    fragColor = mix(clamp(ambientC * vec4(vec3(ambientOcclusion), 1) * vec4(ambientLight, 1) + diffuseSpecular * shadow, 0, 1), vec4(0, 0, 0, 1), mixRatio);
+    fragColor = mix(clamp(ambientC * vec4(vec3(ambientOcclusion), 1) * vec4(ambientLight, 1) + diffuseSpecular * shadow, 0, 1), vec4(0, 0, 0, 1), faceOcclusion);
     fragColor = fog(fragColor, vec4(directionalLight.colour * 0.8, 1), length(vertexPos), fogDensity);
     if (selected == 1 && check(worldCoord, selectedBlock)) {
         fragColor = vec4(1, 1, 1, 2) - fragColor;

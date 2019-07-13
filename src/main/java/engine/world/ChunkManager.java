@@ -9,8 +9,8 @@ import engine.world.gen.ChunkGeneratorOverWorld;
 import javafx.util.Pair;
 
 public class ChunkManager {
-    private final int WORLD_MAX_WIDTH = 20;
-    private final int WORLD_MAX_LENGTH = 20;
+    private final int WORLD_MAX_WIDTH = 2;
+    private final int WORLD_MAX_LENGTH = 2;
     private Map<Pair<Integer, Integer>, Chunk> chunkMap;
     private int[] dx = {1, 0, -1, 0};
     private int[] dz = {0, -1, 0, 1};
