@@ -10,6 +10,8 @@ import engine.graphics.particles.ParticleEmitterInterface;
 import engine.graphics.shaders.ParticleShader;
 import engine.graphics.shaders.Shader;
 import engine.graphics.shaders.ShaderFactory;
+import engine.graphics.shadow.ShadowCascade;
+import engine.graphics.shadow.ShadowRenderer;
 import engine.maths.Transformations;
 import engine.Camera;
 import engine.world.*;
@@ -30,12 +32,9 @@ import java.util.List;
  */
 public class Renderer implements Runnable {
     private Shader sceneShader, depthShader, particleShader;
-    private ShadowMap shadowMap;
+    private ShadowRenderer shadowRenderer;
     private Fog fog;
     private final Transformations transformations;
-    private float FOV = (float) Math.toRadians(60.0f);
-    private float Z_NEAR = 0.1f;
-    private float Z_FAR = 1000.0f;
     private final float specularPower = 10f;
     private final Vector3f ambientLight = new Vector3f(.5f, .5f, .5f);
     private Window window;
@@ -44,6 +43,9 @@ public class Renderer implements Runnable {
     private Timer timer;
     private Vector3f selectedBlockPos;
     private boolean running = false;
+    public static float FOV = (float) Math.toRadians(60.0f);
+    public static float Z_NEAR = 0.1f;
+    public static float Z_FAR = 1000.0f;
 
     public Renderer() {
         transformations = new Transformations();
@@ -57,12 +59,13 @@ public class Renderer implements Runnable {
      *                   shader program failed.
      */
     public void init() throws Exception {
-        shadowMap = new ShadowMap();
         fog = new Fog();
 
         sceneShader = ShaderFactory.newShader("scene");
         depthShader = ShaderFactory.newShader("depth");
         particleShader = ShaderFactory.newShader("particle");
+
+        shadowRenderer = new ShadowRenderer(depthShader);
     }
 
     public void setParameter(Window window, Camera camera, Scene scene, Timer timer, Vector3f selectedBlockPos) {
@@ -84,7 +87,9 @@ public class Renderer implements Runnable {
 
         renderDayNightCycle(window, scene.light, timer);
 
-        renderShadowMap(camera, scene);
+        // since rendering cascade shadow map is much too complex to put in only one class,
+        // it has been encapsulated into a brand new class.
+        renderShadowMap(scene);
 
         glViewport(0, 0, window.getWidth(), window.getHeight());
 
@@ -99,24 +104,8 @@ public class Renderer implements Runnable {
         sceneShader.bind();
 
         sceneShader.setUniform("selected", selectedBlockPos != null);
-        if (selectedBlockPos != null)
-            sceneShader.setUniform("selectedBlock", selectedBlockPos);
-        else
-            sceneShader.setUniform("selectedBlock", new Vector3f(0, 0, 0));
-
-        OrthoCoords orthoCoords = scene.light.getOrthoCoords();
-
-        Matrix4f orthoProjectionMatrix = new Matrix4f().identity().ortho(orthoCoords.left, orthoCoords.right,
-                orthoCoords.bottom, orthoCoords.top, orthoCoords.front, orthoCoords.back);
-
-        sceneShader.setUniform("orthoProjectionMatrix", orthoProjectionMatrix);
-
-        // update matrices
-        sceneShader.setUniform("projectionMatrix",
-                transformations.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(), Z_NEAR, Z_FAR));
-
-        Vector3f lightDirection = scene.light.getDirection();
-        Matrix4f lightViewMatrix = transformations.getLightViewMatrix(lightDirection, camera);
+        if (selectedBlockPos != null) sceneShader.setUniform("selectedBlock", selectedBlockPos);
+        else sceneShader.setUniform("selectedBlock", new Vector3f(0, 0, 0));
 
         // Update view Matrix
         Matrix4f viewMatrix = transformations.getViewMatrix(camera);
@@ -124,30 +113,37 @@ public class Renderer implements Runnable {
         // Update Light Uniforms
         renderLight(viewMatrix, ambientLight, scene.light, sceneShader);
 
+        // Update matrices
+        sceneShader.setUniform("projectionMatrix",
+                transformations.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(), Z_NEAR, Z_FAR));
+        sceneShader.setUniform("viewMatrix", transformations.getViewMatrix(camera));
+
+        // Update cascade shadows
+        List<ShadowCascade> shadowCascades = shadowRenderer.getShadowCascades();
+        for (int i = 0; i < ShadowRenderer.CASCADE_NUM; ++i) {
+            ShadowCascade shadowCascade = shadowCascades.get(i);
+            sceneShader.setUniform("orthoProjectionMatrix", shadowCascade.getOrthoProjectionMatrix(), i);
+            sceneShader.setUniform("lightViewMatrix", shadowCascade.getLightViewMatrix(), i);
+            sceneShader.setUniform("cascadeFarPlanes", ShadowRenderer.CASCADE_SPLITS[i], i);
+            sceneShader.setUniform("shadowMap_" + i, 2 + i);
+        }
+
         sceneShader.setUniform("texture_sampler", 0);
-        sceneShader.setUniform("shadowMap", 2);
 
         sceneShader.setUniform("fogDensity", fog.getDensity());
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, TextureManager.material.getTexture().getId());
 
-        glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, shadowMap.getDepthMap().getId());
-
         sceneShader.setUniform("material", TextureManager.material);
         for (Chunk chunk : scene.chunkManager.getChunks()) {
             sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
-            sceneShader.setUniform("modelViewMatrix", transformations.buildModelViewMatrix(chunk, viewMatrix));
-            sceneShader.setUniform("modelLightViewMatrix",
-                    transformations.buildModelLightViewMatrix(chunk, lightViewMatrix));
+            shadowRenderer.bindTextures(GL_TEXTURE2);
             chunk.renderSolid();
         }
         for (Chunk chunk : scene.chunkManager.getChunks()) {
             sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
-            sceneShader.setUniform("modelViewMatrix", transformations.buildModelViewMatrix(chunk, viewMatrix));
-            sceneShader.setUniform("modelLightViewMatrix",
-                    transformations.buildModelLightViewMatrix(chunk, lightViewMatrix));
+            shadowRenderer.bindTextures(GL_TEXTURE2);
             chunk.renderTransparencies();
         }
         sceneShader.unbind();
@@ -158,8 +154,7 @@ public class Renderer implements Runnable {
         if (!(shader instanceof ParticleShader)) shader.setUniform("specularPower", specularPower);
         shader.setUniform("ambientLight", ambientLight);
 
-        // Get a copy of the directional light object and transform its position to view
-        // coordinates
+        // Get a copy of the directional light object and transform its position to view coordinates
         DirectionalLight cur = new DirectionalLight(directionalLight);
         Vector4f dir = new Vector4f(cur.getDirection(), 0);
         dir.mul(viewMatrix);
@@ -173,39 +168,40 @@ public class Renderer implements Runnable {
         DayNightCycle.setFog(timer.getTimeRatio(), fog);
     }
 
-    private void renderShadowMap(Camera camera, Scene scene) {
-        glBindFramebuffer(GL_FRAMEBUFFER, shadowMap.getDepthMapFBO());
-        glViewport(0, 0, ShadowMap.SHADOW_MAP_WIDTH, ShadowMap.SHADOW_MAP_HEIGHT);
-        glClear(GL_DEPTH_BUFFER_BIT);
-
-        depthShader.bind();
-
-        Vector3f lightDirection = new Vector3f(scene.light.getDirection());
-
-        Matrix4f lightViewMatrix = transformations.getLightViewMatrix(lightDirection, camera);
-
-        OrthoCoords orthoCoords = scene.light.getOrthoCoords();
-        Matrix4f orthoProjectionMatrix = new Matrix4f().identity().ortho(orthoCoords.left, orthoCoords.right,
-                orthoCoords.bottom, orthoCoords.top, orthoCoords.front, orthoCoords.back);
-        depthShader.setUniform("orthoProjectionMatrix", orthoProjectionMatrix);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, TextureManager.material.getTexture().getId());
-
-        for (Chunk chunk : scene.chunkManager.getChunks()) {
-            depthShader.setUniform("modelLightViewMatrix",
-                    transformations.buildModelLightViewMatrix(chunk, lightViewMatrix));
-            chunk.renderSolid();
-        }
-        for (Chunk chunk : scene.chunkManager.getChunks()) {
-            depthShader.setUniform("modelLightViewMatrix",
-                    transformations.buildModelLightViewMatrix(chunk, lightViewMatrix));
-            chunk.renderTransparencies();
-        }
-
-        // Unbind
-        depthShader.unbind();
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    private void renderShadowMap(Scene scene) {
+        shadowRenderer.render(camera, scene, transformations);
+//        glBindFramebuffer(GL_FRAMEBUFFER, shadowMap.getDepthMapFBO());
+//        glViewport(0, 0, ShadowMap.SHADOW_MAP_WIDTH, ShadowMap.SHADOW_MAP_HEIGHT);
+//        glClear(GL_DEPTH_BUFFER_BIT);
+//
+//        depthShader.bind();
+//
+//        Vector3f lightDirection = new Vector3f(scene.light.getDirection());
+//
+//        Matrix4f lightViewMatrix = transformations.getLightViewMatrix(lightDirection, camera);
+//
+//        OrthoCoords orthoCoords = scene.light.getOrthoCoords();
+//        Matrix4f orthoProjectionMatrix = new Matrix4f().identity().ortho(orthoCoords.left, orthoCoords.right,
+//                orthoCoords.bottom, orthoCoords.top, orthoCoords.front, orthoCoords.back);
+//        depthShader.setUniform("orthoProjectionMatrix", orthoProjectionMatrix);
+//
+//        glActiveTexture(GL_TEXTURE0);
+//        glBindTexture(GL_TEXTURE_2D, TextureManager.material.getTexture().getId());
+//
+//        for (Chunk chunk : scene.chunkManager.getChunks()) {
+//            depthShader.setUniform("modelLightViewMatrix",
+//                    transformations.buildModelLightViewMatrix(chunk, lightViewMatrix));
+//            chunk.renderSolid();
+//        }
+//        for (Chunk chunk : scene.chunkManager.getChunks()) {
+//            depthShader.setUniform("modelLightViewMatrix",
+//                    transformations.buildModelLightViewMatrix(chunk, lightViewMatrix));
+//            chunk.renderTransparencies();
+//        }
+//
+//        // Unbind
+//        depthShader.unbind();
+//        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
     private void renderCrossHair(Window window) {

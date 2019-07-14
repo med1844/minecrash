@@ -1,6 +1,7 @@
 package engine.graphics.shaders;
 
 import engine.Utils;
+import engine.graphics.shadow.ShadowRenderer;
 
 public class SceneShader extends Shader {
 
@@ -10,25 +11,34 @@ public class SceneShader extends Shader {
         createFragmentShader(Utils.loadResource("/shader/scene.fsh"));
         link();
 
+        // for block texture
         createUniform("texture_sampler");
-        createUniform("shadowMap");
 
+        // for block selection
         createUniform("selected");
         createUniform("selectedBlock");
 
+        // for coordination transformation
         createUniform("modelMatrix");
         createUniform("projectionMatrix");
-        createUniform("modelViewMatrix");
-        createUniform("orthoProjectionMatrix");
-        createUniform("modelLightViewMatrix");
+        createUniform("viewMatrix");
 
+        // for cascade shadow maps
+        for (int i = 0; i < ShadowRenderer.CASCADE_NUM; ++i) {
+            createUniform("shadowMap_" + i);
+        }
+        createUniform("orthoProjectionMatrix", ShadowRenderer.CASCADE_NUM);
+        createUniform("lightViewMatrix", ShadowRenderer.CASCADE_NUM);
+        createUniform("cascadeFarPlanes", ShadowRenderer.CASCADE_NUM);
+
+        // for directional light
+        createMaterialUniform("material");
+        createDirectionalLightUniform("directionalLight");
         createUniform("specularPower");
         createUniform("ambientLight");
 
+        // for fog
         createUniform("fogDensity");
-
-        createMaterialUniform("material");
-        createDirectionalLightUniform("directionalLight");
     }
 
 }

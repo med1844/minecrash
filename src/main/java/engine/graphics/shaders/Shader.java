@@ -35,6 +35,18 @@ public class Shader {
         uniformTable.put(uniformName, uniformLocation);
     }
 
+    /**
+     * creates uniform that is an array
+     * @param uniformName the name of the new uniform
+     * @param n the size of the array
+     * @throws Exception when failed to create such uniform
+     */
+    public void createUniform(String uniformName, int n) throws Exception {
+        for (int i = 0; i < n; ++i) {
+            createUniform(uniformName + "[" + i + "]");
+        }
+    }
+
     public void createDirectionalLightUniform(String uniformName) throws Exception {
         createUniform(uniformName + ".colour");
         createUniform(uniformName + ".direction");
@@ -56,6 +68,10 @@ public class Shader {
             value.get(fb);
             glUniformMatrix4fv(uniformTable.get(uniformName), false, fb);
         }
+    }
+
+    public void setUniform(String uniformName, Matrix4f value, int index) {
+        setUniform(uniformName + "[" + index + "]", value);
     }
 
     public void setUniform(String uniformName, int value) {
@@ -90,6 +106,10 @@ public class Shader {
         setUniform(uniformName + ".specular", material.getSpecular());
         setUniform(uniformName + ".hasTexture", material.getHasTexture());
         setUniform(uniformName + ".reflectance", material.getReflectance());
+    }
+
+    public void setUniform(String uniformName, float value, int index) {
+        setUniform(uniformName + "[" + index + "]", value);
     }
 
     public void createVertexShader(String shaderCode) throws Exception {

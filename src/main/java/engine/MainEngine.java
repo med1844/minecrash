@@ -53,9 +53,6 @@ public class MainEngine implements Runnable {
                 new Vector3f(0, 5, 0),
                 0.65f
         );
-        directionalLight.setOrthoCoords(
-                -200, 200, -200, 200, -200, 200
-        );
         scene = new Scene(
                 chunkManager, directionalLight
         );

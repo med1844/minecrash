@@ -41,7 +41,7 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
 //    public static final float biomeScaleWeight = 0.7f;
     public static final float lowerLimitScale = 512.0f;
     public static final float upperLimitScale = 512.0f;
-    public static final float stretchY = 12;
+    public static final float stretchY = 5f;
     public static final float baseSize = 8.5f; // surf average height
     public static final double persistence = 0.5;
 
@@ -51,6 +51,7 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
         rand = new Random();
         long seed = System.nanoTime();
 //        seed=884115298253700L;945874381819300 4 16 16 16 is great
+        seed = 85714926159550L;
         rand.setSeed(seed);
 
         int depthNoiseOctave = 4;
