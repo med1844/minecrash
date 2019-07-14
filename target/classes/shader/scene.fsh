@@ -155,10 +155,6 @@ void main() {
     int i;
     for (i = 0; i < CASCADE_NUM && abs(vertexPos.z) >= cascadeFarPlanes[i]; ++i);
     float shadow = calcShadow(lightViewVertexPos[i], i);
-//
-//    if (i == 0) ambientC.xyz = vec3(1.0, 0.6, 0.6);
-//    if (i == 1) ambientC.xyz = vec3(0.6, 1.0, 0.6);
-//    if (i == 2) ambientC.xyz = vec3(0.6, 0.6, 1.0);
 
     fragColor = mix(clamp(ambientC * vec4(vec3(ambientOcclusion), 1) * vec4(ambientLight, 1) + diffuseSpecular * shadow, 0, 1), vec4(0, 0, 0, 1), faceOcclusion);
     fragColor = fog(fragColor, vec4(directionalLight.colour * 0.8, 1), length(vertexPos), fogDensity);
@@ -166,5 +162,4 @@ void main() {
         fragColor = vec4(1, 1, 1, 2) - fragColor;
     }
     fragColor.a = alpha;
-//    fragColor = fragColor * vec4(vec3(shadow), 1);
 }

@@ -32,7 +32,6 @@ void main() {
     for (int i = 0; i < CASCADE_NUM; ++i) {
         lightViewVertexPos[i] = orthoProjectionMatrix[i] * lightViewMatrix[i] * vec4(worldCoord, 1);
     }
-//    gl_Position = lightViewVertexPos[0];
     ambientOcclusion = inAdjacentFaceCount;
     faceOcclusion = 0.0f;
     if (vertexNormalVector == vec3(-1, 0, 0) || vertexNormalVector == vec3(1, 0, 0)) faceOcclusion = 0.15f;
