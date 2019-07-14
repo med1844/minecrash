@@ -2,7 +2,6 @@ package engine.graphics;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
-import static engine.graphics.DirectionalLight.OrthoCoords;
 
 import engine.IO.Window;
 import engine.graphics.particles.Particle;
@@ -170,38 +169,6 @@ public class Renderer implements Runnable {
 
     private void renderShadowMap(Scene scene) {
         shadowRenderer.render(camera, scene, transformations);
-//        glBindFramebuffer(GL_FRAMEBUFFER, shadowMap.getDepthMapFBO());
-//        glViewport(0, 0, ShadowMap.SHADOW_MAP_WIDTH, ShadowMap.SHADOW_MAP_HEIGHT);
-//        glClear(GL_DEPTH_BUFFER_BIT);
-//
-//        depthShader.bind();
-//
-//        Vector3f lightDirection = new Vector3f(scene.light.getDirection());
-//
-//        Matrix4f lightViewMatrix = transformations.getLightViewMatrix(lightDirection, camera);
-//
-//        OrthoCoords orthoCoords = scene.light.getOrthoCoords();
-//        Matrix4f orthoProjectionMatrix = new Matrix4f().identity().ortho(orthoCoords.left, orthoCoords.right,
-//                orthoCoords.bottom, orthoCoords.top, orthoCoords.front, orthoCoords.back);
-//        depthShader.setUniform("orthoProjectionMatrix", orthoProjectionMatrix);
-//
-//        glActiveTexture(GL_TEXTURE0);
-//        glBindTexture(GL_TEXTURE_2D, TextureManager.material.getTexture().getId());
-//
-//        for (Chunk chunk : scene.chunkManager.getChunks()) {
-//            depthShader.setUniform("modelLightViewMatrix",
-//                    transformations.buildModelLightViewMatrix(chunk, lightViewMatrix));
-//            chunk.renderSolid();
-//        }
-//        for (Chunk chunk : scene.chunkManager.getChunks()) {
-//            depthShader.setUniform("modelLightViewMatrix",
-//                    transformations.buildModelLightViewMatrix(chunk, lightViewMatrix));
-//            chunk.renderTransparencies();
-//        }
-//
-//        // Unbind
-//        depthShader.unbind();
-//        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
     private void renderCrossHair(Window window) {

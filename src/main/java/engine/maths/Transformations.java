@@ -81,10 +81,4 @@ public class Transformations {
     public Matrix4f buildModelLightViewMatrix(Chunk chunk, Matrix4f matrix) {
         return new Matrix4f(matrix).mul(getModelMatrix(chunk));
     }
-
-    public static void updateGenericViewMatrix(Vector3f position, Vector3f rotation, Matrix4f matrix) {
-        matrix.rotationX((float) Math.toRadians(rotation.x))
-              .rotateY((float) Math.toRadians(rotation.y))
-              .translate(-position.x, -position.y, -position.z);
-    }
 }
