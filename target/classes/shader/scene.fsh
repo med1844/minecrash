@@ -104,7 +104,7 @@ vec4 calcDirectionalLight(DirectionalLight light, vec3 position, vec3 normal) {
 }
 
 float calcShadow(vec4 position, int j) {
-//    if (directionalLight.intensity < 1e-4) return 0;
+    if (directionalLight.intensity < 1e-4) return 0;
     vec4 shadowCoord = position * 0.5 + 0.5;
     float result = 0.0;
     const float SAMPLE = 8;
@@ -166,5 +166,5 @@ void main() {
         fragColor = vec4(1, 1, 1, 2) - fragColor;
     }
     fragColor.a = alpha;
-    fragColor = fragColor * vec4(vec3(shadow), 1);
+//    fragColor = fragColor * vec4(vec3(shadow), 1);
 }
