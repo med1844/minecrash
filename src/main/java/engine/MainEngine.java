@@ -97,4 +97,9 @@ public class MainEngine implements Runnable {
         scene.clear();
     }
 
+    public void start() {
+        if (game == null) game = new Thread(this, "minecrash_main");
+        game.start();
+    }
+
 }
