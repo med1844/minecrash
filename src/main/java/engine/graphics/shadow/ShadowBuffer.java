@@ -9,11 +9,8 @@ import static org.lwjgl.opengl.GL30.*;
 public class ShadowBuffer {
 
     public static final int SHADOW_MAP_WIDTH = 1 << 12;
-
     public static final int SHADOW_MAP_HEIGHT = 1 << 12;
-
     private final int depthMapFBO;
-
     private final ArrayTexture depthMap;
 
     public ShadowBuffer() throws Exception {

@@ -7,9 +7,7 @@ import static org.lwjgl.opengl.GL14.GL_TEXTURE_COMPARE_MODE;
 
 public class ArrayTexture {
     private final int[] ids;
-
     private final int width;
-
     private final int height;
 
     public ArrayTexture(int numTextures, int width, int height, int pixelFormat) throws Exception {
