@@ -1,10 +1,12 @@
 # version 330
 
+const int CASCADE_NUM = 3;
+
 in vec3 worldCoord;
 in vec2 outTextureCoord;
 in vec3 vertexPos;
 in vec3 vertexNormal;
-in vec4 lightViewVertexPos;
+in vec4 lightViewVertexPos[CASCADE_NUM];
 in float ambientOcclusion;
 in float faceOcclusion;
 
@@ -27,13 +29,14 @@ struct DirectionalLight {
 uniform int selected;
 uniform vec3 selectedBlock;
 uniform sampler2D texture_sampler;
-uniform sampler2DShadow shadowMap;
+uniform sampler2DShadow shadowMap_0;
+uniform sampler2DShadow shadowMap_1;
+uniform sampler2DShadow shadowMap_2;
 uniform Material material;
 uniform DirectionalLight directionalLight;
 uniform float specularPower;
 uniform vec3 ambientLight;
-uniform mat4 orthoProjectionMatrix;
-uniform mat4 lightViewMatrix;
+uniform float cascadeFarPlanes[CASCADE_NUM];
 uniform float fogDensity;
 
 vec4 ambientC;
@@ -100,14 +103,19 @@ vec4 calcDirectionalLight(DirectionalLight light, vec3 position, vec3 normal) {
     return calcLightColour(light.colour, light.intensity, position, normalize(light.direction), normal);
 }
 
-float calcShadow(vec4 position) {
+float calcShadow(vec4 position, int j) {
     if (directionalLight.intensity < 1e-4) return 0;
     vec4 shadowCoord = position * 0.5 + 0.5;
     float result = 0.0;
     const float SAMPLE = 8;
     for (int i = 0; i < SAMPLE; ++i) {
         int index = int(16.0 * random(floor(position.xyz * 1000.0), i)) % 16;
-        result += (1.0 / SAMPLE) * texture(shadowMap, vec3(shadowCoord.xy + poissonDisk[index] / 5000.0, shadowCoord.z - 1e-3));
+        if (j == 0)
+            result += (1.0 / SAMPLE) * texture(shadowMap_0, vec3(shadowCoord.xy + poissonDisk[index] / 5000.0, shadowCoord.z - 1e-3));
+        else if (j == 1)
+            result += (1.0 / SAMPLE) * texture(shadowMap_1, vec3(shadowCoord.xy + poissonDisk[index] / 5000.0, shadowCoord.z - 1e-3));
+        else if (j == 2)
+            result += (1.0 / SAMPLE) * texture(shadowMap_2, vec3(shadowCoord.xy + poissonDisk[index] / 5000.0, shadowCoord.z - 1e-3));
     }
     return result;
 }
@@ -144,13 +152,19 @@ void main() {
 
     vec4 diffuseSpecular = calcDirectionalLight(directionalLight, vertexPos, vertexNormal) * 0.8;
 
-    float shadow = calcShadow(lightViewVertexPos);
+    int i;
+    for (i = 0; i < CASCADE_NUM && abs(vertexPos.z) >= cascadeFarPlanes[i]; ++i);
+    float shadow = calcShadow(lightViewVertexPos[i], i);
+//
+//    if (i == 0) ambientC.xyz = vec3(1.0, 0.6, 0.6);
+//    if (i == 1) ambientC.xyz = vec3(0.6, 1.0, 0.6);
+//    if (i == 2) ambientC.xyz = vec3(0.6, 0.6, 1.0);
+
     fragColor = mix(clamp(ambientC * vec4(vec3(ambientOcclusion), 1) * vec4(ambientLight, 1) + diffuseSpecular * shadow, 0, 1), vec4(0, 0, 0, 1), faceOcclusion);
     fragColor = fog(fragColor, vec4(directionalLight.colour * 0.8, 1), length(vertexPos), fogDensity);
     if (selected == 1 && check(worldCoord, selectedBlock)) {
         fragColor = vec4(1, 1, 1, 2) - fragColor;
     }
     fragColor.a = alpha;
-//    fragColor = vec4(vec3(texture(shadowMap, (lightViewVertexPos * 0.5 + 0.5).xy).r), 1);
-//    fragColor = vec4(vec3(shadow), 1);
+//    fragColor = fragColor * vec4(vec3(shadow), 1);
 }

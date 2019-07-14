@@ -52,17 +52,4 @@ public class DirectionalLight {
         this.intensity = intensity;
     }
 
-    public OrthoCoords getOrthoCoords() {
-        return orthoCoords;
-    }
-
-    public void setOrthoCoords(float left, float right, float bottom, float top, float near, float far) {
-        orthoCoords.left = left;
-        orthoCoords.right = right;
-        orthoCoords.bottom = bottom;
-        orthoCoords.top = top;
-        orthoCoords.front = near;
-        orthoCoords.back = far;
-    }
-
 }

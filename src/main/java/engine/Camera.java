@@ -10,7 +10,7 @@ public class Camera {
     private float verticalAngle; // rad
 
     public Camera() {
-        position = new Vector3f(10, 64, 10);
+        position = new Vector3f(10, 70, 10);
         horizontalAngle = PI / 4;
         verticalAngle = 0;
     }

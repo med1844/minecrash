@@ -11,6 +11,7 @@ public class DepthShader extends Shader {
         link();
 
         createUniform("orthoProjectionMatrix");
-        createUniform("modelLightViewMatrix");
+        createUniform("lightViewMatrix");
+        createUniform("modelMatrix");
     }
 }
