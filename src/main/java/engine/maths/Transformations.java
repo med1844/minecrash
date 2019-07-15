@@ -23,7 +23,11 @@ public class Transformations {
         modelMatrix = new Matrix4f().identity();
     }
 
-    public final Matrix4f getProjectionMatrix(float FOV, float width, float height,
+    public Matrix4f getProjectionMatrix() {
+        return projectionMatrix;
+    }
+
+    public Matrix4f getProjectionMatrix(float FOV, float width, float height,
                                               float zNear, float zFar) {
         projectionMatrix.identity();
 
