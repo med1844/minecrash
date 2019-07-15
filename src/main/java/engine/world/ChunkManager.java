@@ -123,6 +123,13 @@ public class ChunkManager {
                     chunks[i][j] = chunkGenerator.generateChunk(i, j);
 //                    chunks[i][j] = readChunkFromFile(i, j);
                     addSet.add(new Pair(i, j));
+                    for (int k=0;k<4;k++) {
+                        int nx=i+dx[k];
+                        int nz=j+dz[k];
+                        if (valid(nx, nz) && !outOfSight(nx, nz)) {
+                            addSet.add(new Pair(i,j));
+                        }
+                    }
                     posSet.add(new Pair(i, j));
                     hasChunk[i][j] = true;
                 }
