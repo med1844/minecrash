@@ -54,9 +54,9 @@ public class ChunkManager {
                 hasChunk[i][j] = true;
                 posSet.add(new Pair(i, j));
                 long beginTime = System.currentTimeMillis();
-                countReadTask++;
-                chunks[i][j] = readChunkFromFile(i, j);
-//                chunks[i][j] = chunkGenerator.generateChunk(i, j);
+//                countReadTask++;
+//                chunks[i][j] = readChunkFromFile(i, j);
+                chunks[i][j] = chunkGenerator.generateChunk(i, j);
                 System.out.println("[INFO] reading Chunk [" + i + ", " + j + "]" + " ,use time: "
                         + (System.currentTimeMillis() - beginTime));
             }
@@ -118,10 +118,10 @@ public class ChunkManager {
                     continue;
                 }
                 if (!hasChunk[i][j]) {
-                    countReadTask++;
+//                    countReadTask++;
                     cnt++;
-//                    chunks[i][j] = chunkGenerator.generateChunk(i, j);
-                    chunks[i][j] = readChunkFromFile(i, j);
+                    chunks[i][j] = chunkGenerator.generateChunk(i, j);
+//                    chunks[i][j] = readChunkFromFile(i, j);
                     addSet.add(new Pair(i, j));
                     posSet.add(new Pair(i, j));
                     hasChunk[i][j] = true;
