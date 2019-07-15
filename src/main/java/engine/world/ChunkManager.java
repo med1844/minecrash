@@ -199,15 +199,18 @@ public class ChunkManager {
 //        FileThread fileThread=new FileThread(chunk, chunkGenerator, files[x][z], id++);
 //        fileThread.run();
         Thread fileThread = new Thread(new FileThread(chunk, chunkGenerator, files[x][z], id++));
-        fileThread.start();
+        fileThread.run();
         return chunk;
     }
 
     public void writeChunkToFile(Chunk chunk) {
         try {
             File file = files[chunk.getx()][chunk.getz()];
-            if (!file.exists())
-                file.createNewFile();
+            if (!file.exists()) {
+                if (!file.createNewFile()) {
+                    System.err.println("[ERROR] ChunkManager.writeChunkToFile(): Failed to create new chunk file.");
+                }
+            }
 
             OutputStream os = new FileOutputStream(file);
             BufferedOutputStream bs = new BufferedOutputStream(os, 16 * 16 * 256);

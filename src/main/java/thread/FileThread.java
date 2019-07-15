@@ -46,7 +46,8 @@ public class FileThread implements Runnable {
 
             bs.close();
         } catch (FileNotFoundException e) {
-            chunk = chunkGenerator.generateChunk(chunk.getx(), chunk.getz());
+//            chunkGenerator.generateChunk(chunk.getx(), chunk.getz());
+            chunkGenerator.generateChunk(chunk);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -70,5 +71,7 @@ public class FileThread implements Runnable {
     public void setChunkGenerator(ChunkGenerator chunkGeneratorOverWorld) {
         this.chunkGenerator = chunkGeneratorOverWorld;
     }
+
+    public Chunk getChunk() { return this.chunk; }
 
 }

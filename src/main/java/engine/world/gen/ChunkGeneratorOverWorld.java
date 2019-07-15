@@ -97,6 +97,20 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
         return chunk;
     }
 
+    @Override
+    public void generateChunk(Chunk chunk) {
+        setBlocksInChunk(chunk.getx(), chunk.getz(), chunk);
+        clearFloat(chunk);
+        // 16*16 biomes
+        // biomesForGeneration =
+        // this.worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration,
+        // x * 16, z * 16, 16, 16);
+        biomesForGeneration = new BiomeBase[16 * 16];
+        for (int i = 0; i < 16 * 16; i++)
+            biomesForGeneration[i] = new BiomeBase();
+        replaceBlocksForBiome(chunk.getx(), chunk.getz(), chunk, biomesForGeneration);
+    }
+
     public void setBlocksInChunk(int x, int z, Chunk chunk) {
         heightMap = new double[5 * 5 * 33];
 
