@@ -56,6 +56,7 @@ public class MainEngine implements Runnable {
         scene = new Scene(
                 chunkManager, directionalLight
         );
+
         scene.init();
         timer.init();
     }
