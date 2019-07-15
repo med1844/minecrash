@@ -1,15 +1,16 @@
 package engine.graphics;
 
+import org.lwjgl.system.MemoryUtil;
+
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
-import org.lwjgl.system.MemoryUtil;
-import java.util.List;
 
 public class Mesh {
     private final int vaoId;
@@ -19,12 +20,13 @@ public class Mesh {
 
     /**
      * Constructor if mesh object.
-     * @param positions, the position array containing vertex coords
+     *
+     * @param positions,    the position array containing vertex coords
      * @param textureCoord, the colour array, defining color of each vertex
-     * @param indices, this can reduce redundant vertices
-     * @param material, the material that will be used to texturing this mesh
-     *                  it also contains data that determines how it looks like
-     * Usage can be found in MainEngine.java
+     * @param indices,      this can reduce redundant vertices
+     * @param material,     the material that will be used to texturing this mesh
+     *                      it also contains data that determines how it looks like
+     *                      Usage can be found in MainEngine.java
      */
     public Mesh(float[] positions, float[] textureCoord, float[] normals, int[] indices, float[] adjacentFaceCount,
                 Material material) {

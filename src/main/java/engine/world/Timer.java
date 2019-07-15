@@ -21,7 +21,7 @@ public class Timer {
 
     public void update() {
         long now = System.currentTimeMillis();
-        timeTick += (int)((now - lastTime) * gameSpeed);
+        timeTick += (int) ((now - lastTime) * gameSpeed);
         if (timeTick > DAY_LENGTH) timeTick -= DAY_LENGTH;
         lastTime = now;
     }

@@ -1,17 +1,17 @@
 package engine.graphics.shaders;
 
+import engine.graphics.DirectionalLight;
+import engine.graphics.Material;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+import org.lwjgl.system.MemoryStack;
+
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-import engine.graphics.DirectionalLight;
-import engine.graphics.Material;
-import org.joml.Matrix4f;
 import static org.lwjgl.opengl.GL20.*;
-
-import org.joml.Vector3f;
-import org.joml.Vector4f;
-import org.lwjgl.system.MemoryStack;
 
 public class Shader {
     private final int programId;
@@ -37,8 +37,9 @@ public class Shader {
 
     /**
      * creates uniform that is an array
+     *
      * @param uniformName the name of the new uniform
-     * @param n the size of the array
+     * @param n           the size of the array
      * @throws Exception when failed to create such uniform
      */
     public void createUniform(String uniformName, int n) throws Exception {
@@ -140,6 +141,7 @@ public class Shader {
 
     /**
      * this method links the shader program and validates it
+     *
      * @throws Exception when linking process failed
      */
     public void link() throws Exception {

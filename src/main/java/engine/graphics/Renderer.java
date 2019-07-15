@@ -1,8 +1,6 @@
 package engine.graphics;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.*;
-
+import engine.Camera;
 import engine.IO.Window;
 import engine.graphics.particles.Particle;
 import engine.graphics.particles.ParticleEmitterInterface;
@@ -13,7 +11,6 @@ import engine.graphics.shadow.ShadowCascade;
 import engine.graphics.shadow.ShadowRenderer;
 import engine.maths.FrustumCullFilter;
 import engine.maths.Transformations;
-import engine.Camera;
 import engine.world.*;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -21,13 +18,16 @@ import org.joml.Vector4f;
 
 import java.util.List;
 
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL30.*;
+
 /**
  * This class mainly handles the process of rendering, including managing
  * components and the order of rendering.
- *
+ * <p>
  * It doesn't call any GL render function, since these are encapsulated in
  * corresponding classes.
- *
+ * <p>
  * It handles: - scene rendering - light rendering - shadow mapping
  */
 public class Renderer implements Runnable {
@@ -81,7 +81,7 @@ public class Renderer implements Runnable {
     /**
      * This method renders meshes using the shader that has been initialized in the
      * function init();
-     *
+     * <p>
      * This method also updates uniform matrices that is used for transformations.
      */
     public void render() {
@@ -120,7 +120,7 @@ public class Renderer implements Runnable {
         renderLight(viewMatrix, ambientLight, scene.light, sceneShader);
 
         // Update matrices
-        sceneShader.setUniform("projectionMatrix",projectionMatrix);
+        sceneShader.setUniform("projectionMatrix", projectionMatrix);
         sceneShader.setUniform("viewMatrix", viewMatrix);
 
         // Update cascade shadows

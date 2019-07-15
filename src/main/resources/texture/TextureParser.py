@@ -57,7 +57,8 @@ def pprint(position, texture_coord):
     for i in range(len(position) // 3):
         pos_render.append(', '.join([str(position[i * 3 + d]) + 'f' for d in range(3) if i + d < len(position)]))
     for i in range(len(texture_coord) // 2):
-        tex_render.append(', '.join([str(texture_coord[i * 2 + d]) + 'f' for d in range(2) if i + d < len(texture_coord)]))
+        tex_render.append(
+            ', '.join([str(texture_coord[i * 2 + d]) + 'f' for d in range(2) if i + d < len(texture_coord)]))
     print(', \n'.join(pos_render))
     print(', \n'.join(tex_render))
     # assert len(pos_render) == len(tex_render)

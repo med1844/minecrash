@@ -1,21 +1,20 @@
 package engine.maths;
 
 
-
-public class Pair implements Comparable<Pair>{
+public class Pair implements Comparable<Pair> {
     public int first;
     public int second;
-    
-    public Pair(){
-        first=0;
-        second=0;
+
+    public Pair() {
+        first = 0;
+        second = 0;
     }
-    
-    public Pair(int a,int b) {
-        first=a;
-        second=b;
+
+    public Pair(int a, int b) {
+        first = a;
+        second = b;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -23,7 +22,7 @@ public class Pair implements Comparable<Pair>{
 
         if (obj instanceof Pair) {
             Pair pair = (Pair) obj;
-            if (this.first==pair.first && this.second==pair.second) {
+            if (this.first == pair.first && this.second == pair.second) {
                 return true;
             }
         }
@@ -32,14 +31,14 @@ public class Pair implements Comparable<Pair>{
 
     @Override
     public int compareTo(Pair o) {
-        if (this.first!=o.first) return this.first-o.first;
-        else return this.second-o.second;
+        if (this.first != o.first) return this.first - o.first;
+        else return this.second - o.second;
     }
+
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return (first * (second * first * 15731 + 789221) + 1376312589) & 0x7fffffff;
     }
-    
-    
+
+
 }

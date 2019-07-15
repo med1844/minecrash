@@ -1,12 +1,11 @@
 package engine.IO;
 
-import static org.lwjgl.glfw.GLFW.*;
-
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+
+import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window {
@@ -130,7 +129,7 @@ public class Window {
             time = System.currentTimeMillis();
         }
     }
-    
+
     public void setTitle(String title) {
         glfwSetWindowTitle(windowHandle, title);
     }

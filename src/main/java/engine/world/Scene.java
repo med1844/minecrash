@@ -1,16 +1,15 @@
 package engine.world;
 
-import engine.graphics.particles.BlockDebrisParticleEmitter;
 import engine.graphics.DirectionalLight;
+import engine.graphics.particles.BlockDebrisParticleEmitter;
 import engine.graphics.particles.ParticleEmitterInterface;
-
-import static engine.world.TextureManager.*;
-
 import org.joml.Vector3f;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import static engine.world.TextureManager.AIR;
 
 public class Scene {
     public ChunkManager chunkManager;

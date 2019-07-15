@@ -46,7 +46,7 @@ public class DayNightCycle {
             directionalLight.setIntensity((float) (0.65 * Math.sqrt(tempIntensity)));
         }
         if ((1 - THRESHOLD <= currentTimeRatio || currentTimeRatio <= THRESHOLD) ||
-            (0.5 - THRESHOLD <= currentTimeRatio && currentTimeRatio <= 0.5 + THRESHOLD)) {
+                (0.5 - THRESHOLD <= currentTimeRatio && currentTimeRatio <= 0.5 + THRESHOLD)) {
             if (currentTimeRatio >= 1 - THRESHOLD) currentTimeRatio -= 1;
             if (currentTimeRatio >= 0.5 - THRESHOLD) currentTimeRatio = 0.5 - currentTimeRatio;
             currentTimeRatio *= (1 / THRESHOLD); // currentTimeRatio in [-1, 1]

@@ -9,7 +9,7 @@ import org.joml.Vector3f;
 public class Transformations {
     /**
      * to understand these matrices, visit:
-     *      https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/
+     * https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/
      */
     private Matrix4f projectionMatrix;
     private Matrix4f viewMatrix;
@@ -28,7 +28,7 @@ public class Transformations {
     }
 
     public Matrix4f getProjectionMatrix(float FOV, float width, float height,
-                                              float zNear, float zFar) {
+                                        float zNear, float zFar) {
         projectionMatrix.identity();
 
         // mat.perspective() applies transformation to an existing transformation
@@ -77,8 +77,8 @@ public class Transformations {
     public Matrix4f buildModelViewMatrix(Particle particle, Matrix4f matrix) {
         Matrix4f temp = new Matrix4f(matrix).mul(getModelMatrix(particle));
         temp.m00(1).m01(0).m02(0).
-             m10(0).m11(1).m12(0).
-             m20(0).m21(0).m22(1).scaleXY(particle.getScaleX(), particle.getScaleY());
+                m10(0).m11(1).m12(0).
+                m20(0).m21(0).m22(1).scaleXY(particle.getScaleX(), particle.getScaleY());
         return temp;
     }
 

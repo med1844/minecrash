@@ -1,11 +1,12 @@
 package engine.graphics;
 
+import org.lwjgl.system.MemoryStack;
+
 import java.io.File;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.file.Paths;
-import org.lwjgl.system.MemoryStack;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
@@ -64,7 +65,7 @@ public class Texture {
             String filePath = file.getAbsolutePath();
             buf = stbi_load(filePath, w, h, channels, 4);
             if (buf == null) {
-                System.err.println("[ERROR] Texture.loadTexture(): Image file ["  + filePath  +
+                System.err.println("[ERROR] Texture.loadTexture(): Image file [" + filePath +
                         "] not loaded: " + stbi_failure_reason());
                 System.exit(-1);
             }

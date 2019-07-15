@@ -1,14 +1,13 @@
 package engine;
 
+import engine.IO.Input;
 import engine.IO.Window;
 import engine.graphics.DirectionalLight;
 import engine.graphics.Renderer;
-import engine.IO.Input;
 import engine.world.ChunkManager;
 import engine.world.Scene;
 import engine.world.TextureManager;
 import engine.world.Timer;
-
 import org.joml.Vector3f;
 
 /**
@@ -67,7 +66,8 @@ public class MainEngine implements Runnable {
             init();
             while (!window.shouldClose()) {
                 selectedBlockPos = cameraSelectionDetector.selectBlock(scene.chunkManager.getChunks(), camera, renderer.getTransformations());
-                if (selectedBlockPos != null) normalVector = cameraSelectionDetector.getNormalVector(selectedBlockPos, camera, renderer.getTransformations());
+                if (selectedBlockPos != null)
+                    normalVector = cameraSelectionDetector.getNormalVector(selectedBlockPos, camera, renderer.getTransformations());
                 update();
                 render();
             }

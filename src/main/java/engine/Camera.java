@@ -4,7 +4,7 @@ import org.joml.Vector3f;
 
 public class Camera {
 
-    private final float PI = (float)Math.acos(-1);
+    private final float PI = (float) Math.acos(-1);
     private Vector3f position;
     private float horizontalAngle; // rad
     private float verticalAngle; // rad
@@ -47,25 +47,25 @@ public class Camera {
 
     public Vector3f getDirection() {
         return new Vector3f(
-                (float)Math.cos(verticalAngle) * (float)Math.sin(horizontalAngle),
-                (float)Math.sin(verticalAngle),
-                (float)Math.cos(verticalAngle) * (float)Math.cos(horizontalAngle)
+                (float) Math.cos(verticalAngle) * (float) Math.sin(horizontalAngle),
+                (float) Math.sin(verticalAngle),
+                (float) Math.cos(verticalAngle) * (float) Math.cos(horizontalAngle)
         );
     }
 
     public Vector3f getHorizontalDirection(float speed) {
         return new Vector3f(
-                (float)Math.sin(horizontalAngle) * speed,
+                (float) Math.sin(horizontalAngle) * speed,
                 0,
-                (float)Math.cos(horizontalAngle) * speed
+                (float) Math.cos(horizontalAngle) * speed
         );
     }
 
     public Vector3f getRight(float speed) {
         return new Vector3f(
-                (float)Math.sin(horizontalAngle - PI / 2) * speed,
+                (float) Math.sin(horizontalAngle - PI / 2) * speed,
                 0,
-                (float)Math.cos(horizontalAngle - PI / 2) * speed
+                (float) Math.cos(horizontalAngle - PI / 2) * speed
         );
     }
 

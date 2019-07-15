@@ -1,13 +1,12 @@
 package engine;
 
+import engine.maths.Transformations;
 import engine.world.Block;
 import engine.world.Chunk;
 import engine.world.TextureManager;
-import org.joml.*;
-import engine.maths.Transformations;
-
-import java.lang.Math;
-import java.util.Collection;
+import org.joml.Intersectionf;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 public class CameraSelectionDetector {
 

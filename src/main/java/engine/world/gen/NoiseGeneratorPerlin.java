@@ -11,20 +11,18 @@ public class NoiseGeneratorPerlin {
     public double yCoord;
     public double zCoord;
     // 三维梯度向量，去掉y维度后和二维的一样
-    private static final double[] x3D = new double[] {1.0D, -1.0D,  1.0D, -1.0D, 1.0D, -1.0D,  1.0D, -1.0D, 0.0D,  0.0D,  0.0D,  0.0D, 1.0D,  0.0D, -1.0D,  0.0D};
-    private static final double[] y3D = new double[] {1.0D,  1.0D, -1.0D, -1.0D, 0.0D,  0.0D,  0.0D,  0.0D, 1.0D, -1.0D,  1.0D, -1.0D, 1.0D, -1.0D,  1.0D, -1.0D};
-    private static final double[] z3D = new double[] {0.0D,  0.0D,  0.0D,  0.0D, 1.0D,  1.0D, -1.0D, -1.0D, 1.0D,  1.0D, -1.0D, -1.0D, 0.0D,  1.0D,  0.0D, -1.0D};
+    private static final double[] x3D = new double[]{1.0D, -1.0D, 1.0D, -1.0D, 1.0D, -1.0D, 1.0D, -1.0D, 0.0D, 0.0D, 0.0D, 0.0D, 1.0D, 0.0D, -1.0D, 0.0D};
+    private static final double[] y3D = new double[]{1.0D, 1.0D, -1.0D, -1.0D, 0.0D, 0.0D, 0.0D, 0.0D, 1.0D, -1.0D, 1.0D, -1.0D, 1.0D, -1.0D, 1.0D, -1.0D};
+    private static final double[] z3D = new double[]{0.0D, 0.0D, 0.0D, 0.0D, 1.0D, 1.0D, -1.0D, -1.0D, 1.0D, 1.0D, -1.0D, -1.0D, 0.0D, 1.0D, 0.0D, -1.0D};
     // 二维梯度向量
-    private static final double[] x2D = new double[] {1.0D, -1.0D,  1.0D, -1.0D, 1.0D, -1.0D,  1.0D, -1.0D, 0.0D,  0.0D,  0.0D,  0.0D, 1.0D,  0.0D, -1.0D,  0.0D};
-    private static final double[] y2D = new double[] {0.0D,  0.0D,  0.0D,  0.0D, 1.0D,  1.0D, -1.0D, -1.0D, 1.0D,  1.0D, -1.0D, -1.0D, 0.0D,  1.0D,  0.0D, -1.0D};
+    private static final double[] x2D = new double[]{1.0D, -1.0D, 1.0D, -1.0D, 1.0D, -1.0D, 1.0D, -1.0D, 0.0D, 0.0D, 0.0D, 0.0D, 1.0D, 0.0D, -1.0D, 0.0D};
+    private static final double[] y2D = new double[]{0.0D, 0.0D, 0.0D, 0.0D, 1.0D, 1.0D, -1.0D, -1.0D, 1.0D, 1.0D, -1.0D, -1.0D, 0.0D, 1.0D, 0.0D, -1.0D};
 
-    public NoiseGeneratorPerlin()
-    {
+    public NoiseGeneratorPerlin() {
         this(new Random());
     }
 
-    public NoiseGeneratorPerlin(Random rand)
-    {
+    public NoiseGeneratorPerlin(Random rand) {
         this.permutations = new int[512];
         this.xCoord = rand.nextDouble() * 256.0D;
         this.yCoord = rand.nextDouble() * 256.0D;
@@ -32,13 +30,11 @@ public class NoiseGeneratorPerlin {
 
         // 生成0~255的随机排列
 
-        for (int i = 0; i < 256; ++i)
-        {
+        for (int i = 0; i < 256; ++i) {
             this.permutations[i] = i;
         }
 
-        for (int i = 0; i < 256; ++i)
-        {
+        for (int i = 0; i < 256; ++i) {
             // 从i~255中选j
             int j = rand.nextInt(256 - i) + i;
             // 把i和j交换
@@ -51,26 +47,23 @@ public class NoiseGeneratorPerlin {
     }
 
     // 在a与b间线性插值
-    public final double lerp(double t, double a, double b)
-    {
+    public final double lerp(double t, double a, double b) {
         return a + t * (b - a);
     }
 
     // 返回与二维梯度向量点乘的结果，参数：梯度向量索引, 向量（其实就是权重）
-    public final double dot(int index, double xWeight, double zWeight)
-    {
+    public final double dot(int index, double xWeight, double zWeight) {
         int i = index % 16;
-        return   x2D[i] * xWeight
-               + y2D[i] * zWeight;
+        return x2D[i] * xWeight
+                + y2D[i] * zWeight;
     }
 
     // 返回与三维梯度向量点乘的结果，参数：梯度向量索引, 向量（其实就是权重）
-    public final double grad(int index, double xWeight, double yWeight, double zWeight)
-    {
+    public final double grad(int index, double xWeight, double yWeight, double zWeight) {
         int i = index % 16;
-        return   x3D[i] * xWeight 
-               + y3D[i] * yWeight
-               + z3D[i] * zWeight;
+        return x3D[i] * xWeight
+                + y3D[i] * yWeight
+                + z3D[i] * zWeight;
     }
 
     /**
@@ -78,45 +71,40 @@ public class NoiseGeneratorPerlin {
      * noiseArray should be xSize*ySize*zSize in size
      */
     // noiseScale和振幅成反比
-    public void populateNoiseArray(double[] result, double xOffset, double yOffset, double zOffset, int xSize, int ySize, int zSize, double xScale, double yScale, double zScale, double noiseScale)
-    {
+    public void populateNoiseArray(double[] result, double xOffset, double yOffset, double zOffset, int xSize, int ySize, int zSize, double xScale, double yScale, double zScale, double noiseScale) {
         if (ySize == 1) // 二维
         {
             int resultIndex = 0;
             // 结果缩放系数，和noiseScale成反比
             double noiseRatio = 1.0D / noiseScale;
 
-            for (int _x = 0; _x < xSize; ++_x)
-            {
+            for (int _x = 0; _x < xSize; ++_x) {
                 // 经过偏移和缩放的x
-                double x = xOffset + (double)_x * xScale + this.xCoord;
+                double x = xOffset + (double) _x * xScale + this.xCoord;
                 // 不大于x的最大整数
-                int xFloor = (int)x;
-                if (x < (double)xFloor)
-                {
+                int xFloor = (int) x;
+                if (x < (double) xFloor) {
                     --xFloor;
                 }
 
                 int xIndex = xFloor % 256;
                 // 此时x为晶格内的坐标[0, 1)
-                x = x - (double)xFloor;
+                x = x - (double) xFloor;
                 // 缓和曲线s(t) = 6t^5 - 15t^4 + 10t^3
                 double sx = x * x * x * (x * (x * 6.0D - 15.0D) + 10.0D);
 
-                for (int _z = 0; _z < zSize; ++_z)
-                {
+                for (int _z = 0; _z < zSize; ++_z) {
                     // 经过偏移和缩放的z
-                    double z = zOffset + (double)_z * zScale + this.zCoord;
+                    double z = zOffset + (double) _z * zScale + this.zCoord;
                     // 不大于z的最大整数
-                    int zFloor = (int)z;
-                    if (z < (double)zFloor)
-                    {
+                    int zFloor = (int) z;
+                    if (z < (double) zFloor) {
                         --zFloor;
                     }
 
                     int zIndex = zFloor % 256;
                     // 此时z为晶格内的坐标[0, 1)
-                    z = z - (double)zFloor;
+                    z = z - (double) zFloor;
                     // 缓和曲线s(t) = 6t^5 - 15t^4 + 10t^3
                     double sz = z * z * z * (z * (z * 6.0D - 15.0D) + 10.0D);
 
@@ -128,83 +116,75 @@ public class NoiseGeneratorPerlin {
 
                     // x方向上点乘（加权），结果用缓和曲线插值
                     double xRes1 = this.lerp(sx,
-                                             this.dot(this.permutations[vecIndex1],          x ,       z),
-                                             this.grad(        this.permutations[vecIndex2], -(1.0D - x), 0.0D, z));
+                            this.dot(this.permutations[vecIndex1], x, z),
+                            this.grad(this.permutations[vecIndex2], -(1.0D - x), 0.0D, z));
                     double xRes2 = this.lerp(sx,
-                                             this.grad(this.permutations[vecIndex1 + 1],          x , 0.0D, -(1.0D - z)),
-                                             this.grad(this.permutations[vecIndex2 + 1], -(1.0D - x), 0.0D, -(1.0D - z)));
+                            this.grad(this.permutations[vecIndex1 + 1], x, 0.0D, -(1.0D - z)),
+                            this.grad(this.permutations[vecIndex2 + 1], -(1.0D - x), 0.0D, -(1.0D - z)));
                     // 两个x方向的结果在z方向用缓和曲线插值
                     double res = this.lerp(sz, xRes1, xRes2);
 
                     result[resultIndex++] += res * noiseRatio;
                 }
             }
-        }
-        else // 三维
+        } else // 三维
         {
             int resultIndex = 0;
             double noiseRatio = 1.0D / noiseScale;
             int lastYIndex = -1;
 
-            for (int _x = 0; _x < xSize; ++_x)
-            {
-                double x = xOffset + (double)_x * xScale + this.xCoord;
-                int xFloor = (int)x;
+            for (int _x = 0; _x < xSize; ++_x) {
+                double x = xOffset + (double) _x * xScale + this.xCoord;
+                int xFloor = (int) x;
 
-                if (x < (double)xFloor)
-                {
+                if (x < (double) xFloor) {
                     --xFloor;
                 }
 
                 int xIndex = xFloor % 256;
-                x = x - (double)xFloor;
+                x = x - (double) xFloor;
                 double sx = x * x * x * (x * (x * 6.0D - 15.0D) + 10.0D);
 
-                for (int _z = 0; _z < zSize; ++_z)
-                {
-                    double z = zOffset + (double)_z * zScale + this.zCoord;
-                    int zFloor = (int)z;
+                for (int _z = 0; _z < zSize; ++_z) {
+                    double z = zOffset + (double) _z * zScale + this.zCoord;
+                    int zFloor = (int) z;
 
-                    if (z < (double)zFloor)
-                    {
+                    if (z < (double) zFloor) {
                         --zFloor;
                     }
 
                     int zIndex = zFloor % 256;
-                    z = z - (double)zFloor;
+                    z = z - (double) zFloor;
                     double sz = z * z * z * (z * (z * 6.0D - 15.0D) + 10.0D);
 
                     double xRes1, xRes2, xRes3, xRes4;
 
-                    for (int _y = 0; _y < ySize; ++_y)
-                    {
-                        double y = yOffset + (double)_y * yScale + this.yCoord;
-                        int yFloor = (int)y;
+                    for (int _y = 0; _y < ySize; ++_y) {
+                        double y = yOffset + (double) _y * yScale + this.yCoord;
+                        int yFloor = (int) y;
 
-                        if (y < (double)yFloor)
-                        {
+                        if (y < (double) yFloor) {
                             --yFloor;
                         }
 
                         int yIndex = yFloor % 256;
-                        y = y - (double)yFloor;
+                        y = y - (double) yFloor;
                         double sy = y * y * y * (y * (y * 6.0D - 15.0D) + 10.0D);
 
-                        if (_y == 0 || yIndex != lastYIndex)
-                        {
+                        if (_y == 0 || yIndex != lastYIndex) {
                             lastYIndex = yIndex;
                         }
-                            int l = this.permutations[xIndex] + yIndex;
-                            int i1 = this.permutations[l] + zIndex;
-                            int j1 = this.permutations[l + 1] + zIndex;
-                            int k1 = this.permutations[xIndex + 1] + yIndex;
-                            int l1 = this.permutations[k1] + zIndex;
-                            int i2 = this.permutations[k1 + 1] + zIndex;
-                            xRes1 = this.lerp(sx, this.grad(this.permutations[i1], x, y, z), this.grad(this.permutations[l1], x - 1.0D, y, z));
-                            xRes2 = this.lerp(sx, this.grad(this.permutations[j1], x, y - 1.0D, z), this.grad(this.permutations[i2], x - 1.0D, y - 1.0D, z));
-                            xRes3 = this.lerp(sx, this.grad(this.permutations[i1 + 1], x, y, z - 1.0D), this.grad(this.permutations[l1 + 1], x - 1.0D, y, z - 1.0D));
-                            xRes4 = this.lerp(sx, this.grad(this.permutations[j1 + 1], x, y - 1.0D, z - 1.0D), this.grad(this.permutations[i2 + 1], x - 1.0D, y - 1.0D, z - 1.0D));
-                        
+                        int l = this.permutations[xIndex] + yIndex;
+                        int i1 = this.permutations[l] + zIndex;
+                        int j1 = this.permutations[l + 1] + zIndex;
+                        int k1 = this.permutations[xIndex + 1] + yIndex;
+                        int l1 = this.permutations[k1] + zIndex;
+                        int i2 = this.permutations[k1 + 1] + zIndex;
+                        xRes1 = this.lerp(sx, this.grad(this.permutations[i1], x, y, z), this.grad(this.permutations[l1], x - 1.0D, y, z));
+                        xRes2 = this.lerp(sx, this.grad(this.permutations[j1], x, y - 1.0D, z), this.grad(this.permutations[i2], x - 1.0D, y - 1.0D, z));
+                        xRes3 = this.lerp(sx, this.grad(this.permutations[i1 + 1], x, y, z - 1.0D), this.grad(this.permutations[l1 + 1], x - 1.0D, y, z - 1.0D));
+                        xRes4 = this.lerp(sx, this.grad(this.permutations[j1 + 1], x, y - 1.0D, z - 1.0D), this.grad(this.permutations[i2 + 1], x - 1.0D, y - 1.0D, z - 1.0D));
+
                         double yRes1 = this.lerp(sy, xRes1, xRes2);
                         double yRes2 = this.lerp(sy, xRes3, xRes4);
                         double res = this.lerp(sz, yRes1, yRes2);

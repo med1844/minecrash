@@ -11,9 +11,9 @@ import org.joml.Matrix4f;
 import java.util.LinkedList;
 import java.util.List;
 
+import static engine.graphics.Renderer.Z_FAR;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
-import static engine.graphics.Renderer.*;
 
 public class ShadowRenderer {
 

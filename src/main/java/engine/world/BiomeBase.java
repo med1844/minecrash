@@ -1,8 +1,8 @@
 package engine.world;
 
-import java.util.Random;
-import engine.world.Chunk;
 import engine.world.gen.ChunkGeneratorOverWorld;
+
+import java.util.Random;
 
 import static engine.world.TextureManager.*;
 
@@ -14,7 +14,7 @@ public class BiomeBase {
         topBlockID = GRASS;
         fillerBlockID = STONE;
     }
-    
+
     public void genBlocks(Random rand, Chunk chunk, int x, int z, double noise) {
         int seaLevel = ChunkGeneratorOverWorld.seaLevel;
 
@@ -57,7 +57,7 @@ public class BiomeBase {
 //                            } else {
 //                                topBlock.set(WATER);
 //                            }
-                            topBlockID=STILL_WATER;
+                            topBlockID = STILL_WATER;
                         }
 
                         // fill the top
@@ -69,9 +69,9 @@ public class BiomeBase {
                             chunk.setBlock(topBlockID, zLow, y, xLow);
                         } else if (y < seaLevel - 7 - cnt) {
                             // ocean bottom
-                            topBlockID=GRAVEL;
+                            topBlockID = GRAVEL;
                             // fill with stone
-                            fillerBlockID=STONE;
+                            fillerBlockID = STONE;
                             // top with gravel
                             chunk.setBlock(GRAVEL, zLow, y, xLow);
                         } else {
@@ -83,12 +83,12 @@ public class BiomeBase {
                         //filling
                         --res;
                         //fill with fillerBlock
-                        chunk.setBlock(fillerBlockID,zLow, y, xLow);
+                        chunk.setBlock(fillerBlockID, zLow, y, xLow);
 
                         // if fill sand before, then fill with sandstone
                         if (res == 0 && fillerBlockID == SAND) {
                             res = rand.nextInt(4) + Math.max(0, y - 63);
-                            fillerBlockID=SANDSTONE;
+                            fillerBlockID = SANDSTONE;
                         }
                     } //res=0 finish
                 }

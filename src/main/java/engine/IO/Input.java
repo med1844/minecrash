@@ -1,12 +1,11 @@
 package engine.IO;
 
 import engine.Camera;
-
-import static engine.world.TextureManager.*;
-import static org.lwjgl.glfw.GLFW.*;
-
 import engine.world.Scene;
 import org.joml.Vector3f;
+
+import static engine.world.TextureManager.GLASS;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class Input {
     private int centerX, centerY;
@@ -17,7 +16,7 @@ public class Input {
     private Window window;
     private Camera camera;
     private long lastUpdateTime;
-    private static final float PI = (float)Math.acos(-1);
+    private static final float PI = (float) Math.acos(-1);
     private static float keyboardSpeed = 0.008f;
     private static float mouseSpeed = 0.0005f;
     private static final float DECAY_FACTOR = 0.85f;
@@ -36,6 +35,7 @@ public class Input {
      * - Mouse click callback -> left button pressed, right button pressed
      * - Key callback -> keys[]
      * - Mouse position callback -> mouse move
+     *
      * @param window sets centerX and centerY;
      */
     public void init(Window window, Camera camera) {
@@ -46,8 +46,8 @@ public class Input {
         glfwSetCursorPos(window.getWindowHandle(), centerX, centerY);
 
         glfwSetCursorPosCallback(window.getWindowHandle(), (windowHandle, xpos, ypos) -> {
-            dx += centerX - (int)xpos;
-            dy += centerY - (int)ypos;
+            dx += centerX - (int) xpos;
+            dy += centerY - (int) ypos;
             glfwSetCursorPos(window.getWindowHandle(), centerX, centerY);
         });
 
@@ -77,7 +77,7 @@ public class Input {
     }
 
     public boolean isKeyDown(int scancode) {
-         return glfwGetKey(window.getWindowHandle(), scancode) == GLFW_PRESS;
+        return glfwGetKey(window.getWindowHandle(), scancode) == GLFW_PRESS;
     }
 
     private void limit(Vector3f v, float keyboardSpeed) {
@@ -171,9 +171,9 @@ public class Input {
 //        System.out.println(speed);
         limit(speed, keyboardSpeed);
         camera.move(speed);
-        
+
         scene.chunkManager.update(camera.getPosition());
-        
+
         lastUpdateTime = System.currentTimeMillis();
     }
 }

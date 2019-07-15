@@ -36,7 +36,8 @@ public class SimplexNoise {
 
     public double get(int x, int y, int z) {
         double result = 0;
-        for (int i = 0; i < OCTAVE_COUNT; ++i) result += octaves[i].noise(x / freqs[i], y / freqs[i], z / freqs[i]) * amps[i];
+        for (int i = 0; i < OCTAVE_COUNT; ++i)
+            result += octaves[i].noise(x / freqs[i], y / freqs[i], z / freqs[i]) * amps[i];
         return result;
     }
 }

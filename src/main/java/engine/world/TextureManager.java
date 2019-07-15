@@ -3,11 +3,10 @@ package engine.world;
 import engine.graphics.Material;
 import engine.graphics.Mesh;
 import engine.graphics.Texture;
-
-import java.util.Random;
-
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+
+import java.util.Random;
 
 public class TextureManager {
     public static int AIR = 0;
@@ -188,7 +187,7 @@ public class TextureManager {
     }
 
     private static void genRandomFace(int textureID, Vector3f a, Vector3f b, Vector3f c, Vector3f d, Vector3f normalVector,
-                                boolean flag, float[] position, float[] textureCoord, float[] normal) {
+                                      boolean flag, float[] position, float[] textureCoord, float[] normal) {
         float x1 = (textureID / 16) / 16.0f, y1 = (textureID % 16) / 16.0f;
         float x2 = x1 + 1 / 16.0f, y2 = y1 + 1 / 16.0f;
         float x3 = random(x1, x2 - 1 / 64.0f);

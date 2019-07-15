@@ -1,6 +1,7 @@
 package engine.graphics;
 
 import java.nio.ByteBuffer;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL14.GL_TEXTURE_COMPARE_FUNC;

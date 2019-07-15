@@ -1,33 +1,26 @@
 package thread;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 import engine.world.Chunk;
 import engine.world.ChunkManager;
 import engine.world.gen.ChunkGenerator;
 
-public class FileThread implements Runnable{
+import java.io.*;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+public class FileThread implements Runnable {
     public Chunk chunk;
     public ChunkGenerator chunkGenerator;
     File file;
     ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     public int id;
-    
-    public FileThread(Chunk chunk,ChunkGenerator chunkGenerator,File file,int id) {
-        this.chunk=chunk;
-        this.file=file;
-        this.chunkGenerator=chunkGenerator;
-        this.id=id;
+
+    public FileThread(Chunk chunk, ChunkGenerator chunkGenerator, File file, int id) {
+        this.chunk = chunk;
+        this.file = file;
+        this.chunkGenerator = chunkGenerator;
+        this.id = id;
     }
-    
+
     @Override
     public void run() {
 //        System.out.println("Thread "+id+" running");
@@ -36,8 +29,8 @@ public class FileThread implements Runnable{
             File file = this.file;
             if (!file.exists() || file.isDirectory())
                 throw new FileNotFoundException();
-            InputStream in= new FileInputStream(file);
-            BufferedInputStream bs = new BufferedInputStream(in, 16*16*256);
+            InputStream in = new FileInputStream(file);
+            BufferedInputStream bs = new BufferedInputStream(in, 16 * 16 * 256);
 
             byte[] buff = new byte[16 * 16 * 256];
             int len = -1;
@@ -60,9 +53,9 @@ public class FileThread implements Runnable{
             lock.readLock().unlock();
         }
         synchronized (ChunkManager.countReadTask) {
-            ChunkManager.countReadTask--;    
+            ChunkManager.countReadTask--;
         }
-        
+
 //        System.out.println("Thread "+id+" finish "+ChunkManager.countReadTask);
     }
 

@@ -1,19 +1,13 @@
 package engine.world;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.HashSet;
-
-import org.joml.Vector3f;
-
 import engine.maths.Pair;
 import engine.world.gen.ChunkGenerator;
 import engine.world.gen.ChunkGeneratorOverWorld;
+import org.joml.Vector3f;
 import thread.FileThread;
+
+import java.io.*;
+import java.util.HashSet;
 
 public class ChunkManager {
     private final int WORLD_MAX_WIDTH = 50;
@@ -22,8 +16,8 @@ public class ChunkManager {
     private Pair generateCenter;
     private int id = 0;
 
-    private int[] dx = { 1, 0, -1, 0 };
-    private int[] dz = { 0, -1, 0, 1 };
+    private int[] dx = {1, 0, -1, 0};
+    private int[] dz = {0, -1, 0, 1};
     private ChunkGenerator chunkGenerator;
     private File[][] files;
     private Chunk[][] chunks = new Chunk[WORLD_MAX_WIDTH][WORLD_MAX_LENGTH];
@@ -53,7 +47,7 @@ public class ChunkManager {
 //                writeChunkToFile(chunkGenerator.generateChunk(i, j));
 //            }
 //        }
-        long preTime=System.currentTimeMillis();
+        long preTime = System.currentTimeMillis();
         countReadTask = 0;
         for (int i = 0; i < 8; ++i) {
             for (int j = 0; j < 8; ++j) {
@@ -67,19 +61,19 @@ public class ChunkManager {
                         + (System.currentTimeMillis() - beginTime));
             }
         }
-        
+
         try {
             while (countReadTask > 0) {
                 Thread.sleep(1);
-            }   
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         for (Pair p : posSet) {
             chunks[p.first][p.second].generateMesh(this);
         }
-        System.out.println("ChunkManager.init() done "+(System.currentTimeMillis()-preTime));
+        System.out.println("ChunkManager.init() done " + (System.currentTimeMillis() - preTime));
     }
 
     public void clear() {
@@ -134,11 +128,11 @@ public class ChunkManager {
                 }
             }
         }
-        
+
         try {
             while (countReadTask > 0) {
                 Thread.sleep(1);
-            }   
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -146,10 +140,10 @@ public class ChunkManager {
         for (Pair p : addSet) {
             chunks[p.first][p.second].generateMesh(this);
         }
-        
-        
+
+
         System.out.println("ChunkManager.update() finish, use time: " + (System.currentTimeMillis() - beginTime)
-                + " update " + cnt + " chunks "+" maxMemory:"+Runtime.getRuntime().maxMemory()/1024/1024+" freeMemory:"+Runtime.getRuntime().freeMemory()/1024/1024 );
+                + " update " + cnt + " chunks " + " maxMemory:" + Runtime.getRuntime().maxMemory() / 1024 / 1024 + " freeMemory:" + Runtime.getRuntime().freeMemory() / 1024 / 1024);
     }
 
     public Block getBlock(int x, int y, int z) { // x y z are world coord
@@ -204,7 +198,7 @@ public class ChunkManager {
         Chunk chunk = new Chunk(x, z);
 //        FileThread fileThread=new FileThread(chunk, chunkGenerator, files[x][z], id++);
 //        fileThread.run();
-        Thread fileThread=new Thread(new FileThread(chunk, chunkGenerator, files[x][z], id++));
+        Thread fileThread = new Thread(new FileThread(chunk, chunkGenerator, files[x][z], id++));
         fileThread.start();
         return chunk;
     }
