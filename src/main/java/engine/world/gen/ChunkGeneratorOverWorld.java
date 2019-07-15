@@ -41,7 +41,7 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
 //    public static final float biomeScaleWeight = 0.7f;
     public static final float lowerLimitScale = 512.0f;
     public static final float upperLimitScale = 512.0f;
-    public static final float stretchY = 5f;
+    public static final float stretchY = 1f;
     public static final float baseSize = 8.5f; // surf average height
     public static final double persistence = 0.5;
 

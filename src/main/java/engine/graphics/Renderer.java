@@ -11,6 +11,7 @@ import engine.graphics.shaders.Shader;
 import engine.graphics.shaders.ShaderFactory;
 import engine.graphics.shadow.ShadowCascade;
 import engine.graphics.shadow.ShadowRenderer;
+import engine.maths.FrustumCullFilter;
 import engine.maths.Transformations;
 import engine.Camera;
 import engine.world.*;
@@ -33,6 +34,7 @@ public class Renderer implements Runnable {
     private Shader sceneShader, depthShader, particleShader;
     private ShadowRenderer shadowRenderer;
     private Fog fog;
+    private FrustumCullFilter frustumCullFilter;
     private final Transformations transformations;
     private final float specularPower = 10f;
     private final Vector3f ambientLight = new Vector3f(.5f, .5f, .5f);
@@ -48,6 +50,7 @@ public class Renderer implements Runnable {
 
     public Renderer() {
         transformations = new Transformations();
+        frustumCullFilter = new FrustumCullFilter();
     }
 
     /**
@@ -106,16 +109,19 @@ public class Renderer implements Runnable {
         if (selectedBlockPos != null) sceneShader.setUniform("selectedBlock", selectedBlockPos);
         else sceneShader.setUniform("selectedBlock", new Vector3f(0, 0, 0));
 
-        // Update view Matrix
+        // Update view Matrix & projection Matrix
         Matrix4f viewMatrix = transformations.getViewMatrix(camera);
+        Matrix4f projectionMatrix = transformations.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(), Z_NEAR, Z_FAR);
+
+        // Update frustum culling
+        frustumCullFilter.updateFrustum(projectionMatrix, viewMatrix);
 
         // Update Light Uniforms
         renderLight(viewMatrix, ambientLight, scene.light, sceneShader);
 
         // Update matrices
-        sceneShader.setUniform("projectionMatrix",
-                transformations.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(), Z_NEAR, Z_FAR));
-        sceneShader.setUniform("viewMatrix", transformations.getViewMatrix(camera));
+        sceneShader.setUniform("projectionMatrix",projectionMatrix);
+        sceneShader.setUniform("viewMatrix", viewMatrix);
 
         // Update cascade shadows
         List<ShadowCascade> shadowCascades = shadowRenderer.getShadowCascades();
@@ -134,17 +140,19 @@ public class Renderer implements Runnable {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, TextureManager.material.getTexture().getId());
 
+        int cnt = 0;
+
+        shadowRenderer.bindTextures(GL_TEXTURE2);
         sceneShader.setUniform("material", TextureManager.material);
         for (Chunk chunk : scene.chunkManager.getChunks()) {
             sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
-            shadowRenderer.bindTextures(GL_TEXTURE2);
-            chunk.renderSolid();
+            cnt += chunk.renderSolid(frustumCullFilter);
         }
         for (Chunk chunk : scene.chunkManager.getChunks()) {
             sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
-            shadowRenderer.bindTextures(GL_TEXTURE2);
-            chunk.renderTransparencies();
+            cnt += chunk.renderTransparencies(frustumCullFilter);
         }
+        System.out.println(cnt);
         sceneShader.unbind();
 
     }
@@ -168,7 +176,7 @@ public class Renderer implements Runnable {
     }
 
     private void renderShadowMap(Scene scene) {
-        shadowRenderer.render(camera, scene, transformations);
+        shadowRenderer.render(camera, scene, transformations, frustumCullFilter);
     }
 
     private void renderCrossHair(Window window) {
