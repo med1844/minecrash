@@ -26,7 +26,7 @@ public class CameraSelectionDetector {
         nearFar = new Vector2f();
     }
 
-    public Vector3f selectBlock(Collection<Chunk> chunks, Camera camera, Transformations transformations) {
+    public Vector3f selectBlock(Iterable<Chunk> chunks, Camera camera, Transformations transformations) {
         dir = transformations.getViewMatrix(camera).positiveZ(dir).negate();
         return selectBlock(chunks, camera.getPosition(), dir);
     }
@@ -35,7 +35,7 @@ public class CameraSelectionDetector {
         return Math.abs(x1 - x2) + Math.abs(z1 - z2);
     }
 
-    private Vector3f selectBlock(Collection<Chunk> chunks, Vector3f center, Vector3f dir) {
+    private Vector3f selectBlock(Iterable<Chunk> chunks, Vector3f center, Vector3f dir) {
         Block block;
         Block selectedBlock = null;
         float blockClosestDistance = Float.POSITIVE_INFINITY;

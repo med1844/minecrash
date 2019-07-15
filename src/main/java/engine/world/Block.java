@@ -2,12 +2,14 @@ package engine.world;
 
 import org.joml.Vector3f;
 
+import jdk.internal.dynalink.beans.StaticClass;
+
 public class Block {
     private int blockID;
     private int type;
     public int x, y, z; // stores ABSOLUTE coordinate in the world
     public int[] face;
-
+    
     public Block(int blockID, int x, int y, int z) {
         this.blockID = blockID;
         this.x = x;
@@ -42,4 +44,7 @@ public class Block {
         this.type = TextureManager.getType(blockID);
         this.face = TextureManager.getFace(blockID);
     }
+
+    
+    
 }

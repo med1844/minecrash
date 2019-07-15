@@ -136,14 +136,14 @@ public class Renderer implements Runnable {
         glBindTexture(GL_TEXTURE_2D, shadowMap.getDepthMap().getId());
 
         sceneShader.setUniform("material", TextureManager.material);
-        for (Chunk chunk : scene.chunkManager.getChunks(camera.getPosition())) {
+        for (Chunk chunk : scene.chunkManager.getChunks()) {
             sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
             sceneShader.setUniform("modelViewMatrix", transformations.buildModelViewMatrix(chunk, viewMatrix));
             sceneShader.setUniform("modelLightViewMatrix",
                     transformations.buildModelLightViewMatrix(chunk, lightViewMatrix));
             chunk.renderSolid();
         }
-        for (Chunk chunk : scene.chunkManager.getChunks(camera.getPosition())) {
+        for (Chunk chunk : scene.chunkManager.getChunks()) {
             sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
             sceneShader.setUniform("modelViewMatrix", transformations.buildModelViewMatrix(chunk, viewMatrix));
             sceneShader.setUniform("modelLightViewMatrix",
@@ -192,12 +192,12 @@ public class Renderer implements Runnable {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, TextureManager.material.getTexture().getId());
 
-        for (Chunk chunk : scene.chunkManager.getChunks(camera.getPosition())) {
+        for (Chunk chunk : scene.chunkManager.getChunks()) {
             depthShader.setUniform("modelLightViewMatrix",
                     transformations.buildModelLightViewMatrix(chunk, lightViewMatrix));
             chunk.renderSolid();
         }
-        for (Chunk chunk : scene.chunkManager.getChunks(camera.getDirection())) {
+        for (Chunk chunk : scene.chunkManager.getChunks()) {
             depthShader.setUniform("modelLightViewMatrix",
                     transformations.buildModelLightViewMatrix(chunk, lightViewMatrix));
             chunk.renderTransparencies();

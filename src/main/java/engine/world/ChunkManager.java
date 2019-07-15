@@ -1,21 +1,16 @@
 package engine.world;
 
-import java.io.BufferedReader;
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 
-import org.joml.Vector3f;
+import javax.swing.plaf.IconUIResource;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
+import org.joml.Vector3f;
 
 import engine.maths.Pair;
 import engine.world.gen.ChunkGenerator;
@@ -25,61 +20,73 @@ import thread.FileThread;
 public class ChunkManager {
     private final int WORLD_MAX_WIDTH = 50;
     private final int WORLD_MAX_LENGTH = 50;
-    private int generateDistance = 8;
+    private int generateDistance = 4;
     private Pair generateCenter;
+    private int id = 0;
 
-    private HashMap<Pair, Chunk> chunkMap;
     private int[] dx = { 1, 0, -1, 0 };
     private int[] dz = { 0, -1, 0, 1 };
     private ChunkGenerator chunkGenerator;
     private File[][] files;
+    private Chunk[][] chunks = new Chunk[WORLD_MAX_WIDTH][WORLD_MAX_LENGTH];
+    private boolean[][] hasChunk = new boolean[WORLD_MAX_WIDTH][WORLD_MAX_LENGTH];
+    private HashSet<Pair> posSet;
+
+    public static Integer countReadTask = 0;
 
     public ChunkManager() {
-        chunkMap = new HashMap<Pair, Chunk>();
+        posSet = new HashSet<Pair>();
         chunkGenerator = new ChunkGeneratorOverWorld();
-    }
-
-    public void init() {
         generateCenter = new Pair(0, 0);
-        files = new File[50][50];
-        for (int i = 0; i < 50; ++i) {
-            for (int j = 0; j < 50; ++j) {
-                String filename = "C:\\map\\chunk" + i + "_" + j + ".txt";
+        files = new File[WORLD_MAX_WIDTH][WORLD_MAX_LENGTH];
+        for (int i = 0; i < WORLD_MAX_WIDTH; ++i) {
+            for (int j = 0; j < WORLD_MAX_LENGTH; ++j) {
+                String filename = "C:\\map\\chunk" + i + "_" + j + ".bin";
                 files[i][j] = new File(filename);
             }
         }
+    }
+
+    public void init() {
 
 //        for (int i = 0; i < 50; ++i) {
 //            for (int j = 0; j < 50; ++j) {
 //                System.out.println("[INFO] writing Chunk [" + i + ", " + j + "]");
 //                writeChunkToFile(chunkGenerator.generateChunk(i, j));
-////                chunkMap.put(new Pair<>(i, j), chunkGenerator.generateChunk(i, j));
 //            }
 //        }
-
-        for (int i = 0; i < 16; ++i) {
-            for (int j = 0; j < 16; ++j) {
+        long preTime=System.currentTimeMillis();
+        countReadTask = 0;
+        for (int i = 0; i < 8; ++i) {
+            for (int j = 0; j < 8; ++j) {
+                hasChunk[i][j] = true;
+                posSet.add(new Pair(i, j));
                 long beginTime = System.currentTimeMillis();
-                chunkMap.put(new Pair(i, j), readChunkFromFile(i, j));
+                countReadTask++;
+                chunks[i][j] = readChunkFromFile(i, j);
+//                chunks[i][j] = chunkGenerator.generateChunk(i, j);
                 System.out.println("[INFO] reading Chunk [" + i + ", " + j + "]" + " ,use time: "
                         + (System.currentTimeMillis() - beginTime));
             }
         }
-
-        for (Chunk chunk : chunkMap.values()) {
-//            System.out.println("[INFO] Generating Chunk Mesh [" + chunk.getx() + ", " + chunk.getz() + "]");
-            chunk.generateMesh(this);
+        
+        try {
+            while (countReadTask > 0) {
+                Thread.sleep(1);
+            }   
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-    }
-
-    public Collection<Chunk> getChunks(Vector3f position) {
-        return chunkMap.values();
+        
+        for (Pair p : posSet) {
+            chunks[p.first][p.second].generateMesh(this);
+        }
+        System.out.println("ChunkManager.init() done "+(System.currentTimeMillis()-preTime));
     }
 
     public void clear() {
-        for (Chunk chunk : chunkMap.values()) {
-            chunk.clear();
+        for (Pair p : posSet) {
+            chunks[p.first][p.second].clear();
         }
     }
 
@@ -92,20 +99,25 @@ public class ChunkManager {
         long beginTime = System.currentTimeMillis();
 
         generateCenter = new Pair((int) position.x / 16, (int) position.z / 16);
-//        System.out.println("centerx:"+generateCenter.getKey()+" centerz:"+generateCenter.getValue()+" centery:"+(int)position.y);
 
-        HashSet<Pair> posSet = new HashSet<Pair>();
-        for (Chunk chunk : chunkMap.values()) {
-            if (!valid(chunk.getx(), chunk.getz()) || outOfSight(chunk.getx(), chunk.getz())) {
-//                System.out.println("[INFO] removing Chunk [" + chunk.getx() + ", " + chunk.getz() + "]");
-                posSet.add(new Pair(chunk.getx(), chunk.getz()));
+        HashSet<Pair> removeSet = new HashSet<Pair>();
+        for (Pair p : posSet) {
+            if (!valid(p.first, p.second) || outOfSight(p.first, p.second)) {
+                removeSet.add(p);
             }
         }
-        for (Pair p : posSet) {
-            chunkMap.remove(p);
+
+        for (Pair p : removeSet) {
+            chunks[p.first][p.second] = null;
+            hasChunk[p.first][p.second] = false;
+            posSet.remove(p);
         }
+
+        HashSet<Pair> addSet = new HashSet<Pair>();
+
         int cnt = 0;
-        posSet.clear();
+        id = 0;
+        countReadTask = 0;
         for (int i = -generateDistance + generateCenter.first; i <= generateDistance + generateCenter.first; ++i) {
             int d = (int) Math.sqrt(
                     generateDistance * generateDistance - (generateCenter.first - i) * (generateCenter.first - i));
@@ -113,32 +125,33 @@ public class ChunkManager {
                 if (!valid(i, j)) {
                     continue;
                 }
-                if (chunkMap.get(new Pair(i, j)) == null) {
-//                    System.out.println("[INFO] Generating Chunk [" + i + ", " + j + "]");
-//                    chunkMap.put(new Pair<>(i, j), chunkGenerator.generateChunk(i, j));
-//                    Chunk newChunk = readChunkFromFile(i, j);
-                    Chunk newChunk = new Chunk(i, j);
-                    long tmp = System.currentTimeMillis();
-                    readChunkFromFile(newChunk);
-//                    System.out.println("[INFO] read Chunk [" + i + ", " + j + "]" + " use time: "
-//                            + (System.currentTimeMillis() - tmp));
-//                    if (newChunk == null) {
-//                        System.out.println("[INFO] create Chunk[" + i + ", " + j + "]" + " failed");
-//                    }
-                    chunkMap.put(new Pair(i, j), newChunk);
-                    posSet.add(new Pair(i, j));
+                if (!hasChunk[i][j]) {
+                    countReadTask++;
                     cnt++;
+//                    chunks[i][j] = chunkGenerator.generateChunk(i, j);
+                    chunks[i][j] = readChunkFromFile(i, j);
+                    addSet.add(new Pair(i, j));
+                    posSet.add(new Pair(i, j));
+                    hasChunk[i][j] = true;
                 }
             }
         }
         
-        
-        for (Pair p : posSet) {
-            chunkMap.get(p).generateMesh(this);
+        try {
+            while (countReadTask > 0) {
+                Thread.sleep(1);
+            }   
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
+        for (Pair p : addSet) {
+            chunks[p.first][p.second].generateMesh(this);
+        }
+        
+        
         System.out.println("ChunkManager.update() finish, use time: " + (System.currentTimeMillis() - beginTime)
-                + " update " + cnt + " chunks");
+                + " update " + cnt + " chunks "+" maxMemory:"+Runtime.getRuntime().maxMemory()/1024/1024+" freeMemory:"+Runtime.getRuntime().freeMemory()/1024/1024 );
     }
 
     public Block getBlock(int x, int y, int z) { // x y z are world coord
@@ -147,10 +160,9 @@ public class ChunkManager {
         if (!valid(chunkX, chunkZ))
             return null;
 
-        Chunk curChunk = chunkMap.get(new Pair(chunkX, chunkZ));
-        if (curChunk == null)
+        if (chunks[chunkX][chunkZ] == null)
             return null;
-        return curChunk.getBlock(x & 15, y, z & 15);
+        return chunks[chunkX][chunkZ].getBlock(x & 15, y, z & 15);
     }
 
     private boolean valid(int chunkX, int chunkZ) {
@@ -168,110 +180,61 @@ public class ChunkManager {
         if (!valid(chunkX, chunkZ))
             return;
 
-        Chunk curChunk = chunkMap.get(new Pair(chunkX, chunkZ));
-        if (curChunk == null)
+        if (chunks[chunkX][chunkZ] == null)
             return;
 
-        curChunk.setBlock(blockID, x & 15, y, z & 15);
-        curChunk.updateMesh(y >> 4, this);
+        chunks[chunkX][chunkZ].setBlock(blockID, x & 15, y, z & 15);
+        chunks[chunkX][chunkZ].updateMesh(y >> 4, this);
         if ((y & 15) == 0)
-            curChunk.updateMesh((y >> 4) - 1, this);
+            chunks[chunkX][chunkZ].updateMesh((y >> 4) - 1, this);
         if ((y & 15) == 15)
-            curChunk.updateMesh((y >> 4) + 1, this);
+            chunks[chunkX][chunkZ].updateMesh((y >> 4) + 1, this);
         for (int d = 0; d < 4; ++d) {
             int nx = x + dx[d], nz = z + dz[d];
             int nX = nx >> 4, nZ = nz >> 4;
-            curChunk = chunkMap.get(new Pair(nX, nZ));
-            if (curChunk == null)
+            if (chunks[nX][nZ] == null)
                 continue;
 
             if (nX != chunkX)
-                curChunk.updateMesh(y >> 4, this);
+                chunks[nX][nZ].updateMesh(y >> 4, this);
             if (nZ != chunkZ)
-                curChunk.updateMesh(y >> 4, this);
+                chunks[nX][nZ].updateMesh(y >> 4, this);
         }
     }
 
     public Chunk readChunkFromFile(int x, int z) {
         Chunk chunk = new Chunk(x, z);
-//        String filename = "C:\\map\\chunk" + x + "_" + z + ".txt";
-        try {
-            File file = files[x][z];
-//            File file = new File(filename);
-            if (!file.exists() || file.isDirectory())
-                throw new FileNotFoundException();
-            BufferedReader br = new BufferedReader(new FileReader(file), 16 * 16 * 256);
-
-            char[] buff = new char[16 * 16 * 256];
-            int len = -1;
-            int index = 0;
-            while ((len = br.read(buff)) != -1) {
-                for (int i = 0; i < len; i++) {
-                    // i j k
-                    // 16 256 16
-                    chunk.setBlock(buff[i] & 255, index >> 12, (index >> 4) & 255, index & 15);
-                    index++;
-                    chunk.setBlock(buff[i] >> 8, index >> 12, (index >> 4) & 255, index & 15);
-                    index++;
-                }
-            }
-
-            br.close();
-        } catch (FileNotFoundException e) {
-            chunk = chunkGenerator.generateChunk(x, z);
-            return chunk;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+//        FileThread fileThread=new FileThread(chunk, chunkGenerator, files[x][z], id++);
+//        fileThread.run();
+        Thread fileThread=new Thread(new FileThread(chunk, chunkGenerator, files[x][z], id++));
+        fileThread.start();
         return chunk;
     }
 
-    public void readChunkFromFile(Chunk chunk) {
-        FileThread fileThread = new FileThread();
-        fileThread.setChunk(chunk);
-        fileThread.setChunkGenerator(chunkGenerator);
-        fileThread.setFile(files[chunk.getx()][chunk.getz()]);
-        fileThread.start();
-        try {
-            fileThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void writeChunkToFile(Chunk chunk) {
-//        String filename = "C:\\map\\chunk" + chunk.getx() + "_" + chunk.getz() + ".txt";
         try {
             File file = files[chunk.getx()][chunk.getz()];
-//            File file = new File(filename);
             if (!file.exists())
                 file.createNewFile();
 
             OutputStream os = new FileOutputStream(file);
-            OutputStreamWriter writer = new OutputStreamWriter(os);
-            BufferedWriter bw = new BufferedWriter(writer);
-            char data = 0;
-            int t = 0;
+            BufferedOutputStream bs = new BufferedOutputStream(os, 16 * 16 * 256);
             for (int i = 0; i < 16; i++) {
                 for (int j = 0; j < 256; j++) {
                     for (int k = 0; k < 16; k++) {
-                        if (t == 0) {
-                            data = (char) chunk.getBlock(i, j, k).getBlockID();
-                            t++;
-                        } else {
-                            data += ((char) chunk.getBlock(i, j, k).getBlockID()) << 8;
-                            t = 0;
-                            bw.append(data);
-                        }
+                        bs.write(chunk.getBlock(i, j, k).getBlockID());
                     }
                 }
-                bw.flush();
+                bs.flush();
             }
-            bw.close();
+            bs.close();
         } catch (IOException e) {
             System.err.println(e);
         }
+    }
+
+    public Iterable<Chunk> getChunks() {
+        return new ChunkSet(posSet.iterator(), chunks);
     }
 
 }

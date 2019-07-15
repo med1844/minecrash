@@ -7,12 +7,14 @@ import java.util.Map;
 
 import engine.graphics.Mesh;
 import javafx.util.Pair;
+import sun.management.jdp.JdpJmxPacket;
+
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import static engine.world.TextureManager.*;
 
-public class Chunk {
+public class Chunk{
 
     private int x, z; // the chunk coordinates of current chunk
     private Block[][][] blocks;
@@ -30,6 +32,7 @@ public class Chunk {
         this.x = x;
         this.z = y;
         blocks = new Block[X][Y][Z]; // retrieve data through (x, y, z)
+        for (int i=0;i<X;i++) for (int j=0;j<Y;j++)for (int k=0;k<Z;k++) blocks[i][j][k]=new Block(0,i,j,k);
         m = new HashMap<>();
         solid = new Mesh[Y >> 4];
         transparencies = new Mesh[Y >> 4];
@@ -334,9 +337,9 @@ public class Chunk {
                             } else {
                                 temp = blocks[nx][ny][nz];
                             }
-                            if (temp == null)
-                                continue;
-                            if ((blocks[x][y][z].getType() & 3) != (temp.getType() & 3)) {
+//                            if (temp == null)
+//                                continue;
+                            if (temp==null||(blocks[x][y][z].getType() & 3) != (temp.getType() & 3)) {
                                 l.add(new Pair<>(blocks[x][y][z], d));
                                 addAO(x, y, z, d, chunkManager);
                             }
@@ -441,5 +444,6 @@ public class Chunk {
         }
         return false;
     }
+    
 
 }
