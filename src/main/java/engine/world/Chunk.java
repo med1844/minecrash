@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import engine.graphics.Mesh;
+import engine.maths.FrustumCullFilter;
 import javafx.util.Pair;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -378,16 +379,26 @@ public class Chunk {
         return new Vector3f(x << 4, 0, z << 4);
     }
 
-    public void renderSolid() {
+    public int renderSolid(FrustumCullFilter frustumCullFilter) {
+        int cnt = 0;
         for (int i = 0; i < (Y >> 4); ++i) {
-            solid[i].render();
+            if (frustumCullFilter == null || frustumCullFilter.insideFrustum((x << 4) + (X >> 1), (i << 4) + 8, (z << 4) + (Z >> 1), 13.856406460551018f)) {
+                solid[i].render();
+                ++cnt;
+            }
         }
+        return cnt;
     }
 
-    public void renderTransparencies() {
+    public int renderTransparencies(FrustumCullFilter frustumCullFilter) {
+        int cnt = 0;
         for (int i = 0; i < (Y >> 4); ++i) {
-            transparencies[i].render();
+            if (frustumCullFilter == null || frustumCullFilter.insideFrustum((x << 4) + (X >> 1), (i << 4) + 8, (z << 4) + (Z >> 1), 13.856406460551018f)) {
+                transparencies[i].render();
+                ++cnt;
+            }
         }
+        return cnt;
     }
 
 }

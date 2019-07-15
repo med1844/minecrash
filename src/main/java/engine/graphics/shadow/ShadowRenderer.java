@@ -4,6 +4,7 @@ import engine.Camera;
 import engine.IO.Window;
 import engine.graphics.DirectionalLight;
 import engine.graphics.shaders.Shader;
+import engine.maths.FrustumCullFilter;
 import engine.maths.Transformations;
 import engine.world.Chunk;
 import engine.world.Scene;
@@ -46,7 +47,7 @@ public class ShadowRenderer {
         }
     }
 
-    public void render(Camera camera, Scene scene, Transformations transformations) {
+    public void render(Camera camera, Scene scene, Transformations transformations, FrustumCullFilter frustumCullFilter) {
 //        update(window, transformations.getViewMatrix(camera), scene);
         update(camera, scene);
 
@@ -59,13 +60,18 @@ public class ShadowRenderer {
         for (int i = 0; i < CASCADE_NUM; ++i) {
             ShadowCascade shadowCascade = shadowCascades.get(i);
 
-            depthShader.setUniform("orthoProjectionMatrix", shadowCascade.getOrthoProjectionMatrix());
-            depthShader.setUniform("lightViewMatrix", shadowCascade.getLightViewMatrix());
+            Matrix4f projectionMatrix = shadowCascade.getOrthoProjectionMatrix();
+            Matrix4f lightViewMatrix = shadowCascade.getLightViewMatrix();
+
+            depthShader.setUniform("orthoProjectionMatrix", projectionMatrix);
+            depthShader.setUniform("lightViewMatrix", lightViewMatrix);
+
+//            frustumCullFilter.updateFrustum(projectionMatrix, lightViewMatrix);
 
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowBuffer.getDepthMapTexture().getIds()[i], 0);
             glClear(GL_DEPTH_BUFFER_BIT);
 
-            renderChunks(scene, transformations);
+            renderChunks(scene, transformations, frustumCullFilter);
         }
 
         // Unbind
@@ -77,7 +83,7 @@ public class ShadowRenderer {
         shadowBuffer.bindTextures(start);
     }
 
-    private void renderChunks(Scene scene, Transformations transformations) {
+    private void renderChunks(Scene scene, Transformations transformations, FrustumCullFilter frustumCullFilter) {
 
 //        glActiveTexture(GL_TEXTURE0);
 //        glBindTexture(GL_TEXTURE_2D, TextureManager.material.getTexture().getId());
@@ -85,12 +91,12 @@ public class ShadowRenderer {
         for (Chunk chunk : scene.chunkManager.getChunks()) {
             depthShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
             bindTextures(GL_TEXTURE2);
-            chunk.renderSolid();
+            chunk.renderSolid(frustumCullFilter);
         }
         for (Chunk chunk : scene.chunkManager.getChunks()) {
             depthShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
             bindTextures(GL_TEXTURE2);
-            chunk.renderTransparencies();
+            chunk.renderTransparencies(frustumCullFilter);
         }
     }
 
