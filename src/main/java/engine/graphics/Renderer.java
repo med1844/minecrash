@@ -140,19 +140,16 @@ public class Renderer implements Runnable {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, TextureManager.material.getTexture().getId());
 
-        int cnt = 0;
-
         shadowRenderer.bindTextures(GL_TEXTURE2);
         sceneShader.setUniform("material", TextureManager.material);
         for (Chunk chunk : scene.chunkManager.getChunks()) {
             sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
-            cnt += chunk.renderSolid(frustumCullFilter);
+            chunk.renderSolid(frustumCullFilter);
         }
         for (Chunk chunk : scene.chunkManager.getChunks()) {
             sceneShader.setUniform("modelMatrix", transformations.getModelMatrix(chunk));
-            cnt += chunk.renderTransparencies(frustumCullFilter);
+            chunk.renderTransparencies(frustumCullFilter);
         }
-        System.out.println(cnt);
         sceneShader.unbind();
 
     }

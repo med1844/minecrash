@@ -18,6 +18,7 @@ public class Chunk {
     private int x, z; // the chunk coordinates of current chunk
     private Block[][][] blocks;
     private Mesh[] solid, transparencies;
+    private boolean[] isEmpty;
     private int pos, tex, norm, adj;
     private static final int X = 16;
     private static final int Y = 256;
@@ -34,6 +35,7 @@ public class Chunk {
         m = new HashMap<>();
         solid = new Mesh[Y >> 4];
         transparencies = new Mesh[Y >> 4];
+        isEmpty = new boolean[Y >> 4];
     }
 
     private boolean valid(int x, int y, int z) {
@@ -278,7 +280,7 @@ public class Chunk {
         }
     }
 
-    public void generatePartMesh(ChunkManager chunkManager, int index, int type, Mesh[] target) {
+    private boolean generatePartMesh(ChunkManager chunkManager, int index, int type, Mesh[] target) {
         List<Pair<Block, Integer>> l = new LinkedList<>();
         m.clear();
         pos = tex = norm = adj = 0;
@@ -319,19 +321,22 @@ public class Chunk {
             addFace(p.getKey(), p.getValue(), position, textureCoord, normal, adjacentFaceCount);
         }
         target[index] = new Mesh(position, textureCoord, normal, indices, adjacentFaceCount, TextureManager.material);
+        return l.isEmpty();
     }
 
     public void generateMesh(ChunkManager chunkManager) {
         for (int i = 0; i < (Y >> 4); ++i) {
-            generatePartMesh(chunkManager, i, SOLID, solid);
-            generatePartMesh(chunkManager, i, TRANSPARENT, transparencies);
+            boolean solidFlag = generatePartMesh(chunkManager, i, SOLID, solid);
+            boolean transparentFlag = generatePartMesh(chunkManager, i, TRANSPARENT, transparencies);
+            isEmpty[i] = solidFlag && transparentFlag;
         }
     }
 
     public void updateMesh(int i, ChunkManager chunkManager) {
         if (0 <= i && i < (Y >> 4)) {
-            generatePartMesh(chunkManager, i, SOLID, solid);
-            generatePartMesh(chunkManager, i, TRANSPARENT, transparencies);
+            boolean solidFlag = generatePartMesh(chunkManager, i, SOLID, solid);
+            boolean transparentFlag = generatePartMesh(chunkManager, i, TRANSPARENT, transparencies);
+            isEmpty[i] = solidFlag && transparentFlag;
         }
     }
 
@@ -379,26 +384,26 @@ public class Chunk {
         return new Vector3f(x << 4, 0, z << 4);
     }
 
-    public int renderSolid(FrustumCullFilter frustumCullFilter) {
-        int cnt = 0;
+    public void renderSolid(FrustumCullFilter frustumCullFilter) {
         for (int i = 0; i < (Y >> 4); ++i) {
+            if (isEmpty[i]) continue;
             if (frustumCullFilter == null || frustumCullFilter.insideFrustum((x << 4) + (X >> 1), (i << 4) + 8, (z << 4) + (Z >> 1), 13.856406460551018f)) {
-                solid[i].render();
-                ++cnt;
+                if (solid[i] != null) {
+                    solid[i].render();
+                }
             }
         }
-        return cnt;
     }
 
-    public int renderTransparencies(FrustumCullFilter frustumCullFilter) {
-        int cnt = 0;
+    public void renderTransparencies(FrustumCullFilter frustumCullFilter) {
         for (int i = 0; i < (Y >> 4); ++i) {
+            if (isEmpty[i]) continue;
             if (frustumCullFilter == null || frustumCullFilter.insideFrustum((x << 4) + (X >> 1), (i << 4) + 8, (z << 4) + (Z >> 1), 13.856406460551018f)) {
-                transparencies[i].render();
-                ++cnt;
+                if (transparencies[i] != null) {
+                    transparencies[i].render();
+                }
             }
         }
-        return cnt;
     }
 
 }
