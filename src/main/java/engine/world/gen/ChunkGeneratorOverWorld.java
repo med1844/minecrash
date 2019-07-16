@@ -55,10 +55,7 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
         rand.setSeed(seed);
 
         int depthNoiseOctave = 4;
-
-        //
         int mainNoiseOctave = 16;
-        // minNoiseOctave=maxNoiseOctave, for interpolate
         int minLimitNoiseOctave = 16;
         int maxLimitNoiseOctave = 16;
 
@@ -72,7 +69,6 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
 
         System.out.println(seed + " " + depthNoiseOctave + " " + mainNoiseOctave + " " + minLimitNoiseOctave + " "
                 + maxLimitNoiseOctave);
-
     }
 
     @Override

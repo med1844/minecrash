@@ -1,6 +1,5 @@
 package engine.world.ChunkUtils;
 
-import java.awt.desktop.SystemSleepEvent;
 import java.util.*;
 
 import engine.world.Block;
@@ -10,12 +9,10 @@ import javafx.util.Pair;
 import org.joml.Vector3f;
 
 public class ChunkManager {
-    private final int WORLD_MAX_WIDTH =  0;
-    private final int WORLD_MAX_LENGTH =  0;
     private Map<Pair<Integer, Integer>, Chunk> chunkMap;
     private int[] dx = {1, 0, -1, 0};
     private int[] dz = {0, -1, 0, 1};
-    private ChunkGenerator chunkGenerator;
+//    private ChunkGenerator chunkGenerator;
     private int viewDistanceNear = 8;
     private int viewDistanceFar = 12;
     private Vector3f generateCenter;
@@ -23,7 +20,7 @@ public class ChunkManager {
 
     public ChunkManager() {
         chunkMap = new HashMap<>();
-        chunkGenerator = new ChunkGeneratorOverWorld();
+//        chunkGenerator = new ChunkGeneratorOverWorld();
         generateCenter = new Vector3f();
         updateList = new HashSet<>();
     }
@@ -97,18 +94,21 @@ public class ChunkManager {
     }
 
     public void update(Vector3f cameraPosition) {
+        List<MultiThreadChunkGenerator> generators = new LinkedList<>();
+
         generateCenter.set(cameraPosition);
 
         chunkMap.values().removeIf(this::tooFar);
 
-        long time = System.nanoTime();
         int centerX = (int) generateCenter.x >> 4;
         int centerZ = (int) generateCenter.z >> 4;
         for (int i = centerX - viewDistanceNear; i <= centerX + viewDistanceNear; ++i) {
             for (int j = centerZ - viewDistanceNear; j <= centerZ + viewDistanceNear; ++j) {
                 if (i < 0 || j < 0) continue;
                 if (!chunkMap.containsKey(new Pair<>(i, j))) {
-                    chunkMap.put(new Pair<>(i, j), chunkGenerator.generateChunk(i, j));
+                    MultiThreadChunkGenerator generator = new MultiThreadChunkGenerator(i, j);
+                    generators.add(generator);
+                    generator.start();
                     updateList.add(new Pair<>(i, j));
                     for (int d = 0; d < 4; ++d) {
                         int nx = i + dx[d];
@@ -120,7 +120,16 @@ public class ChunkManager {
                 }
             }
         }
-        System.out.println(System.nanoTime() - time);
+
+        try {
+            for (MultiThreadChunkGenerator generator : generators) {
+                generator.join();
+                chunkMap.put(new Pair<>(generator.getX(), generator.getZ()), generator.getChunk());
+            }
+        } catch (InterruptedException e) {
+            System.err.println("[ERROR] ChunkManager.update(): Error in generating chunks.");
+            e.printStackTrace();
+        }
 
         for (Pair<Integer, Integer> p : updateList) {
             chunkMap.get(p).generateMesh(this);
