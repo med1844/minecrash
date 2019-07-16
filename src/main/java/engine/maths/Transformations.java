@@ -2,7 +2,7 @@ package engine.maths;
 
 import engine.Camera;
 import engine.graphics.particles.Particle;
-import engine.world.Chunk;
+import engine.world.ChunkUtils.Chunk;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 

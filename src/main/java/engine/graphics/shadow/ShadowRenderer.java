@@ -4,7 +4,7 @@ import engine.Camera;
 import engine.graphics.shaders.Shader;
 import engine.maths.FrustumCullFilter;
 import engine.maths.Transformations;
-import engine.world.Chunk;
+import engine.world.ChunkUtils.Chunk;
 import engine.world.Scene;
 import org.joml.Matrix4f;
 

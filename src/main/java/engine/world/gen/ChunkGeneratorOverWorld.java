@@ -8,7 +8,7 @@ import java.util.Random;
 
 import engine.maths.NoiseMath;
 import engine.world.BiomeBase;
-import engine.world.Chunk;
+import engine.world.ChunkUtils.Chunk;
 
 public class ChunkGeneratorOverWorld implements ChunkGenerator {
     Random rand;

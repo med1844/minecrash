@@ -4,7 +4,7 @@ import engine.IO.Window;
 import engine.graphics.DirectionalLight;
 import engine.graphics.Renderer;
 import engine.IO.Input;
-import engine.world.ChunkManager;
+import engine.world.ChunkUtils.ChunkManager;
 import engine.world.Scene;
 import engine.world.TextureManager;
 import engine.world.Timer;
@@ -84,12 +84,10 @@ public class MainEngine implements Runnable {
     }
 
     public void render() {
-        if (!renderer.isRunning()) {
-            window.clear(); // clear up existing data
-            renderer.setParameter(window, camera, scene, timer, selectedBlockPos);
-            renderer.run();
-            window.swapBuffers();
-        }
+        window.clear(); // clear up existing data
+        renderer.setParameter(window, camera, scene, timer, selectedBlockPos);
+        renderer.render();
+        window.swapBuffers();
     }
 
     public void clear() {

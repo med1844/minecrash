@@ -1,7 +1,7 @@
 package engine;
 
 import engine.world.Block;
-import engine.world.Chunk;
+import engine.world.ChunkUtils.Chunk;
 import engine.world.TextureManager;
 import org.joml.*;
 import engine.maths.Transformations;

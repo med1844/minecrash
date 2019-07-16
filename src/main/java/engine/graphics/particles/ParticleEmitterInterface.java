@@ -1,6 +1,6 @@
 package engine.graphics.particles;
 
-import engine.world.ChunkManager;
+import engine.world.ChunkUtils.ChunkManager;
 
 import java.util.List;
 

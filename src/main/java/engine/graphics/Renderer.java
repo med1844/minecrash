@@ -15,6 +15,7 @@ import engine.maths.FrustumCullFilter;
 import engine.maths.Transformations;
 import engine.Camera;
 import engine.world.*;
+import engine.world.ChunkUtils.Chunk;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -30,7 +31,7 @@ import java.util.List;
  *
  * It handles: - scene rendering - light rendering - shadow mapping
  */
-public class Renderer implements Runnable {
+public class Renderer {
     private Shader sceneShader, depthShader, particleShader;
     private ShadowRenderer shadowRenderer;
     private Fog fog;
@@ -246,13 +247,6 @@ public class Renderer implements Runnable {
 
     public Transformations getTransformations() {
         return transformations;
-    }
-
-    @Override
-    public void run() {
-        running = true;
-        render();
-        running = false;
     }
 
     public boolean isRunning() {

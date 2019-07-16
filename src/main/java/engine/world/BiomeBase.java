@@ -1,7 +1,7 @@
 package engine.world;
 
 import java.util.Random;
-import engine.world.Chunk;
+import engine.world.ChunkUtils.Chunk;
 import engine.world.gen.ChunkGeneratorOverWorld;
 
 import static engine.world.TextureManager.*;
