@@ -40,7 +40,6 @@ public class MultiThreadChunkMeshBuilder implements Runnable {
 
     @Override
     public void run() {
-        long time = System.nanoTime();
         for (int i = 0; i < Chunk.getY() >> 4; ++i) {
             List<Pair<Block, Integer>> l = chunk.generatePartMeshL(chunkManager, i, TextureManager.SOLID);
             positionS[i] = new float[18 * l.size()];
@@ -63,7 +62,6 @@ public class MultiThreadChunkMeshBuilder implements Runnable {
                 chunk.addFace(p.getKey(), p.getValue(), positionT[i], textureCoordT[i], normalT[i], adjacentFaceCountT[i]);
             }
         }
-        System.out.println("Mesh data generation time: " + (System.nanoTime() - time));
     }
 
     public void start() {
@@ -75,11 +73,9 @@ public class MultiThreadChunkMeshBuilder implements Runnable {
     }
 
     public void buildMesh() {
-        long time = System.nanoTime();
         for (int i = 0; i < Chunk.getY() >> 4; ++i) {
             chunk.buildSolidMesh(i, positionS[i], textureCoordS[i], normalS[i], adjacentFaceCountS[i], indicesS[i], positionS[i].length != 0);
             chunk.buildTransparentMesh(i, positionT[i], textureCoordT[i], normalT[i], adjacentFaceCountT[i], indicesT[i], positionT[i].length != 0);
         }
-        System.out.println("Mesh creation time: " + (System.nanoTime() - time));
     }
 }
