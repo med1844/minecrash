@@ -37,8 +37,11 @@ public class Block {
         return blockID;
     }
 
-    public void set(int blockID) {
+    public void set(int blockID, int x, int y, int z) {
         this.blockID = blockID;
+        this.x=x;
+        this.type=y;
+        this.z=z;
         this.type = TextureManager.getType(blockID);
         this.face = TextureManager.getFace(blockID);
     }

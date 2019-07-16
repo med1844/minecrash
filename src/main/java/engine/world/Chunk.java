@@ -1,17 +1,22 @@
 package engine.world;
 
-import engine.graphics.Mesh;
-import engine.maths.FrustumCullFilter;
-import javafx.util.Pair;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
+import static engine.world.TextureManager.AIR;
+import static engine.world.TextureManager.SOLID;
+import static engine.world.TextureManager.TRANSPARENT;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static engine.world.TextureManager.*;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+
+import cache.FloatCache;
+import cache.IntCache;
+import engine.graphics.Mesh;
+import engine.maths.FrustumCullFilter;
+import javafx.util.Pair;
 
 public class Chunk {
 
@@ -23,9 +28,9 @@ public class Chunk {
     private static final int X = 16;
     private static final int Y = 256;
     private static final int Z = 16;
-    private static final int[] dx = {0, 0, 0, 0, 1, -1};
-    private static final int[] dy = {1, -1, 0, 0, 0, 0};
-    private static final int[] dz = {0, 0, -1, 1, 0, 0};
+    private static final int[] dx = { 0, 0, 0, 0, 1, -1 };
+    private static final int[] dy = { 1, -1, 0, 0, 0, 0 };
+    private static final int[] dz = { 0, 0, -1, 1, 0, 0 };
     private Map<Pair<Vector3f, Integer>, Integer> m;
 
     public Chunk(int x, int y) {
@@ -33,7 +38,9 @@ public class Chunk {
         this.z = y;
         blocks = new Block[X][Y][Z]; // retrieve data through (x, y, z)
         for (int i = 0; i < X; i++)
-            for (int j = 0; j < Y; j++) for (int k = 0; k < Z; k++) blocks[i][j][k] = new Block(0, i, j, k);
+            for (int j = 0; j < Y; j++)
+                for (int k = 0; k < Z; k++)
+                    blocks[i][j][k] = new Block(0, i, j, k);
         m = new HashMap<>();
         solid = new Mesh[Y >> 4];
         transparencies = new Mesh[Y >> 4];
@@ -57,7 +64,7 @@ public class Chunk {
     }
 
     private void genFace(int textureID, Vector3f a, Vector3f b, Vector3f c, Vector3f d, Vector3f normalVector,
-                         boolean flag, float[] position, float[] textureCoord, float[] normal, float[] adjacentFaceCount, int n) {
+            boolean flag, float[] position, float[] textureCoord, float[] normal, float[] adjacentFaceCount, int n) {
         float x1 = (textureID / 16) / 16.0f, y1 = (textureID % 16) / 16.0f;
         float x2 = x1 + 1 / 16.0f, y2 = y1 + 1 / 16.0f;
         Vector2f e = new Vector2f(y1, x1), f = new Vector2f(y2, x1), g = new Vector2f(y1, x2), h = new Vector2f(y2, x2);
@@ -175,47 +182,47 @@ public class Chunk {
     }
 
     private void addFace(Block block, int faceID, float[] position, float[] textureCoord, float[] normal,
-                         float[] adjacentFaceCount) {
+            float[] adjacentFaceCount) {
         int x = block.x & 15, y = block.y, z = block.z & 15;
         switch (faceID) {
-            case 0:
-                genFace(block.face[0], new Vector3f(x + 1, y + 1, z + 1), new Vector3f(x, y + 1, z + 1),
-                        new Vector3f(x + 1, y + 1, z), new Vector3f(x, y + 1, z), new Vector3f(0, 1, 0), false, position,
-                        textureCoord, normal, adjacentFaceCount, 0);
-                break;
-            case 1:
-                genFace(block.face[1], new Vector3f(x, y, z), new Vector3f(x, y, z + 1), new Vector3f(x + 1, y, z),
-                        new Vector3f(x + 1, y, z + 1), new Vector3f(0, -1, 0), false, position, textureCoord, normal,
-                        adjacentFaceCount, 1);
-                break;
-            case 2:
-                genFace(block.face[2], new Vector3f(x + 1, y + 1, z), new Vector3f(x, y + 1, z), new Vector3f(x + 1, y, z),
-                        new Vector3f(x, y, z), new Vector3f(0, 0, -1), false, position, textureCoord, normal,
-                        adjacentFaceCount, 2);
-                break;
-            case 3:
-                genFace(block.face[3], new Vector3f(x + 1, y + 1, z + 1), new Vector3f(x, y + 1, z + 1),
-                        new Vector3f(x + 1, y, z + 1), new Vector3f(x, y, z + 1), new Vector3f(0, 0, 1), true, position,
-                        textureCoord, normal, adjacentFaceCount, 3);
-                break;
-            case 4:
-                genFace(block.face[4], new Vector3f(x + 1, y + 1, z + 1), new Vector3f(x + 1, y + 1, z),
-                        new Vector3f(x + 1, y, z + 1), new Vector3f(x + 1, y, z), new Vector3f(1, 0, 0), false, position,
-                        textureCoord, normal, adjacentFaceCount, 4);
-                break;
-            case 5:
-                genFace(block.face[5], new Vector3f(x, y + 1, z + 1), new Vector3f(x, y + 1, z), new Vector3f(x, y, z + 1),
-                        new Vector3f(x, y, z), new Vector3f(-1, 0, 0), true, position, textureCoord, normal,
-                        adjacentFaceCount, 5);
-                break;
-            default:
-                System.err.println("[ERROR] Chunk.addFace(): Invalid faceID!");
-                System.exit(-1);
+        case 0:
+            genFace(block.face[0], new Vector3f(x + 1, y + 1, z + 1), new Vector3f(x, y + 1, z + 1),
+                    new Vector3f(x + 1, y + 1, z), new Vector3f(x, y + 1, z), new Vector3f(0, 1, 0), false, position,
+                    textureCoord, normal, adjacentFaceCount, 0);
+            break;
+        case 1:
+            genFace(block.face[1], new Vector3f(x, y, z), new Vector3f(x, y, z + 1), new Vector3f(x + 1, y, z),
+                    new Vector3f(x + 1, y, z + 1), new Vector3f(0, -1, 0), false, position, textureCoord, normal,
+                    adjacentFaceCount, 1);
+            break;
+        case 2:
+            genFace(block.face[2], new Vector3f(x + 1, y + 1, z), new Vector3f(x, y + 1, z), new Vector3f(x + 1, y, z),
+                    new Vector3f(x, y, z), new Vector3f(0, 0, -1), false, position, textureCoord, normal,
+                    adjacentFaceCount, 2);
+            break;
+        case 3:
+            genFace(block.face[3], new Vector3f(x + 1, y + 1, z + 1), new Vector3f(x, y + 1, z + 1),
+                    new Vector3f(x + 1, y, z + 1), new Vector3f(x, y, z + 1), new Vector3f(0, 0, 1), true, position,
+                    textureCoord, normal, adjacentFaceCount, 3);
+            break;
+        case 4:
+            genFace(block.face[4], new Vector3f(x + 1, y + 1, z + 1), new Vector3f(x + 1, y + 1, z),
+                    new Vector3f(x + 1, y, z + 1), new Vector3f(x + 1, y, z), new Vector3f(1, 0, 0), false, position,
+                    textureCoord, normal, adjacentFaceCount, 4);
+            break;
+        case 5:
+            genFace(block.face[5], new Vector3f(x, y + 1, z + 1), new Vector3f(x, y + 1, z), new Vector3f(x, y, z + 1),
+                    new Vector3f(x, y, z), new Vector3f(-1, 0, 0), true, position, textureCoord, normal,
+                    adjacentFaceCount, 5);
+            break;
+        default:
+            System.err.println("[ERROR] Chunk.addFace(): Invalid faceID!");
+            System.exit(-1);
         }
     }
 
     private void genAO(int x, int y, int z, int nx, int ny, int nz, Vector3f a, Vector3f b, ChunkManager chunkManager,
-                       int d) {
+            int d) {
         Block source = valid(x, y, z) ? blocks[x][y][z]
                 : chunkManager.getBlock((this.x << 4) + x, y, (this.z << 4) + z);
         Block target = valid(nx, ny, nz) ? blocks[nx][ny][nz]
@@ -238,86 +245,86 @@ public class Chunk {
 
     private void addAO(int x, int y, int z, int d, ChunkManager chunkManager) {
         switch (d) {
-            case 0: // UP
-                genAO(x, y + 1, z, x - 1, y + 1, z, new Vector3f(x, y + 1, z), new Vector3f(x, y + 1, z + 1), chunkManager,
-                        d);
-                genAO(x, y + 1, z, x + 1, y + 1, z, new Vector3f(x + 1, y + 1, z), new Vector3f(x + 1, y + 1, z + 1),
-                        chunkManager, d);
-                genAO(x, y + 1, z, x, y + 1, z - 1, new Vector3f(x, y + 1, z), new Vector3f(x + 1, y + 1, z), chunkManager,
-                        d);
-                genAO(x, y + 1, z, x, y + 1, z + 1, new Vector3f(x, y + 1, z + 1), new Vector3f(x + 1, y + 1, z + 1),
-                        chunkManager, d);
-                genAO(x, y + 1, z, x - 1, y + 1, z - 1, new Vector3f(x, y + 1, z), chunkManager, d);
-                genAO(x, y + 1, z, x - 1, y + 1, z + 1, new Vector3f(x, y + 1, z + 1), chunkManager, d);
-                genAO(x, y + 1, z, x + 1, y + 1, z - 1, new Vector3f(x + 1, y + 1, z), chunkManager, d);
-                genAO(x, y + 1, z, x + 1, y + 1, z + 1, new Vector3f(x + 1, y + 1, z + 1), chunkManager, d);
-                break;
-            case 1: // DOWN
-                genAO(x, y - 1, z, x - 1, y - 1, z, new Vector3f(x, y, z), new Vector3f(x, y, z + 1), chunkManager, d);
-                genAO(x, y - 1, z, x + 1, y - 1, z, new Vector3f(x + 1, y, z), new Vector3f(x + 1, y, z + 1), chunkManager,
-                        d);
-                genAO(x, y - 1, z, x, y - 1, z - 1, new Vector3f(x, y, z), new Vector3f(x + 1, y, z), chunkManager, d);
-                genAO(x, y - 1, z, x, y - 1, z + 1, new Vector3f(x, y, z + 1), new Vector3f(x + 1, y, z + 1), chunkManager,
-                        d);
-                genAO(x, y - 1, z, x - 1, y - 1, z - 1, new Vector3f(x, y, z), chunkManager, d);
-                genAO(x, y - 1, z, x - 1, y - 1, z + 1, new Vector3f(x, y, z + 1), chunkManager, d);
-                genAO(x, y - 1, z, x + 1, y - 1, z - 1, new Vector3f(x + 1, y, z), chunkManager, d);
-                genAO(x, y - 1, z, x + 1, y - 1, z + 1, new Vector3f(x + 1, y, z + 1), chunkManager, d);
-                break;
-            case 2: // LEFT
-                genAO(x, y, z - 1, x - 1, y, z - 1, new Vector3f(x, y, z), new Vector3f(x, y + 1, z), chunkManager, d);
-                genAO(x, y, z - 1, x + 1, y, z - 1, new Vector3f(x + 1, y, z), new Vector3f(x + 1, y + 1, z), chunkManager,
-                        d);
-                genAO(x, y, z - 1, x, y - 1, z - 1, new Vector3f(x, y, z), new Vector3f(x + 1, y, z), chunkManager, d);
-                genAO(x, y, z - 1, x, y + 1, z - 1, new Vector3f(x, y + 1, z), new Vector3f(x + 1, y + 1, z), chunkManager,
-                        d);
-                genAO(x, y, z - 1, x - 1, y - 1, z - 1, new Vector3f(x, y, z), chunkManager, d);
-                genAO(x, y, z - 1, x + 1, y - 1, z - 1, new Vector3f(x + 1, y, z), chunkManager, d);
-                genAO(x, y, z - 1, x - 1, y + 1, z - 1, new Vector3f(x, y + 1, z), chunkManager, d);
-                genAO(x, y, z - 1, x + 1, y + 1, z - 1, new Vector3f(x + 1, y + 1, z), chunkManager, d);
-                break;
-            case 3: // RIGHT
-                genAO(x, y, z + 1, x - 1, y, z + 1, new Vector3f(x, y, z + 1), new Vector3f(x, y + 1, z + 1), chunkManager,
-                        d);
-                genAO(x, y, z + 1, x + 1, y, z + 1, new Vector3f(x + 1, y, z + 1), new Vector3f(x + 1, y + 1, z + 1),
-                        chunkManager, d);
-                genAO(x, y, z + 1, x, y - 1, z + 1, new Vector3f(x, y, z + 1), new Vector3f(x + 1, y, z + 1), chunkManager,
-                        d);
-                genAO(x, y, z + 1, x, y + 1, z + 1, new Vector3f(x, y + 1, z + 1), new Vector3f(x + 1, y + 1, z + 1),
-                        chunkManager, d);
-                genAO(x, y, z + 1, x - 1, y - 1, z + 1, new Vector3f(x, y, z + 1), chunkManager, d);
-                genAO(x, y, z + 1, x + 1, y - 1, z + 1, new Vector3f(x + 1, y, z + 1), chunkManager, d);
-                genAO(x, y, z + 1, x - 1, y + 1, z + 1, new Vector3f(x, y + 1, z + 1), chunkManager, d);
-                genAO(x, y, z + 1, x + 1, y + 1, z + 1, new Vector3f(x + 1, y + 1, z + 1), chunkManager, d);
-                break;
-            case 4: // FRONT
-                genAO(x + 1, y, z, x + 1, y, z - 1, new Vector3f(x + 1, y, z), new Vector3f(x + 1, y + 1, z), chunkManager,
-                        d);
-                genAO(x + 1, y, z, x + 1, y, z + 1, new Vector3f(x + 1, y, z + 1), new Vector3f(x + 1, y + 1, z + 1),
-                        chunkManager, d);
-                genAO(x + 1, y, z, x + 1, y - 1, z, new Vector3f(x + 1, y, z), new Vector3f(x + 1, y, z + 1), chunkManager,
-                        d);
-                genAO(x + 1, y, z, x + 1, y + 1, z, new Vector3f(x + 1, y + 1, z), new Vector3f(x + 1, y + 1, z + 1),
-                        chunkManager, d);
-                genAO(x + 1, y, z, x + 1, y - 1, z - 1, new Vector3f(x + 1, y, z), chunkManager, d);
-                genAO(x + 1, y, z, x + 1, y - 1, z + 1, new Vector3f(x + 1, y, z + 1), chunkManager, d);
-                genAO(x + 1, y, z, x + 1, y + 1, z - 1, new Vector3f(x + 1, y + 1, z), chunkManager, d);
-                genAO(x + 1, y, z, x + 1, y + 1, z + 1, new Vector3f(x + 1, y + 1, z + 1), chunkManager, d);
-                break;
-            case 5: // BACK
-                genAO(x - 1, y, z, x - 1, y, z - 1, new Vector3f(x, y, z), new Vector3f(x, y + 1, z), chunkManager, d);
-                genAO(x - 1, y, z, x - 1, y, z + 1, new Vector3f(x, y, z + 1), new Vector3f(x, y + 1, z + 1), chunkManager,
-                        d);
-                genAO(x - 1, y, z, x - 1, y - 1, z, new Vector3f(x, y, z), new Vector3f(x, y, z + 1), chunkManager, d);
-                genAO(x - 1, y, z, x - 1, y + 1, z, new Vector3f(x, y + 1, z), new Vector3f(x, y + 1, z + 1), chunkManager,
-                        d);
-                genAO(x - 1, y, z, x - 1, y - 1, z - 1, new Vector3f(x, y, z), chunkManager, d);
-                genAO(x - 1, y, z, x - 1, y - 1, z + 1, new Vector3f(x, y, z + 1), chunkManager, d);
-                genAO(x - 1, y, z, x - 1, y + 1, z - 1, new Vector3f(x, y + 1, z), chunkManager, d);
-                genAO(x - 1, y, z, x - 1, y + 1, z + 1, new Vector3f(x, y + 1, z + 1), chunkManager, d);
-                break;
-            default:
-                System.err.println("[ERROR Chunk.addAO()]: Invalid faceID!");
+        case 0: // UP
+            genAO(x, y + 1, z, x - 1, y + 1, z, new Vector3f(x, y + 1, z), new Vector3f(x, y + 1, z + 1), chunkManager,
+                    d);
+            genAO(x, y + 1, z, x + 1, y + 1, z, new Vector3f(x + 1, y + 1, z), new Vector3f(x + 1, y + 1, z + 1),
+                    chunkManager, d);
+            genAO(x, y + 1, z, x, y + 1, z - 1, new Vector3f(x, y + 1, z), new Vector3f(x + 1, y + 1, z), chunkManager,
+                    d);
+            genAO(x, y + 1, z, x, y + 1, z + 1, new Vector3f(x, y + 1, z + 1), new Vector3f(x + 1, y + 1, z + 1),
+                    chunkManager, d);
+            genAO(x, y + 1, z, x - 1, y + 1, z - 1, new Vector3f(x, y + 1, z), chunkManager, d);
+            genAO(x, y + 1, z, x - 1, y + 1, z + 1, new Vector3f(x, y + 1, z + 1), chunkManager, d);
+            genAO(x, y + 1, z, x + 1, y + 1, z - 1, new Vector3f(x + 1, y + 1, z), chunkManager, d);
+            genAO(x, y + 1, z, x + 1, y + 1, z + 1, new Vector3f(x + 1, y + 1, z + 1), chunkManager, d);
+            break;
+        case 1: // DOWN
+            genAO(x, y - 1, z, x - 1, y - 1, z, new Vector3f(x, y, z), new Vector3f(x, y, z + 1), chunkManager, d);
+            genAO(x, y - 1, z, x + 1, y - 1, z, new Vector3f(x + 1, y, z), new Vector3f(x + 1, y, z + 1), chunkManager,
+                    d);
+            genAO(x, y - 1, z, x, y - 1, z - 1, new Vector3f(x, y, z), new Vector3f(x + 1, y, z), chunkManager, d);
+            genAO(x, y - 1, z, x, y - 1, z + 1, new Vector3f(x, y, z + 1), new Vector3f(x + 1, y, z + 1), chunkManager,
+                    d);
+            genAO(x, y - 1, z, x - 1, y - 1, z - 1, new Vector3f(x, y, z), chunkManager, d);
+            genAO(x, y - 1, z, x - 1, y - 1, z + 1, new Vector3f(x, y, z + 1), chunkManager, d);
+            genAO(x, y - 1, z, x + 1, y - 1, z - 1, new Vector3f(x + 1, y, z), chunkManager, d);
+            genAO(x, y - 1, z, x + 1, y - 1, z + 1, new Vector3f(x + 1, y, z + 1), chunkManager, d);
+            break;
+        case 2: // LEFT
+            genAO(x, y, z - 1, x - 1, y, z - 1, new Vector3f(x, y, z), new Vector3f(x, y + 1, z), chunkManager, d);
+            genAO(x, y, z - 1, x + 1, y, z - 1, new Vector3f(x + 1, y, z), new Vector3f(x + 1, y + 1, z), chunkManager,
+                    d);
+            genAO(x, y, z - 1, x, y - 1, z - 1, new Vector3f(x, y, z), new Vector3f(x + 1, y, z), chunkManager, d);
+            genAO(x, y, z - 1, x, y + 1, z - 1, new Vector3f(x, y + 1, z), new Vector3f(x + 1, y + 1, z), chunkManager,
+                    d);
+            genAO(x, y, z - 1, x - 1, y - 1, z - 1, new Vector3f(x, y, z), chunkManager, d);
+            genAO(x, y, z - 1, x + 1, y - 1, z - 1, new Vector3f(x + 1, y, z), chunkManager, d);
+            genAO(x, y, z - 1, x - 1, y + 1, z - 1, new Vector3f(x, y + 1, z), chunkManager, d);
+            genAO(x, y, z - 1, x + 1, y + 1, z - 1, new Vector3f(x + 1, y + 1, z), chunkManager, d);
+            break;
+        case 3: // RIGHT
+            genAO(x, y, z + 1, x - 1, y, z + 1, new Vector3f(x, y, z + 1), new Vector3f(x, y + 1, z + 1), chunkManager,
+                    d);
+            genAO(x, y, z + 1, x + 1, y, z + 1, new Vector3f(x + 1, y, z + 1), new Vector3f(x + 1, y + 1, z + 1),
+                    chunkManager, d);
+            genAO(x, y, z + 1, x, y - 1, z + 1, new Vector3f(x, y, z + 1), new Vector3f(x + 1, y, z + 1), chunkManager,
+                    d);
+            genAO(x, y, z + 1, x, y + 1, z + 1, new Vector3f(x, y + 1, z + 1), new Vector3f(x + 1, y + 1, z + 1),
+                    chunkManager, d);
+            genAO(x, y, z + 1, x - 1, y - 1, z + 1, new Vector3f(x, y, z + 1), chunkManager, d);
+            genAO(x, y, z + 1, x + 1, y - 1, z + 1, new Vector3f(x + 1, y, z + 1), chunkManager, d);
+            genAO(x, y, z + 1, x - 1, y + 1, z + 1, new Vector3f(x, y + 1, z + 1), chunkManager, d);
+            genAO(x, y, z + 1, x + 1, y + 1, z + 1, new Vector3f(x + 1, y + 1, z + 1), chunkManager, d);
+            break;
+        case 4: // FRONT
+            genAO(x + 1, y, z, x + 1, y, z - 1, new Vector3f(x + 1, y, z), new Vector3f(x + 1, y + 1, z), chunkManager,
+                    d);
+            genAO(x + 1, y, z, x + 1, y, z + 1, new Vector3f(x + 1, y, z + 1), new Vector3f(x + 1, y + 1, z + 1),
+                    chunkManager, d);
+            genAO(x + 1, y, z, x + 1, y - 1, z, new Vector3f(x + 1, y, z), new Vector3f(x + 1, y, z + 1), chunkManager,
+                    d);
+            genAO(x + 1, y, z, x + 1, y + 1, z, new Vector3f(x + 1, y + 1, z), new Vector3f(x + 1, y + 1, z + 1),
+                    chunkManager, d);
+            genAO(x + 1, y, z, x + 1, y - 1, z - 1, new Vector3f(x + 1, y, z), chunkManager, d);
+            genAO(x + 1, y, z, x + 1, y - 1, z + 1, new Vector3f(x + 1, y, z + 1), chunkManager, d);
+            genAO(x + 1, y, z, x + 1, y + 1, z - 1, new Vector3f(x + 1, y + 1, z), chunkManager, d);
+            genAO(x + 1, y, z, x + 1, y + 1, z + 1, new Vector3f(x + 1, y + 1, z + 1), chunkManager, d);
+            break;
+        case 5: // BACK
+            genAO(x - 1, y, z, x - 1, y, z - 1, new Vector3f(x, y, z), new Vector3f(x, y + 1, z), chunkManager, d);
+            genAO(x - 1, y, z, x - 1, y, z + 1, new Vector3f(x, y, z + 1), new Vector3f(x, y + 1, z + 1), chunkManager,
+                    d);
+            genAO(x - 1, y, z, x - 1, y - 1, z, new Vector3f(x, y, z), new Vector3f(x, y, z + 1), chunkManager, d);
+            genAO(x - 1, y, z, x - 1, y + 1, z, new Vector3f(x, y + 1, z), new Vector3f(x, y + 1, z + 1), chunkManager,
+                    d);
+            genAO(x - 1, y, z, x - 1, y - 1, z - 1, new Vector3f(x, y, z), chunkManager, d);
+            genAO(x - 1, y, z, x - 1, y - 1, z + 1, new Vector3f(x, y, z + 1), chunkManager, d);
+            genAO(x - 1, y, z, x - 1, y + 1, z - 1, new Vector3f(x, y + 1, z), chunkManager, d);
+            genAO(x - 1, y, z, x - 1, y + 1, z + 1, new Vector3f(x, y + 1, z + 1), chunkManager, d);
+            break;
+        default:
+            System.err.println("[ERROR Chunk.addAO()]: Invalid faceID!");
         }
     }
 
@@ -349,11 +356,19 @@ public class Chunk {
                 }
             }
         }
-        float[] position = new float[18 * l.size()];
-        float[] textureCoord = new float[12 * l.size()];
-        float[] normal = new float[18 * l.size()];
-        float[] adjacentFaceCount = new float[6 * l.size()];
-        int[] indices = new int[6 * l.size()];
+//        float[] position = new float[18 * l.size()];
+//        float[] textureCoord = new float[12 * l.size()];
+//        float[] normal = new float[18 * l.size()];
+//        float[] adjacentFaceCount = new float[6 * l.size()];
+//        int[] indices = new int[6 * l.size()];
+        FloatCache.update();
+        IntCache.update();
+        float[] position = FloatCache.getFloatCache(18 * l.size());
+        float[] textureCoord = FloatCache.getFloatCache(12 * l.size());
+        float[] normal = FloatCache.getFloatCache(18 * l.size());
+        float[] adjacentFaceCount = FloatCache.getFloatCache(6 * l.size());
+        int[] indices = IntCache.getIntCache(6 * l.size());
+
         for (int i = 0; i < indices.length; ++i)
             indices[i] = i;
         for (Pair<Block, Integer> p : l) {
@@ -407,7 +422,7 @@ public class Chunk {
 
     public void setBlock(int blockID, int x, int y, int z) {
         if (0 <= x && x < X && 0 <= y && y < Y && 0 <= z && z < Z) {
-            blocks[x][y][z] = new Block(blockID, (this.x << 4) + x, y, (this.z << 4) + z);
+            blocks[x][y][z].set(blockID, (this.x << 4) + x, y, (this.z << 4) + z);
         }
     }
 
@@ -425,8 +440,10 @@ public class Chunk {
 
     public void renderSolid(FrustumCullFilter frustumCullFilter) {
         for (int i = 0; i < (Y >> 4); ++i) {
-            if (isEmpty[i]) continue;
-            if (frustumCullFilter == null || frustumCullFilter.insideFrustum((x << 4) + (X >> 1), (i << 4) + 8, (z << 4) + (Z >> 1), 13.856406460551018f)) {
+            if (isEmpty[i])
+                continue;
+            if (frustumCullFilter == null || frustumCullFilter.insideFrustum((x << 4) + (X >> 1), (i << 4) + 8,
+                    (z << 4) + (Z >> 1), 13.856406460551018f)) {
                 if (solid[i] != null) {
                     solid[i].render();
                 }
@@ -436,8 +453,10 @@ public class Chunk {
 
     public void renderTransparencies(FrustumCullFilter frustumCullFilter) {
         for (int i = 0; i < (Y >> 4); ++i) {
-            if (isEmpty[i]) continue;
-            if (frustumCullFilter == null || frustumCullFilter.insideFrustum((x << 4) + (X >> 1), (i << 4) + 8, (z << 4) + (Z >> 1), 13.856406460551018f)) {
+            if (isEmpty[i])
+                continue;
+            if (frustumCullFilter == null || frustumCullFilter.insideFrustum((x << 4) + (X >> 1), (i << 4) + 8,
+                    (z << 4) + (Z >> 1), 13.856406460551018f)) {
                 if (transparencies[i] != null) {
                     transparencies[i].render();
                 }
@@ -447,8 +466,10 @@ public class Chunk {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
 
         if (obj instanceof Chunk) {
             Chunk chunk = (Chunk) obj;
@@ -458,6 +479,5 @@ public class Chunk {
         }
         return false;
     }
-
 
 }

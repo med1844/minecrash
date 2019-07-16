@@ -49,14 +49,14 @@ public class ChunkManager {
 //        }
         long preTime = System.currentTimeMillis();
         countReadTask = 0;
-        for (int i = 0; i < 8; ++i) {
-            for (int j = 0; j < 8; ++j) {
+        for (int i = 0; i < generateDistance; ++i) {
+            for (int j = 0; j < generateDistance; ++j) {
                 hasChunk[i][j] = true;
                 posSet.add(new Pair(i, j));
                 long beginTime = System.currentTimeMillis();
-//                countReadTask++;
-//                chunks[i][j] = readChunkFromFile(i, j);
-                chunks[i][j] = chunkGenerator.generateChunk(i, j);
+                countReadTask++;
+                chunks[i][j] = readChunkFromFile(i, j);
+//                chunks[i][j] = chunkGenerator.generateChunk(i, j);
                 System.out.println("[INFO] reading Chunk [" + i + ", " + j + "]" + " ,use time: "
                         + (System.currentTimeMillis() - beginTime));
             }
@@ -118,10 +118,10 @@ public class ChunkManager {
                     continue;
                 }
                 if (!hasChunk[i][j]) {
-//                    countReadTask++;
+                    countReadTask++;
                     cnt++;
-                    chunks[i][j] = chunkGenerator.generateChunk(i, j);
-//                    chunks[i][j] = readChunkFromFile(i, j);
+//                    chunks[i][j] = chunkGenerator.generateChunk(i, j);
+                    chunks[i][j] = readChunkFromFile(i, j);
                     addSet.add(new Pair(i, j));
                     for (int k=0;k<4;k++) {
                         int nx=i+dx[k];
@@ -203,10 +203,8 @@ public class ChunkManager {
 
     public Chunk readChunkFromFile(int x, int z) {
         Chunk chunk = new Chunk(x, z);
-//        FileThread fileThread=new FileThread(chunk, chunkGenerator, files[x][z], id++);
-//        fileThread.run();
         Thread fileThread = new Thread(new FileThread(chunk, chunkGenerator, files[x][z], id++));
-        fileThread.run();
+        fileThread.start();
         return chunk;
     }
 

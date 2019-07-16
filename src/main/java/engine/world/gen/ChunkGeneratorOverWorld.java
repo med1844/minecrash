@@ -13,7 +13,7 @@ import static engine.world.TextureManager.*;
 
 public class ChunkGeneratorOverWorld implements ChunkGenerator {
     Random rand;
-    private double[] heightMap;
+    private double[] heightMap=new double[5*5*33];
     public static final int seaLevel = 63;
     NoiseGeneratorPerlinOctaves depthNoise;
     NoiseGeneratorPerlinOctaves mainPerlinNoise;
@@ -85,7 +85,7 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
         // only water and stone
 
         setBlocksInChunk(x, z, chunk);
-        clearFloat(chunk);
+//        clearFloat(chunk);
         // 16*16 biomes
         // biomesForGeneration =
         // this.worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration,
@@ -98,9 +98,9 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
     }
 
     @Override
-    public void generateChunk(Chunk chunk) {
+    public synchronized void generateChunk(Chunk chunk) {
         setBlocksInChunk(chunk.getx(), chunk.getz(), chunk);
-        clearFloat(chunk);
+//        clearFloat(chunk);
         // 16*16 biomes
         // biomesForGeneration =
         // this.worldObj.getWorldChunkManager().loadBlockGeneratorData(biomesForGeneration,
@@ -112,7 +112,6 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
     }
 
     public void setBlocksInChunk(int x, int z, Chunk chunk) {
-        heightMap = new double[5 * 5 * 33];
 
         this.generateHeightmap(x * 4, 0, z * 4);
 

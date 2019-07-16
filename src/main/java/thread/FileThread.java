@@ -7,12 +7,15 @@ import engine.world.gen.ChunkGenerator;
 import java.io.*;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import cache.ByteCache;
+
 public class FileThread implements Runnable {
     public Chunk chunk;
     public ChunkGenerator chunkGenerator;
     File file;
     ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     public int id;
+    public byte[] buff = new byte[16*16*256];
 
     public FileThread(Chunk chunk, ChunkGenerator chunkGenerator, File file, int id) {
         this.chunk = chunk;
@@ -31,8 +34,6 @@ public class FileThread implements Runnable {
                 throw new FileNotFoundException();
             InputStream in = new FileInputStream(file);
             BufferedInputStream bs = new BufferedInputStream(in, 16 * 16 * 256);
-
-            byte[] buff = new byte[16 * 16 * 256];
             int len = -1;
             int index = 0;
             while ((len = bs.read(buff)) != -1) {
