@@ -1,12 +1,19 @@
 package engine.world.ChunkUtils;
 
-import java.util.*;
+import java.io.FileNotFoundException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.joml.Vector3f;
 
 import engine.world.Block;
-import engine.world.gen.ChunkGenerator;
-import engine.world.gen.ChunkGeneratorOverWorld;
 import javafx.util.Pair;
-import org.joml.Vector3f;
 
 public class ChunkManager {
     private Map<Pair<Integer, Integer>, Chunk> chunkMap;
@@ -18,7 +25,10 @@ public class ChunkManager {
     private Vector3f generateCenter;
     private Set<Pair<Integer, Integer>> updateList;
     private List<MultiThreadChunkGenerator> generators = new LinkedList<>();
+    private List<MultiThreadChunkReader> readers = new LinkedList<>();
     private List<MultiThreadChunkMeshBuilder> builders = new LinkedList<>();
+    
+    
     private final long TIME_THRESHOLD = 10000000L;
 
     public ChunkManager() {
@@ -109,10 +119,19 @@ public class ChunkManager {
             for (int j = centerZ - viewDistanceNear; j <= centerZ + viewDistanceNear; ++j) {
                 if (i < 0 || j < 0) continue;
                 if (!chunkMap.containsKey(new Pair<>(i, j))) {
-                    MultiThreadChunkGenerator generator = new MultiThreadChunkGenerator(i, j);
-                    generators.add(generator);
-                    generator.start();
-                    updateList.add(new Pair<>(i, j));
+                    MultiThreadChunkReader reader = new MultiThreadChunkReader(i, j);
+                    try {
+                        reader.setFile();
+                        readers.add(reader);
+                        reader.start();
+                        updateList.add(new Pair<>(i,j));
+                    } catch (FileNotFoundException e) {
+                        MultiThreadChunkGenerator generator = new MultiThreadChunkGenerator(i, j);
+                        generators.add(generator);
+                        generator.start();
+                        updateList.add(new Pair<>(i, j));
+                    }
+                    
                     for (int d = 0; d < 4; ++d) {
                         int nx = i + dx[d];
                         int ny = j + dz[d];
@@ -125,6 +144,20 @@ public class ChunkManager {
         }
 
         long test = System.nanoTime();
+        
+        try {
+            Iterator<MultiThreadChunkReader> iter = readers.iterator();
+            while (iter.hasNext()) {
+                MultiThreadChunkReader reader = iter.next();
+                reader.join();
+                chunkMap.put(new Pair<>(reader.getX(), reader.getZ()), reader.getChunk());
+                iter.remove();
+            }
+        } catch (InterruptedException e) {
+            System.err.println("[ERROR] ChunkManager.update(): Error in reading chunks.");
+            e.printStackTrace();
+        }
+        
         try {
             Iterator<MultiThreadChunkGenerator> iter = generators.iterator();
             while (iter.hasNext()) {
@@ -137,6 +170,7 @@ public class ChunkManager {
             System.err.println("[ERROR] ChunkManager.update(): Error in generating chunks.");
             e.printStackTrace();
         }
+        
         System.out.println("gen chunk: " + (System.nanoTime() - test));
 
         for (Pair<Integer, Integer> p : updateList) {
