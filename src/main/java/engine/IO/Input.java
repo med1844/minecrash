@@ -97,8 +97,6 @@ public class Input {
         if (coolDownLeft < 0) coolDownLeft = 0;
         if (coolDownRight < 0) coolDownRight = 0;
 
-        scene.update(deltaTime);
-
         camera.rotate(dx * deltaTime * mouseSpeed, dy * deltaTime * mouseSpeed);
         dx = 0;
         dy = 0;
@@ -171,6 +169,8 @@ public class Input {
 //        System.out.println(speed);
         limit(speed, keyboardSpeed);
         camera.move(speed);
+
+        scene.update(deltaTime, camera.getPosition());
 
         lastUpdateTime = System.currentTimeMillis();
     }

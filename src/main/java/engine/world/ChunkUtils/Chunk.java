@@ -1,4 +1,4 @@
-package engine.world;
+package engine.world.ChunkUtils;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -7,6 +7,8 @@ import java.util.Map;
 
 import engine.graphics.Mesh;
 import engine.maths.FrustumCullFilter;
+import engine.world.Block;
+import engine.world.TextureManager;
 import javafx.util.Pair;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -342,7 +344,12 @@ public class Chunk {
 
     public void clear() {
         for (int i = 0; i < (Y >> 4); ++i) {
-            solid[i].clear();
+            if (solid[i] != null) {
+                solid[i].clear();
+            }
+            if (transparencies[i] != null) {
+                transparencies[i].clear();
+            }
         }
     }
 

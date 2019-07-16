@@ -1,6 +1,6 @@
 package engine.maths;
 
-import engine.world.Chunk;
+import engine.world.ChunkUtils.Chunk;
 import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;

@@ -1,6 +1,6 @@
 package engine.world.gen;
 
-import engine.world.Chunk;
+import engine.world.ChunkUtils.Chunk;
 
 public interface ChunkGenerator {
 

@@ -2,7 +2,7 @@ package engine.graphics.particles;
 
 import engine.graphics.Mesh;
 import engine.world.Block;
-import engine.world.ChunkManager;
+import engine.world.ChunkUtils.ChunkManager;
 import engine.world.TextureManager;
 import org.joml.Vector3f;
 

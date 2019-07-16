@@ -1,6 +1,6 @@
 package engine.graphics.particles;
 
-import engine.world.ChunkManager;
+import engine.world.ChunkUtils.ChunkManager;
 import engine.world.TextureManager;
 import org.joml.Vector3f;
 

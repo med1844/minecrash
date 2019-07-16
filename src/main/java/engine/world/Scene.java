@@ -6,6 +6,7 @@ import engine.graphics.particles.ParticleEmitterInterface;
 
 import static engine.world.TextureManager.*;
 
+import engine.world.ChunkUtils.ChunkManager;
 import org.joml.Vector3f;
 
 import java.util.Iterator;
@@ -41,7 +42,7 @@ public class Scene {
         chunkManager.updateBlock((int) selectedBlockPos.x, (int) selectedBlockPos.y, (int) selectedBlockPos.z, blockID);
     }
 
-    public void update(long elapsedTime) {
+    public void update(long elapsedTime, Vector3f cameraPosition) {
         Iterator<ParticleEmitterInterface> iter = particleEmitters.iterator();
         while (iter.hasNext()) {
             ParticleEmitterInterface emitter = iter.next();
@@ -52,6 +53,7 @@ public class Scene {
                 iter.remove();
             }
         }
+        chunkManager.update(cameraPosition);
     }
 
 }
