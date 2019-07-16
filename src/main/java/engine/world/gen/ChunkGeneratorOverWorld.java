@@ -67,8 +67,8 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
         int stoneNoiseOctave = 4;
         stoneSimplexNoise = new NoiseGeneratorSimplexOctaves(rand, stoneNoiseOctave);
 
-        System.out.println(seed + " " + depthNoiseOctave + " " + mainNoiseOctave + " " + minLimitNoiseOctave + " "
-                + maxLimitNoiseOctave);
+//        System.out.println(seed + " " + depthNoiseOctave + " " + mainNoiseOctave + " " + minLimitNoiseOctave + " "
+//                + maxLimitNoiseOctave);
     }
 
     @Override
