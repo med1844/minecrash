@@ -10,7 +10,7 @@ public class Camera {
     private float verticalAngle; // rad
 
     public Camera() {
-        position = new Vector3f(10, 70, 10);
+        position = new Vector3f(10, 256, 10);
         horizontalAngle = PI / 4;
         verticalAngle = 0;
     }
@@ -21,10 +21,24 @@ public class Camera {
         position.z = z;
     }
 
+    public void setPosition(Vector3f pos) {
+        position.set(pos);
+    }
+
     public void move(Vector3f offset) {
         position.x += offset.x;
         position.y += offset.y;
         position.z += offset.z;
+    }
+
+    public void move(float x, float y, float z) {
+        position.x += x;
+        position.y += y;
+        position.z += z;
+    }
+
+    public void setY(float y) {
+        position.y = y;
     }
 
     public void setRotation(float horizontal, float vertical) {

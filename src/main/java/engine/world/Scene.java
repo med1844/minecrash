@@ -56,4 +56,17 @@ public class Scene {
         chunkManager.update(cameraPosition);
     }
 
+    public boolean isBlock(Vector3f selectedBlockPos, int blockType) {
+        if (selectedBlockPos == null) return false;
+        Block block = chunkManager.getBlock((int) selectedBlockPos.x, (int) selectedBlockPos.y, (int) selectedBlockPos.z);
+        if (block == null) return false;
+        return (block.getType() & blockType) != 0;
+    }
+
+    public boolean isBlock(int x, int y, int z, int blockType) {
+        Block block = chunkManager.getBlock(x, y, z);
+        if (block == null) return false;
+        return (block.getType() & blockType) != 0;
+    }
+
 }

@@ -13,7 +13,7 @@ public class ChunkManager {
     private int[] dx = {1, 0, -1, 0};
     private int[] dz = {0, -1, 0, 1};
 //    private ChunkGenerator chunkGenerator;
-    private int viewDistanceNear = 12;
+    private int viewDistanceNear = 4;
     private int viewDistanceFar = 16;
     private Vector3f generateCenter;
     private Set<Pair<Integer, Integer>> updateList;
@@ -124,7 +124,6 @@ public class ChunkManager {
             }
         }
 
-        long test = System.nanoTime();
         try {
             Iterator<MultiThreadChunkGenerator> iter = generators.iterator();
             while (iter.hasNext()) {
@@ -137,7 +136,6 @@ public class ChunkManager {
             System.err.println("[ERROR] ChunkManager.update(): Error in generating chunks.");
             e.printStackTrace();
         }
-        System.out.println("gen chunk: " + (System.nanoTime() - test));
 
         for (Pair<Integer, Integer> p : updateList) {
             MultiThreadChunkMeshBuilder builder = new MultiThreadChunkMeshBuilder(chunkMap.get(p), this);
