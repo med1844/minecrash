@@ -20,7 +20,8 @@ public class Chunk {
     private int x, z; // the chunk coordinates of current chunk
     private Block[][][] blocks;
     private Mesh[] solid, transparencies;
-    private boolean[] isEmpty;
+    private boolean[] isEmptySolid;
+    private boolean[] isEmptyTransparencies;
     private int pos, tex, norm, adj;
     private static final int X = 16;
     private static final int Y = 256;
@@ -37,7 +38,8 @@ public class Chunk {
         m = new HashMap<>();
         solid = new Mesh[Y >> 4];
         transparencies = new Mesh[Y >> 4];
-        isEmpty = new boolean[Y >> 4];
+        isEmptySolid = new boolean[Y >> 4];
+        isEmptyTransparencies = new boolean[Y >> 4];
     }
 
     private boolean valid(int x, int y, int z) {
@@ -58,7 +60,7 @@ public class Chunk {
 
     private void genFace(int textureID, Vector3f a, Vector3f b, Vector3f c, Vector3f d, Vector3f normalVector,
                          boolean flag, float[] position, float[] textureCoord, float[] normal, float[] adjacentFaceCount, int n) {
-        float x1 = (textureID / 16) / 16.0f, y1 = (textureID % 16) / 16.0f;
+        float x1 = (textureID >> 4) / 16.0f, y1 = (textureID % 16) / 16.0f;
         float x2 = x1 + 1 / 16.0f, y2 = y1 + 1 / 16.0f;
         Vector2f e = new Vector2f(y1, x1), f = new Vector2f(y2, x1), g = new Vector2f(y1, x2), h = new Vector2f(y2, x2);
         if (flag) {
@@ -174,7 +176,7 @@ public class Chunk {
         }
     }
 
-    private void addFace(Block block, int faceID, float[] position, float[] textureCoord, float[] normal, float[] adjacentFaceCount) {
+    public void addFace(Block block, int faceID, float[] position, float[] textureCoord, float[] normal, float[] adjacentFaceCount) {
         int x = block.x & 15, y = block.y, z = block.z & 15;
         switch (faceID) {
             case 0:
@@ -328,17 +330,67 @@ public class Chunk {
 
     public void generateMesh(ChunkManager chunkManager) {
         for (int i = 0; i < (Y >> 4); ++i) {
-            boolean solidFlag = generatePartMesh(chunkManager, i, SOLID, solid);
-            boolean transparentFlag = generatePartMesh(chunkManager, i, TRANSPARENT, transparencies);
-            isEmpty[i] = solidFlag && transparentFlag;
+            isEmptySolid[i] = generatePartMesh(chunkManager, i, SOLID, solid);
+            isEmptyTransparencies[i] = generatePartMesh(chunkManager, i, TRANSPARENT, transparencies);
         }
+    }
+
+    public void buildSolidMesh(int index, float[] position, float[] textureCoord, float[] normal, float[] adjacentFaceCount, int[] indices, boolean flag) {
+        if (flag) {
+            solid[index] = new Mesh(position, textureCoord, normal, indices, adjacentFaceCount, material);
+            isEmptySolid[index] = false;
+        } else {
+            isEmptySolid[index] = true;
+        }
+    }
+
+    public void buildTransparentMesh(int index, float[] position, float[] textureCoord, float[] normal, float[] adjacentFaceCount, int[] indices, boolean flag) {
+        if (flag) {
+            transparencies[index] = new Mesh(position, textureCoord, normal, indices, adjacentFaceCount, material);
+            isEmptyTransparencies[index] = false;
+        } else {
+            isEmptyTransparencies[index] = true;
+        }
+    }
+
+    public List<Pair<Block, Integer>> generatePartMeshL(ChunkManager chunkManager, int i, int type) {
+        List<Pair<Block, Integer>> l = new LinkedList<>();
+        m.clear();
+        pos = tex = norm = adj = 0;
+        for (int x = 0; x < X; ++x) {
+            for (int y = i << 4; y < (i + 1) << 4; ++y) {
+                for (int z = 0; z < Z; ++z) {
+                    if (blocks[x][y][z].equals(AIR)) continue;
+                    if ((blocks[x][y][z].getType() & type) != 0) {
+                        for (int d = 0; d < 6; ++d) {
+                            int nx = x + dx[d], ny = y + dy[d], nz = z + dz[d];
+                            Block temp;
+                            if (!valid(nx, ny, nz)) {
+                                temp = chunkManager.getBlock(
+                                        (this.x << 4) + nx,
+                                        ny,
+                                        (this.z << 4) + nz
+                                );
+                            } else {
+                                temp = blocks[nx][ny][nz];
+                            }
+//                            if (temp == null) continue;
+                            if ((temp == null) || (blocks[x][y][z].getType() & 3) != (temp.getType() & 3)) {
+                                l.add(new Pair<>(blocks[x][y][z], d));
+                                addAO(x, y, z, d, chunkManager);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return l;
     }
 
     public void updateMesh(int i, ChunkManager chunkManager) {
         if (0 <= i && i < (Y >> 4)) {
-            boolean solidFlag = generatePartMesh(chunkManager, i, SOLID, solid);
-            boolean transparentFlag = generatePartMesh(chunkManager, i, TRANSPARENT, transparencies);
-            isEmpty[i] = solidFlag && transparentFlag;
+            isEmptySolid[i] = generatePartMesh(chunkManager, i, SOLID, solid);
+            isEmptyTransparencies[i] = generatePartMesh(chunkManager, i, TRANSPARENT, transparencies);
         }
     }
 
@@ -393,7 +445,7 @@ public class Chunk {
 
     public void renderSolid(FrustumCullFilter frustumCullFilter) {
         for (int i = 0; i < (Y >> 4); ++i) {
-            if (isEmpty[i]) continue;
+            if (isEmptySolid[i]) continue;
             if (frustumCullFilter == null || frustumCullFilter.insideFrustum((x << 4) + (X >> 1), (i << 4) + 8, (z << 4) + (Z >> 1), 13.856406460551018f)) {
                 if (solid[i] != null) {
                     solid[i].render();
@@ -404,7 +456,7 @@ public class Chunk {
 
     public void renderTransparencies(FrustumCullFilter frustumCullFilter) {
         for (int i = 0; i < (Y >> 4); ++i) {
-            if (isEmpty[i]) continue;
+            if (isEmptyTransparencies[i]) continue;
             if (frustumCullFilter == null || frustumCullFilter.insideFrustum((x << 4) + (X >> 1), (i << 4) + 8, (z << 4) + (Z >> 1), 13.856406460551018f)) {
                 if (transparencies[i] != null) {
                     transparencies[i].render();

@@ -140,6 +140,9 @@ public class Mesh {
 
     public void clear() {
         glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(2);
+        glDisableVertexAttribArray(3);
 
         // Delete the VBOs
         glBindBuffer(GL_ARRAY_BUFFER, 0);
