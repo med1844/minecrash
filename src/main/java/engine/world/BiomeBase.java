@@ -9,12 +9,13 @@ import static engine.world.TextureManager.*;
 public class BiomeBase {
     private Block topBlock;
     private Block fillerBlock;
+    private int minTreeHeight = 8;
 
     public BiomeBase() {
         topBlock = new Block(GRASS, 0, 0, 0);
-        fillerBlock = new Block(STONE, 0, 0, 0);
+        fillerBlock = new Block(DIRT, 0, 0, 0);
     }
-    
+
     public void genBlocks(Random rand, Chunk chunk, int x, int z, double noise) {
         int seaLevel = ChunkGeneratorOverWorld.seaLevel;
 
@@ -68,6 +69,7 @@ public class BiomeBase {
                             // above seaLevel
                             // fill topBlock
                             chunk.setBlock(topBlock.getBlockID(), zLow, y, xLow);
+                            genTree(rand, chunk, xLow, y, zLow);
                         } else if (y < seaLevel - 7 - cnt) {
                             // ocean bottom
                             topBlock.set(GRAVEL);
@@ -82,19 +84,82 @@ public class BiomeBase {
                             chunk.setBlock(fillerBlock.getBlockID(), zLow, y, xLow);
                         }
                     } else if (res > 0) {
-                        //filling
+                        // filling
                         --res;
-                        //fill with fillerBlock
-                        chunk.setBlock(fillerBlock.getBlockID(),zLow, y, xLow);
+                        // fill with fillerBlock
+                        chunk.setBlock(fillerBlock.getBlockID(), zLow, y, xLow);
 
                         // if fill sand before, then fill with sandstone
                         if (res == 0 && fillerBlock.getBlockID() == SAND) {
                             res = rand.nextInt(4) + Math.max(0, y - 63);
                             fillerBlock.set(SANDSTONE);
                         }
-                    } //res=0 finish
+                    } // res=0 finish
                 }
             }
         }
+    }
+
+    public void genTree(Random rand, Chunk chunk, int xLow, int y, int zLow) {
+        if (rand.nextInt(10)>=1) return;
+        int height = rand.nextInt(3) + minTreeHeight;
+        if (chunk.getBlock(xLow, y, zLow).getBlockID() == GRASS || chunk.getBlock(xLow, y, zLow).getBlockID() == DIRT) {
+            y++;
+            boolean isReplaceable = true;
+            if (y >= 1 && y + height + 1 < Chunk.getY()) {
+                for (int h = y; h <= y + 1 + height; ++h) {
+                    int xzSize = 1;
+
+                    // bottom
+                    if (h == y) {
+                        xzSize = 0;
+                    }
+
+                    // top
+                    if (h >= y + height - 1) {
+                        xzSize = 2;
+                    }
+                    // check replaceable
+                    int tx = xLow;
+                    int ty = y;
+                    int tz = zLow;
+                    for (int i = xLow - xzSize; i <= xLow + xzSize && isReplaceable; ++i) {
+                        for (int j = zLow - xzSize; j <= zLow + xzSize && isReplaceable; ++j) {
+                            if (h >= 0 && h < 256) {
+                                if (chunk.getBlock(i, h, j)!=null && chunk.getBlock(i, h, j).getBlockID() != AIR) {
+                                    isReplaceable = false;
+                                }
+                            } else
+                                isReplaceable = false;
+                        }
+                    }
+                }
+            }
+            if (!isReplaceable) {
+                return;
+            }
+
+            for (int h = y + height - 5; h <= y + height; ++h) {
+                int restHeight = h - (y + height);
+                int xzSize = 5 - restHeight / 2;
+
+                for (int x = xLow - xzSize; x <= xLow + xzSize; ++x) {
+
+                    for (int z = zLow - xzSize; z <= zLow + xzSize; ++z) {
+
+                        if (true||Math.abs(x-xLow) != xzSize || Math.abs(z-zLow) != xzSize // not on bound
+                                || rand.nextInt(2) != 0 && restHeight != 0) {
+                            chunk.setBlock(OAK_LEAVES, x, h, z);
+                        }
+                    }
+                }
+            }
+
+            // genWood
+            for (int h = y; h < y+height; ++h) {
+                chunk.setBlock(OAK_WOOD, xLow, h, zLow);
+            }
+        }
+
     }
 }
