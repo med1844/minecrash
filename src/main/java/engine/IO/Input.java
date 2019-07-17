@@ -160,6 +160,10 @@ public class Input {
             }
         }
 
+        if (isKeyDown(GLFW_KEY_Q)) {
+            inventory.drop();
+        }
+
         horizontalDirection = camera.getHorizontalDirection(deltaTime * keyboardSpeed);
         right = camera.getRight(deltaTime * keyboardSpeed);
 
