@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
 
 import engine.IO.Window;
+import engine.graphics.HUD.Inventory;
 import engine.graphics.particles.Particle;
 import engine.graphics.particles.ParticleEmitterInterface;
 import engine.graphics.shaders.ParticleShader;
@@ -32,9 +33,10 @@ import java.util.List;
  * It handles: - scene rendering - light rendering - shadow mapping
  */
 public class Renderer {
-    private Shader sceneShader, depthShader, particleShader;
+    private Shader sceneShader, depthShader, particleShader, HUDShader;
     private ShadowRenderer shadowRenderer;
     private Fog fog;
+    private Inventory inventory;
     private FrustumCullFilter frustumCullFilter;
     private final Transformations transformations;
     private final float specularPower = 10f;
@@ -63,10 +65,12 @@ public class Renderer {
      */
     public void init() throws Exception {
         fog = new Fog();
+        inventory = new Inventory();
 
         sceneShader = ShaderFactory.newShader("scene");
         depthShader = ShaderFactory.newShader("depth");
         particleShader = ShaderFactory.newShader("particle");
+        HUDShader = ShaderFactory.newShader("HUD");
 
         shadowRenderer = new ShadowRenderer(depthShader);
     }
@@ -99,6 +103,8 @@ public class Renderer {
         renderScene(window, camera, scene, selectedBlockPos);
 
         renderParticles(window, camera, scene);
+
+        renderHUD(window);
 
         renderCrossHair(window);
     }
@@ -232,6 +238,20 @@ public class Renderer {
 
         particleShader.unbind();
     }
+
+    public void renderHUD(Window window) {
+        HUDShader.bind();
+
+        Matrix4f orthoModelProjection = new Matrix4f().ortho2D(0, window.getWidth(), window.getHeight(), 0);
+        orthoModelProjection.mul(inventory.getModelMatrix(window));
+        HUDShader.setUniform("projectionModelMatrix", orthoModelProjection);
+        HUDShader.setUniform("texture_sampler", 1);
+        glActiveTexture(GL_TEXTURE1);
+        inventory.render();
+
+        HUDShader.unbind();
+    }
+
 
     /**
      * This method should be called when deleting the Renderer.
