@@ -28,7 +28,7 @@ public class Inventory {
     public Inventory() throws Exception {
         inventoryMaterial = new Material(new Texture("/texture/widget.png"), 0);
         items = new int[9];
-        for (int i = 1; i < 9; ++i) items[i] = i + 10;
+        for (int i = 1; i < 9; ++i) items[i] = i + 12;
         inv_width = 182 << 2;
         inv_height = 22 << 2;
         sel_width = 24 << 2;
@@ -140,6 +140,10 @@ public class Inventory {
 
     public int get() {
         return items[selection_i];
+    }
+
+    public void drop() {
+        items[selection_i] = 0;
     }
 
 }
