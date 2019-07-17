@@ -9,6 +9,7 @@ import java.util.Random;
 import engine.maths.NoiseMath;
 import engine.world.BiomeBase;
 import engine.world.ChunkUtils.Chunk;
+import javafx.util.Pair;
 
 public class ChunkGeneratorOverWorld implements ChunkGenerator {
     Random rand;
@@ -85,6 +86,7 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
         for (int i = 0; i < 16 * 16; i++)
             biomesForGeneration[i] = new BiomeBase();
         replaceBlocksForBiome(x, z, chunk, biomesForGeneration);
+        
         return chunk;
     }
 
@@ -311,5 +313,5 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
             }
         }
     }
-
+    
 }
