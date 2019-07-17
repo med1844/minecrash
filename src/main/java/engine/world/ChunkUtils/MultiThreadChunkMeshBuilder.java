@@ -49,7 +49,9 @@ public class MultiThreadChunkMeshBuilder implements Runnable {
             indicesS[i] = new int[6 * l.size()];
             for (int j = 0; j < indicesS[i].length; ++j) indicesS[i][j] = j;
             for (Pair<Block, Integer> p : l) {
-                chunk.addFace(p.getKey(), p.getValue(), positionS[i], textureCoordS[i], normalS[i], adjacentFaceCountS[i]);
+                synchronized (this) {
+                    chunk.addFace(p.getKey(), p.getValue(), positionS[i], textureCoordS[i], normalS[i], adjacentFaceCountS[i]);
+                }
             }
             l = chunk.generatePartMeshL(chunkManager, i, TextureManager.TRANSPARENT);
             positionT[i] = new float[18 * l.size()];
@@ -59,7 +61,9 @@ public class MultiThreadChunkMeshBuilder implements Runnable {
             indicesT[i] = new int[6 * l.size()];
             for (int j = 0; j < indicesT[i].length; ++j) indicesT[i][j] = j;
             for (Pair<Block, Integer> p : l) {
-                chunk.addFace(p.getKey(), p.getValue(), positionT[i], textureCoordT[i], normalT[i], adjacentFaceCountT[i]);
+                synchronized (this) {
+                    chunk.addFace(p.getKey(), p.getValue(), positionT[i], textureCoordT[i], normalT[i], adjacentFaceCountT[i]);
+                }
             }
         }
     }

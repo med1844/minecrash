@@ -10,6 +10,7 @@ import engine.world.ChunkUtils.Chunk;
 import engine.world.Scene;
 import engine.world.TextureManager;
 import org.joml.AABBf;
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 public class Input {
@@ -101,7 +102,6 @@ public class Input {
 
     public void update(Vector3f selectedBlockPos, Scene scene, Vector3f normalVector) {
         long deltaTime = System.currentTimeMillis() - lastUpdateTime;
-        lastUpdateTime = System.currentTimeMillis();
         coolDownLeft -= deltaTime;
         coolDownRight -= deltaTime;
         coolDownBackspace -= deltaTime;
@@ -199,6 +199,7 @@ public class Input {
 
             floating = true;
             AABBf cameraAABB = new AABBf(camera.getPosition().sub(0.4f, 1.8f, 0.4f), camera.getPosition().add(0.4f, 0.2f, 0.4f));
+            if (cameraAABB.minY - (int) cameraAABB.minY < 1e-3) cameraAABB.minY = (int) cameraAABB.minY;
             for (int i = (int) cameraAABB.minX; i < (int) Math.ceil(cameraAABB.maxX) && floating; ++i) {
                 for (int k = (int) cameraAABB.minZ; k < (int) Math.ceil(cameraAABB.maxZ) && floating; ++k) {
                     int j = (int) cameraAABB.minY - 1;
@@ -225,14 +226,14 @@ public class Input {
             }
             if (isKeyDown(GLFW_KEY_SPACE)) {
                 if (!floating) {
-                    upSpeed += 60 * SLOW;
+                    upSpeed += 30 * deltaTime * 0.001;
                     floating = true;
                 } else {
-                    upSpeed += 5 * SLOW;
+                    upSpeed += 1.5 * deltaTime * 0.001;
                 }
             }
             if (floating) {
-                upSpeed -= 9.8 * SLOW;
+                upSpeed -= 3 * deltaTime * 0.001;
             } else {
                 upSpeed = 0;
             }
@@ -303,5 +304,6 @@ public class Input {
         }
 
         scene.update(deltaTime, camera.getPosition());
+        lastUpdateTime = System.currentTimeMillis();
     }
 }
