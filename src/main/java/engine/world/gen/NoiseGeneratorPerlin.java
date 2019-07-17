@@ -3,9 +3,7 @@ package engine.world.gen;
 
 import java.util.Random;
 
-public class NoiseGeneratorPerlin {
-    // 0~255的随机排列
-    private int[] permutations;
+public class NoiseGeneratorPerlin extends NoiseGenerator{
     // 坐标偏移量
     public double xCoord;
     public double yCoord;
@@ -48,12 +46,6 @@ public class NoiseGeneratorPerlin {
             // 形成一个周期
             this.permutations[i + 256] = this.permutations[i];
         }
-    }
-
-    // 在a与b间线性插值
-    public final double lerp(double t, double a, double b)
-    {
-        return a + t * (b - a);
     }
 
     // 返回与二维梯度向量点乘的结果，参数：梯度向量索引, 向量（其实就是权重）

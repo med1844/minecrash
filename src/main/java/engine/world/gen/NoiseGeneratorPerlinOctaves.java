@@ -3,9 +3,8 @@ package engine.world.gen;
 
 import java.util.Random;
 
-public class NoiseGeneratorPerlinOctaves {
+public class NoiseGeneratorPerlinOctaves extends NoiseGeneratorOctaves{
     /** Collection of noise generation functions.  Output is combined to produce different octaves of noise. */
-    private NoiseGeneratorPerlin[] generatorCollection;
     private int octaves;
 
     public NoiseGeneratorPerlinOctaves(Random rand, int octaveCount)
@@ -64,7 +63,7 @@ public class NoiseGeneratorPerlinOctaves {
             z2 = z2 + (double)z2Floor;
 
             // 叠加
-            this.generatorCollection[i].populateNoiseArray(result, x2, y2, z2, xArraySize, yArraySize, zArraySize, xScale * scale, yScale * scale, zScale * scale, scale);
+            ((NoiseGeneratorPerlin)this.generatorCollection[i]).populateNoiseArray(result, x2, y2, z2, xArraySize, yArraySize, zArraySize, xScale * scale, yScale * scale, zScale * scale, scale);
             // 频率减半，幅度加倍
             scale *= persistence;
             

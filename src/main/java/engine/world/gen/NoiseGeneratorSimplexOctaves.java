@@ -2,8 +2,7 @@ package engine.world.gen;
 
 import java.util.Random;
 
-public class NoiseGeneratorSimplexOctaves {
-    private NoiseGeneratorSimplex[] generatorCollection;
+public class NoiseGeneratorSimplexOctaves extends NoiseGeneratorOctaves{
     private int octaves;
 
     // 同NoiseGeneratorOctaves
@@ -25,7 +24,7 @@ public class NoiseGeneratorSimplexOctaves {
 
         for (int i = 0; i < this.octaves; ++i)
         {
-            d0 += this.generatorCollection[i].getNoise(x * d1, y * d1) / d1;
+            d0 += ((NoiseGeneratorSimplex)this.generatorCollection[i]).getNoise(x * d1, y * d1) / d1;
             d1 /= 2.0D;
         }
 
@@ -65,7 +64,7 @@ public class NoiseGeneratorSimplexOctaves {
 
         for (int i = 0; i < this.octaves; ++i)
         {
-            this.generatorCollection[i].generateNoiseSimplex(result, x, z, xSize, zSize, xScale * freqScale * noiseScale, zScale * freqScale * noiseScale, 0.55D / noiseScale);
+            ((NoiseGeneratorSimplex)this.generatorCollection[i]).generateNoiseSimplex(result, x, z, xSize, zSize, xScale * freqScale * noiseScale, zScale * freqScale * noiseScale, 0.55D / noiseScale);
             freqScale *= _freqScale;
             noiseScale *= _noiseScale;
         }

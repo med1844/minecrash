@@ -2,7 +2,7 @@ package engine.world.gen;
 
 import java.util.Random;
 
-public class NoiseGeneratorSimplex {
+public class NoiseGeneratorSimplex extends NoiseGenerator{
     // 梯度向量
     private static int[][] xy2D = new int[][] {{1, 1, 0}, { -1, 1, 0}, {1, -1, 0}, { -1, -1, 0}, {1, 0, 1}, { -1, 0, 1}, {1, 0, -1}, { -1, 0, -1}, {0, 1, 1}, {0, -1, 1}, {0, 1, -1}, {0, -1, -1}};
     // √3

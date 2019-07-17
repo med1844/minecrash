@@ -427,7 +427,9 @@ public class Chunk {
 
     public void setBlock(int blockID, int x, int y, int z) {
         if (0 <= x && x < X && 0 <= y && y < Y  && 0 <= z && z < Z) {
-            blocks[x][y][z] = new Block(blockID, (this.x << 4) + x, y, (this.z << 4) + z);
+            if (blocks[x][y][z]==null)
+                blocks[x][y][z] = new Block(blockID, (this.x << 4) + x, y, (this.z << 4) + z);
+            else blocks[x][y][z].set(blockID);
         }
     }
     

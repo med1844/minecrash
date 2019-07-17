@@ -171,7 +171,7 @@ public class ChunkManager {
             e.printStackTrace();
         }
         
-        System.out.println("gen chunk: " + (System.nanoTime() - test));
+//        System.out.println("gen chunk: " + (System.nanoTime() - test));
 
         for (Pair<Integer, Integer> p : updateList) {
             MultiThreadChunkMeshBuilder builder = new MultiThreadChunkMeshBuilder(chunkMap.get(p), this);
