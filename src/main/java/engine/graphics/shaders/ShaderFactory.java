@@ -10,6 +10,8 @@ public class ShaderFactory {
                 return new DepthShader();
             case "particle":
                 return new ParticleShader();
+            case "HUD":
+                return new HUDShader();
             default:
                 throw new Exception("[ERROR] ShaderFactory.newShader(): Invalid Parameter!");
         }
