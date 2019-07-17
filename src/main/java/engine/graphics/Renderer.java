@@ -36,16 +36,10 @@ public class Renderer {
     private Shader sceneShader, depthShader, particleShader, HUDShader;
     private ShadowRenderer shadowRenderer;
     private Fog fog;
-    private Inventory inventory;
     private FrustumCullFilter frustumCullFilter;
     private final Transformations transformations;
     private final float specularPower = 10f;
     private final Vector3f ambientLight = new Vector3f(.5f, .5f, .5f);
-    private Window window;
-    private Camera camera;
-    private Scene scene;
-    private Timer timer;
-    private Vector3f selectedBlockPos;
     private boolean running = false;
     public static float FOV = (float) Math.toRadians(60.0f);
     public static float Z_NEAR = 0.1f;
@@ -65,7 +59,6 @@ public class Renderer {
      */
     public void init() throws Exception {
         fog = new Fog();
-        inventory = new Inventory();
 
         sceneShader = ShaderFactory.newShader("scene");
         depthShader = ShaderFactory.newShader("depth");
@@ -75,28 +68,20 @@ public class Renderer {
         shadowRenderer = new ShadowRenderer(depthShader);
     }
 
-    public void setParameter(Window window, Camera camera, Scene scene, Timer timer, Vector3f selectedBlockPos) {
-        this.window = window;
-        this.camera = camera;
-        this.scene = scene;
-        this.timer = timer;
-        this.selectedBlockPos = selectedBlockPos;
-    }
-
     /**
      * This method renders meshes using the shader that has been initialized in the
      * function init();
      *
      * This method also updates uniform matrices that is used for transformations.
      */
-    public void render() {
+    public void render(Window window, Camera camera, Scene scene, Timer timer, Vector3f selectedBlockPos, Inventory inventory) {
         // the window's buffer has been cleaned, in MainEngine.update();
 
         renderDayNightCycle(window, scene.light, timer);
 
         // since rendering cascade shadow map is much too complex to put in only one class,
         // it has been encapsulated into a brand new class.
-        renderShadowMap(scene);
+        renderShadowMap(camera, scene);
 
         glViewport(0, 0, window.getWidth(), window.getHeight());
 
@@ -104,7 +89,7 @@ public class Renderer {
 
         renderParticles(window, camera, scene);
 
-        renderHUD(window);
+        renderHUD(window, inventory);
 
         renderCrossHair(window);
     }
@@ -179,7 +164,7 @@ public class Renderer {
         DayNightCycle.setFog(timer.getTimeRatio(), fog);
     }
 
-    private void renderShadowMap(Scene scene) {
+    private void renderShadowMap(Camera camera, Scene scene) {
         shadowRenderer.render(camera, scene, transformations, frustumCullFilter);
     }
 
@@ -239,15 +224,10 @@ public class Renderer {
         particleShader.unbind();
     }
 
-    public void renderHUD(Window window) {
+    public void renderHUD(Window window, Inventory inventory) {
         HUDShader.bind();
 
-        Matrix4f orthoModelProjection = new Matrix4f().ortho2D(0, window.getWidth(), window.getHeight(), 0);
-        orthoModelProjection.mul(inventory.getModelMatrix(window));
-        HUDShader.setUniform("projectionModelMatrix", orthoModelProjection);
-        HUDShader.setUniform("texture_sampler", 1);
-        glActiveTexture(GL_TEXTURE1);
-        inventory.render();
+        inventory.render(window, HUDShader);
 
         HUDShader.unbind();
     }

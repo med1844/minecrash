@@ -2,6 +2,7 @@ package engine;
 
 import engine.IO.Window;
 import engine.graphics.DirectionalLight;
+import engine.graphics.HUD.Inventory;
 import engine.graphics.Renderer;
 import engine.IO.Input;
 import engine.world.ChunkUtils.ChunkManager;
@@ -30,6 +31,7 @@ public class MainEngine implements Runnable {
     private CameraSelectionDetector cameraSelectionDetector;
     private Vector3f selectedBlockPos = null;
     private Vector3f normalVector;
+    private Inventory inventory;
 
     public MainEngine(int width, int height, String windowTitle, boolean vSync) {
         game = new Thread(this, "minecrash");
@@ -58,6 +60,7 @@ public class MainEngine implements Runnable {
         );
         scene.init();
         timer.init();
+        inventory = new Inventory();
     }
 
     @Override
@@ -78,15 +81,14 @@ public class MainEngine implements Runnable {
     }
 
     public void update() {
-        input.update(selectedBlockPos, scene, normalVector); // the input class would update camera.
+        input.update(selectedBlockPos, scene, normalVector, inventory); // the input class would update camera.
         timer.update();
         window.update();
     }
 
     public void render() {
         window.clear(); // clear up existing data
-        renderer.setParameter(window, camera, scene, timer, selectedBlockPos);
-        renderer.render();
+        renderer.render(window, camera, scene, timer, selectedBlockPos, inventory);
         window.swapBuffers();
     }
 

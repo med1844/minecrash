@@ -10,7 +10,8 @@ public class HUDShader extends Shader {
         createFragmentShader(Utils.loadResource("/shader/HUD.fsh"));
         link();
 
-        createUniform("projectionModelMatrix");
+        createUniform("projectionMatrix");
+        createUniform("modelMatrix");
         createUniform("texture_sampler");
     }
 }

@@ -13,7 +13,7 @@ public class ChunkManager {
     private int[] dx = {1, 0, -1, 0};
     private int[] dz = {0, -1, 0, 1};
 //    private ChunkGenerator chunkGenerator;
-    private int viewDistanceNear = 4;
+    private int viewDistanceNear = 3;
     private int viewDistanceFar = 16;
     private Vector3f generateCenter;
     private Set<Pair<Integer, Integer>> updateList;
@@ -101,7 +101,14 @@ public class ChunkManager {
 
         generateCenter.set(cameraPosition);
 
-        chunkMap.values().removeIf(this::tooFar);
+        Iterator<Chunk> chunkIterator = chunkMap.values().iterator();
+        while (chunkIterator.hasNext()) {
+            Chunk chunk = chunkIterator.next();
+            if (tooFar(chunk)) {
+                chunkIterator.remove();
+                chunk.clear();
+            }
+        }
 
         int centerX = (int) generateCenter.x >> 4;
         int centerZ = (int) generateCenter.z >> 4;
@@ -125,12 +132,12 @@ public class ChunkManager {
         }
 
         try {
-            Iterator<MultiThreadChunkGenerator> iter = generators.iterator();
-            while (iter.hasNext()) {
-                MultiThreadChunkGenerator generator = iter.next();
+            Iterator<MultiThreadChunkGenerator> iterChunkGenerator = generators.iterator();
+            while (iterChunkGenerator.hasNext()) {
+                MultiThreadChunkGenerator generator = iterChunkGenerator.next();
                 generator.join();
                 chunkMap.put(new Pair<>(generator.getX(), generator.getZ()), generator.getChunk());
-                iter.remove();
+                iterChunkGenerator.remove();
             }
         } catch (InterruptedException e) {
             System.err.println("[ERROR] ChunkManager.update(): Error in generating chunks.");
@@ -145,13 +152,13 @@ public class ChunkManager {
         updateList.clear();
 
         try {
-            Iterator<MultiThreadChunkMeshBuilder> iter = builders.iterator();
-            while (iter.hasNext()) {
+            Iterator<MultiThreadChunkMeshBuilder> iterMeshGenerator = builders.iterator();
+            while (iterMeshGenerator.hasNext()) {
                 if (System.nanoTime() - time > TIME_THRESHOLD) return;
-                MultiThreadChunkMeshBuilder builder = iter.next();
+                MultiThreadChunkMeshBuilder builder = iterMeshGenerator.next();
                 builder.join();
                 builder.buildMesh();
-                iter.remove();
+                iterMeshGenerator.remove();
             }
         } catch (InterruptedException e) {
             System.err.println("[ERROR] ChunkManager.update(): Error in generating chunk meshes.");
