@@ -29,7 +29,7 @@ public class ChunkManager {
     private List<MultiThreadChunkMeshBuilder> builders = new LinkedList<>();
     
     
-    private final long TIME_THRESHOLD = 10000000L;
+    private final long TIME_THRESHOLD = 5000000L;
 
     public ChunkManager() {
         chunkMap = new HashMap<>();
@@ -111,7 +111,14 @@ public class ChunkManager {
 
         generateCenter.set(cameraPosition);
 
-        chunkMap.values().removeIf(this::tooFar);
+        Iterator<Chunk> chunkTooFarIter = chunkMap.values().iterator();
+        while (chunkTooFarIter.hasNext()) {
+            Chunk chunk = chunkTooFarIter.next();
+            if (tooFar(chunk)) {
+                chunkTooFarIter.remove();
+                chunk.clear();
+            }
+        }
 
         int centerX = (int) generateCenter.x >> 4;
         int centerZ = (int) generateCenter.z >> 4;
