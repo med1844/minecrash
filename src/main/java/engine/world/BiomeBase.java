@@ -9,7 +9,7 @@ import static engine.world.TextureManager.*;
 public class BiomeBase {
     private Block topBlock;
     private Block fillerBlock;
-    private int minTreeHeight = 8;
+    private int minTreeHeight = 4;
 
     public BiomeBase() {
         topBlock = new Block(GRASS, 0, 0, 0);
