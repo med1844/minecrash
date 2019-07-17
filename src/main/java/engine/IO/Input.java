@@ -5,6 +5,7 @@ import engine.Camera;
 import static engine.world.TextureManager.*;
 import static org.lwjgl.glfw.GLFW.*;
 
+import engine.graphics.HUD.Inventory;
 import engine.world.Block;
 import engine.world.ChunkUtils.Chunk;
 import engine.world.Scene;
@@ -37,6 +38,7 @@ public class Input {
     private boolean floating = false;
     private final float FAST = 0.02f;
     private final float SLOW = 0.008f;
+    private double scrollY = 0;
 
     public Input() {
     }
@@ -78,6 +80,8 @@ public class Input {
             middleButtonPressed = button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_PRESS;
         });
 
+        glfwSetScrollCallback(window.getWindowHandle(), (windowHandle, dx, dy) -> scrollY += dy);
+
         lastUpdateTime = System.currentTimeMillis();
     }
 
@@ -100,8 +104,12 @@ public class Input {
         return Math.max(Math.min(a, threshold), -threshold);
     }
 
-    public void update(Vector3f selectedBlockPos, Scene scene, Vector3f normalVector) {
+    public void update(Vector3f selectedBlockPos, Scene scene, Vector3f normalVector, Inventory inventory) {
         long deltaTime = System.currentTimeMillis() - lastUpdateTime;
+
+        inventory.move(-(int) scrollY);
+        scrollY = 0;
+
         coolDownLeft -= deltaTime;
         coolDownRight -= deltaTime;
         coolDownBackspace -= deltaTime;
@@ -141,12 +149,13 @@ public class Input {
 
         if (middleButtonPressed && selectedBlockPos != null) {
             currentChoseBlockID = scene.chunkManager.getBlock((int) selectedBlockPos.x, (int) selectedBlockPos.y, (int) selectedBlockPos.z).getBlockID();
+            inventory.set(currentChoseBlockID);
         }
 
         if (rightButtonPressed && selectedBlockPos != null && normalVector != null && coolDownRight == 0) {
             selectedBlockPos.add(normalVector);
             if (!((int) selectedBlockPos.x == x && (int) selectedBlockPos.y == y && (int) selectedBlockPos.z == z)) {
-                scene.putBlock(selectedBlockPos, currentChoseBlockID);
+                scene.putBlock(selectedBlockPos, inventory.get());
                 coolDownRight = 200;
             }
         }

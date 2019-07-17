@@ -319,15 +319,36 @@ public class TextureManager {
         try {
             Texture texture = new Texture("/texture/terrain.png");
             material = new Material(texture, 1f);
-            float[] position = new float[36 * 3];
-            float[] textureCoord = new float[36 * 2];
-            float[] normal = new float[36 * 3];
-            int[] indices = new int[36];
-            float[] adjacentFaceCount = new float[36];
-            for (int i = 0; i < 6; ++i) indices[i] = i;
+            float block_height = 16.0f * 4;
+            float block_width = 16.0f * 4;
+            float[] position = {
+                    0, 0, 0,
+                    0, block_height, 0,
+                    block_width, 0, 0,
+                    block_width, block_height, 0
+            };
+            float[] textureCoord = new float[4 * 2];
+            float[] normal = {
+                    0, 0, 1,
+                    0, 0, 1,
+                    0, 0, 1,
+                    0, 0, 1
+            };
+            int[] indices = {
+                    0, 1, 3, 0, 3, 2
+            };
+            float[] adjacentFaceCount = {
+                    0, 0, 0, 0, 0, 0
+            };
+            float minX, minY, maxX, maxY;
             for (int i = 0; i < face.length; ++i) {
                 norm = tex = pos = 0;
-                genArray(face[i], position, textureCoord, normal);
+                minX = (face[i][2] >> 4) / 16.0f; minY = (face[i][2] & 15) / 16.0f;
+                maxX = minX + 1 / 16.0f; maxY = minY + 1 / 16.0f;
+                textureCoord[0] = minY; textureCoord[1] = minX;
+                textureCoord[2] = minY; textureCoord[3] = maxX;
+                textureCoord[4] = maxY; textureCoord[5] = minX;
+                textureCoord[6] = maxY; textureCoord[7] = maxX;
                 meshes[i] = new Mesh(position, textureCoord, normal, indices, adjacentFaceCount, material);
             }
         } catch (Exception e) {
@@ -350,6 +371,7 @@ public class TextureManager {
         for (Mesh mesh : meshes) {
             mesh.clear();
         }
+        material.clear();
     }
 
     public static Mesh newParticleMesh(int blockID) {
@@ -362,5 +384,9 @@ public class TextureManager {
         for (int i = 0; i < 6; ++i) indices[i] = i;
         genRandomFace(face[blockID][(int) (Math.random() * 6)], new Vector3f(1.0f, 1.0f, 0.0f), new Vector3f(0.0f, 1.0f, 0.0f), new Vector3f(1.0f, 0.0f, 0.0f), new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(0, 0, 1), true, position, textureCoord, normal);
         return new Mesh(position, textureCoord, normal, indices, adjacentFaceCount, material);
+    }
+
+    public static Mesh getBlockMesh(int blockID) {
+        return meshes[blockID];
     }
 }
