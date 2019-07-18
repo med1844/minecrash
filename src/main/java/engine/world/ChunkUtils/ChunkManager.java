@@ -28,6 +28,7 @@ public class ChunkManager {
     private List<MultiThreadChunkReader> readers = new LinkedList<>();
     private List<MultiThreadChunkMeshBuilder> builders = new LinkedList<>();
     private List<MultiThreadChunkWriter> writers =new LinkedList<>();
+    
     private boolean writeFile=false;
     
     
