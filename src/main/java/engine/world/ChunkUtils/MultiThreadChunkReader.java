@@ -66,8 +66,7 @@ public class MultiThreadChunkReader implements Runnable {
     }
 
     public void setFile() throws FileNotFoundException {
-        System.out.println("C:\\map\\chunk" + x + "_" + z + ".bin");
-        this.file = new File("C:\\map\\chunk" + x + "_" + z + ".bin");
+        this.file = new File("E:\\map\\chunk" + x + "_" + z + ".bin");
         this.in = new FileInputStream(file);
     }
 }
