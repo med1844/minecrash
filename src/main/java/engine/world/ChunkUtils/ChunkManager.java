@@ -20,13 +20,17 @@ public class ChunkManager {
     private int[] dx = {1, 0, -1, 0};
     private int[] dz = {0, -1, 0, 1};
 //    private ChunkGenerator chunkGenerator;
-    private int viewDistanceNear = 12;
-    private int viewDistanceFar = 16;
+    private int viewDistanceNear = 12;//12
+    private int viewDistanceFar = 16;//16
     private Vector3f generateCenter;
     private Set<Pair<Integer, Integer>> updateList;
     private List<MultiThreadChunkGenerator> generators = new LinkedList<>();
     private List<MultiThreadChunkReader> readers = new LinkedList<>();
     private List<MultiThreadChunkMeshBuilder> builders = new LinkedList<>();
+    private List<MultiThreadChunkWriter> writers =new LinkedList<>();
+    
+    private boolean writeFile=false;
+    
     
     
     private final long TIME_THRESHOLD = 5000000L;
@@ -171,6 +175,11 @@ public class ChunkManager {
                 MultiThreadChunkGenerator generator = iter.next();
                 generator.join();
                 chunkMap.put(new Pair<>(generator.getX(), generator.getZ()), generator.getChunk());
+                if (writeFile) {
+                    MultiThreadChunkWriter writer =new MultiThreadChunkWriter(generator.getChunk());
+                    writers.add(writer);
+                    writer.start();
+                }
                 iter.remove();
             }
         } catch (InterruptedException e) {
@@ -199,6 +208,21 @@ public class ChunkManager {
         } catch (InterruptedException e) {
             System.err.println("[ERROR] ChunkManager.update(): Error in generating chunk meshes.");
             e.printStackTrace();
+        }
+        
+        //writefile
+        if (writeFile) {
+            try {
+                Iterator<MultiThreadChunkWriter> iter = writers.iterator();
+                while (iter.hasNext()) {
+                    MultiThreadChunkWriter writer = iter.next();
+                    writer.join();
+                    iter.remove();
+                }
+            } catch (InterruptedException e) {
+                System.err.println("[ERROR] ChunkManager.update(): Error in writing chunks.");
+                e.printStackTrace();
+            }
         }
     }
 

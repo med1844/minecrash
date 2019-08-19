@@ -101,7 +101,7 @@ public class BiomeBase {
     }
 
     public void genTree(Random rand, Chunk chunk, int xLow, int y, int zLow) {
-        if (rand.nextInt(20)>=1) return;
+        if (rand.nextInt(50)>=1) return;
         int height = rand.nextInt(3) + minTreeHeight;
         if (chunk.getBlock(xLow, y, zLow).getBlockID() == GRASS || chunk.getBlock(xLow, y, zLow).getBlockID() == DIRT) {
             y++;
