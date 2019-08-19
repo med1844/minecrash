@@ -33,7 +33,7 @@ public class ChunkManager {
     
     
     
-    private final long TIME_THRESHOLD = 5000000L;
+    private final long TIME_THRESHOLD = 1000000L;
 
     public ChunkManager() {
         chunkMap = new HashMap<>();
@@ -65,6 +65,11 @@ public class ChunkManager {
         }
     }
 
+    /**
+     * Get block by world coord
+     * @param x, y, z world coord of this block
+     * @return a block instance
+     */
     public Block getBlock(int x, int y, int z) { // x y z are world coord
         int chunkX = x >> 4;
         int chunkZ = z >> 4;
@@ -154,8 +159,6 @@ public class ChunkManager {
             }
         }
 
-        long test = System.nanoTime();
-        
         try {
             Iterator<MultiThreadChunkReader> iter = readers.iterator();
             while (iter.hasNext()) {
