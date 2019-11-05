@@ -40,6 +40,14 @@ public class Input {
     private final float SLOW = 0.008f;
     private double scrollY = 0;
 
+    private static int FRONT = GLFW_KEY_W;
+    private static int LEFT = GLFW_KEY_A;
+    private static int BACK = GLFW_KEY_S;
+    private static int RIGHT = GLFW_KEY_D;
+    private static int UP = GLFW_KEY_SPACE;
+    private static int DOWN = GLFW_KEY_LEFT_SHIFT;
+    private static int DROP = GLFW_KEY_Q;
+
     public Input() {
     }
 
@@ -160,7 +168,7 @@ public class Input {
             }
         }
 
-        if (isKeyDown(GLFW_KEY_Q)) {
+        if (isKeyDown(DROP)) {
             inventory.drop();
         }
 
@@ -178,22 +186,22 @@ public class Input {
             upSpeed *= DECAY_FACTOR;
             if (Math.abs(upSpeed) < 1e-5) upSpeed = 0;
             floating = false;
-            if (isKeyDown(GLFW_KEY_E)) {
+            if (isKeyDown(FRONT)) {
                 frontSpeed += ACCELERATION_FACTOR;
             }
-            if (isKeyDown(GLFW_KEY_D)) {
+            if (isKeyDown(BACK)) {
                 frontSpeed -= ACCELERATION_FACTOR;
             }
-            if (isKeyDown(GLFW_KEY_F)) {
+            if (isKeyDown(RIGHT)) {
                 rightSpeed += ACCELERATION_FACTOR;
             }
-            if (isKeyDown(GLFW_KEY_S)) {
+            if (isKeyDown(LEFT)) {
                 rightSpeed -= ACCELERATION_FACTOR;
             }
-            if (isKeyDown(GLFW_KEY_SPACE)) {
+            if (isKeyDown(UP)) {
                 upSpeed += ACCELERATION_FACTOR;
             }
-            if (isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
+            if (isKeyDown(DOWN)) {
                 upSpeed -= ACCELERATION_FACTOR;
             }
 
@@ -225,19 +233,19 @@ public class Input {
                 }
             }
 
-            if (isKeyDown(GLFW_KEY_E)) {
+            if (isKeyDown(FRONT)) {
                 frontSpeed += ACCELERATION_FACTOR;
             }
-            if (isKeyDown(GLFW_KEY_D)) {
+            if (isKeyDown(BACK)) {
                 frontSpeed -= ACCELERATION_FACTOR;
             }
-            if (isKeyDown(GLFW_KEY_F)) {
+            if (isKeyDown(RIGHT)) {
                 rightSpeed += ACCELERATION_FACTOR;
             }
-            if (isKeyDown(GLFW_KEY_S)) {
+            if (isKeyDown(LEFT)) {
                 rightSpeed -= ACCELERATION_FACTOR;
             }
-            if (isKeyDown(GLFW_KEY_SPACE)) {
+            if (isKeyDown(UP)) {
                 if (!floating) {
                     upSpeed += 30 * deltaTime * 0.001;
                     floating = true;

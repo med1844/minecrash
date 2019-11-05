@@ -7,10 +7,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fd199bd0-17de-4e96-8139-258e73d17526" name="Default Changelist" comment="V">
+      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.core.resources.prefs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/engine/CameraSelectionDetector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/CameraSelectionDetector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/MainEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/MainEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/ChunkManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/ChunkManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/MultiThreadChunkWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/MultiThreadChunkWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/IO/Input.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/IO/Input.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/engine/IO/Input.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/IO/Input.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/engine/Utils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/Utils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/engine/world/Block.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/world/Block.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/engine/world/Scene.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/world/Scene.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/engine/world/TextureManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/world/TextureManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/engine/world/Timer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/world/Timer.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -28,10 +36,14 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
-              <caret line="137" column="50" selection-start-line="137" selection-start-column="50" selection-end-line="137" selection-end-column="50" />
+            <state relative-caret-position="-2161">
+              <caret line="47" column="3" selection-start-line="47" selection-start-column="3" selection-end-line="47" selection-end-column="3" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#9129#9130#0" expanded="true" />
+                <element signature="e#9167#9168#0" expanded="true" />
+                <element signature="e#9201#9202#0" expanded="true" />
+                <element signature="e#9231#9232#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -40,8 +52,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/Chunk.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="331" column="35" selection-start-line="331" selection-start-column="35" selection-end-line="331" selection-end-column="35" />
+            <state relative-caret-position="-7270">
+              <caret line="37" column="24" selection-start-line="37" selection-start-column="24" selection-end-line="37" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1772#1773#0" expanded="true" />
@@ -66,8 +78,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/ChunkManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="563">
-              <caret line="35" column="40" lean-forward="true" selection-start-line="35" selection-start-column="40" selection-end-line="35" selection-end-column="40" />
+            <state relative-caret-position="596">
+              <caret line="127" column="25" selection-start-line="127" selection-start-column="25" selection-end-line="127" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -78,8 +90,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/engine/MainEngine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
-              <caret line="70" column="66" selection-start-line="70" selection-start-column="66" selection-end-line="70" selection-end-column="66" />
+            <state relative-caret-position="240">
+              <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -90,26 +102,42 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/game/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
-              <caret column="12" selection-start-column="12" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/engine/CameraSelectionDetector.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="688">
-              <caret line="63" column="41" selection-start-line="63" selection-start-column="41" selection-end-line="63" selection-end-column="41" />
+            <state relative-caret-position="160">
+              <caret line="8" column="3" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/shader/scene.vsh">
+        <entry file="file://$PROJECT_DIR$/src/main/java/engine/Utils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="28" selection-start-line="28" selection-end-line="28" />
+            <state relative-caret-position="100">
+              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/engine/CameraSelectionDetector.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="3" column="36" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/engine/IO/Input.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="328">
+              <caret line="203" column="29" selection-start-line="203" selection-start-column="29" selection-end-line="203" selection-end-column="29" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#setCenter#0;class#Input#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -137,6 +165,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -186,12 +215,12 @@
         <option value="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/Chunk.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/world/TextureManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/HUD/Inventory.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/IO/Input.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/Shader.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/MultiThreadChunkWriter.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/MainEngine.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/ChunkManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/CameraSelectionDetector.java" />
+        <option value="$PROJECT_DIR$/src/main/java/engine/IO/Input.java" />
       </list>
     </option>
   </component>
@@ -199,6 +228,7 @@
     <option name="importingSettings">
       <MavenImportingSettings>
         <option name="importAutomatically" value="true" />
+        <option name="vmOptionsForImporter" value="-Xmx768m" />
       </MavenImportingSettings>
     </option>
   </component>
@@ -225,6 +255,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -275,96 +306,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="engine" type="462c0819:PsiDirectoryNode" />
-              <item name="graphics" type="462c0819:PsiDirectoryNode" />
-              <item name="HUD" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
-              <item name="minecrash" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="engine" type="462c0819:PsiDirectoryNode" />
-              <item name="graphics" type="462c0819:PsiDirectoryNode" />
-              <item name="particles" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
-              <item name="minecrash" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="engine" type="462c0819:PsiDirectoryNode" />
-              <item name="graphics" type="462c0819:PsiDirectoryNode" />
-              <item name="shaders" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
-              <item name="minecrash" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="engine" type="462c0819:PsiDirectoryNode" />
-              <item name="graphics" type="462c0819:PsiDirectoryNode" />
-              <item name="shadow" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
-              <item name="minecrash" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="engine" type="462c0819:PsiDirectoryNode" />
               <item name="IO" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
-              <item name="minecrash" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="engine" type="462c0819:PsiDirectoryNode" />
-              <item name="maths" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
-              <item name="minecrash" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="engine" type="462c0819:PsiDirectoryNode" />
-              <item name="world" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
-              <item name="minecrash" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="engine" type="462c0819:PsiDirectoryNode" />
-              <item name="world" type="462c0819:PsiDirectoryNode" />
-              <item name="ChunkUtils" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
-              <item name="minecrash" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="engine" type="462c0819:PsiDirectoryNode" />
-              <item name="world" type="462c0819:PsiDirectoryNode" />
-              <item name="gen" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
-              <item name="minecrash" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="engine" type="462c0819:PsiDirectoryNode" />
-              <item name="world" type="462c0819:PsiDirectoryNode" />
-              <item name="gen" type="462c0819:PsiDirectoryNode" />
-              <item name="layer" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
@@ -397,15 +339,10 @@
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="texture" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -413,10 +350,10 @@
     <property name="DefaultPlantUmlFileTemplate" value="UML Class" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$MAVEN_REPOSITORY$/org/joml/joml/1.9.13" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.proportion" value="0.14355469" />
     <property name="project.structure.side.proportion" value="0.20344828" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -506,7 +443,7 @@
     <frame x="-6" y="-6" width="1513" height="1013" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20068729" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20206186" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -562,6 +499,32 @@
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
     </layout-to-restore>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -787,13 +750,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/game/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret column="12" selection-start-column="12" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/shadow/ShadowRenderer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="501">
@@ -898,17 +854,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/IO/Input.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="69" column="12" selection-start-line="69" selection-start-column="12" selection-end-line="69" selection-end-column="12" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#setCenter#0;class#Input#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/engine/Camera.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-94">
@@ -944,40 +889,6 @@
           <caret line="33" column="16" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret line="137" column="50" selection-start-line="137" selection-start-column="50" selection-end-line="137" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/Chunk.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="331" column="35" selection-start-line="331" selection-start-column="35" selection-end-line="331" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1772#1773#0" expanded="true" />
-            <element signature="e#1822#1823#0" expanded="true" />
-            <element signature="e#21844#21845#0" expanded="true" />
-            <element signature="e#21868#21869#0" expanded="true" />
-            <element signature="e#21893#21894#0" expanded="true" />
-            <element signature="e#21917#21918#0" expanded="true" />
-            <element signature="e#21949#21950#0" expanded="true" />
-            <element signature="e#21973#21974#0" expanded="true" />
-            <element signature="e#22005#22006#0" expanded="true" />
-            <element signature="e#22029#22030#0" expanded="true" />
-            <element signature="e#22061#22062#0" expanded="true" />
-            <element signature="e#22085#22086#0" expanded="true" />
-            <element signature="e#22615#22616#0" expanded="true" />
-            <element signature="e#22669#22670#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1027,30 +938,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/ChunkManager.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/MainEngine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="563">
-          <caret line="35" column="40" lean-forward="true" selection-start-line="35" selection-start-column="40" selection-end-line="35" selection-end-column="40" />
+        <state relative-caret-position="240">
+          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/MainEngine.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/game/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="70" column="66" selection-start-line="70" selection-start-column="66" selection-end-line="70" selection-end-column="66" />
+        <state relative-caret-position="160">
+          <caret line="8" column="3" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2161">
+          <caret line="47" column="3" selection-start-line="47" selection-start-column="3" selection-end-line="47" selection-end-column="3" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#9129#9130#0" expanded="true" />
+            <element signature="e#9167#9168#0" expanded="true" />
+            <element signature="e#9201#9202#0" expanded="true" />
+            <element signature="e#9231#9232#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/ChunkManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="596">
+          <caret line="127" column="25" selection-start-line="127" selection-start-column="25" selection-end-line="127" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/Chunk.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7270">
+          <caret line="37" column="24" selection-start-line="37" selection-start-column="24" selection-end-line="37" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1772#1773#0" expanded="true" />
+            <element signature="e#1822#1823#0" expanded="true" />
+            <element signature="e#21844#21845#0" expanded="true" />
+            <element signature="e#21868#21869#0" expanded="true" />
+            <element signature="e#21893#21894#0" expanded="true" />
+            <element signature="e#21917#21918#0" expanded="true" />
+            <element signature="e#21949#21950#0" expanded="true" />
+            <element signature="e#21973#21974#0" expanded="true" />
+            <element signature="e#22005#22006#0" expanded="true" />
+            <element signature="e#22029#22030#0" expanded="true" />
+            <element signature="e#22061#22062#0" expanded="true" />
+            <element signature="e#22085#22086#0" expanded="true" />
+            <element signature="e#22615#22616#0" expanded="true" />
+            <element signature="e#22669#22670#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/engine/CameraSelectionDetector.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="688">
-          <caret line="63" column="41" selection-start-line="63" selection-start-column="41" selection-end-line="63" selection-end-column="41" />
+        <state relative-caret-position="60">
+          <caret line="3" column="36" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/engine/IO/Input.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="328">
+          <caret line="203" column="29" selection-start-line="203" selection-start-column="29" selection-end-line="203" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#setCenter#0;class#Input#0" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1065,6 +1032,7 @@
             <option name="proportions">
               <list>
                 <option value="0.20344828" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -1072,7 +1040,7 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited>Python</last-edited>
+          <last-edited>Python (minecrash)|Python</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1096,7 +1064,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>Python 3.7</last-edited>
+          <last-edited>1.8</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

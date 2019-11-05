@@ -8,7 +8,9 @@ import org.joml.*;
 import engine.maths.Transformations;
 
 import java.lang.Math;
-import java.util.Collection;
+
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public class CameraSelectionDetector {
 
@@ -36,15 +38,23 @@ public class CameraSelectionDetector {
         return Math.abs(x1 - x2) + Math.abs(z1 - z2);
     }
 
+    /**
+     * Given the camera position, and the direction the camera is looking for, and the chunks
+     * return the block that the cross hair is pointing at
+     * @param chunkManager contains all chunk data
+     * @param center camera position
+     * @param dir where camera is looking at
+     * @return the selected block, or null if nothing is selected
+     */
     private Vector3f selectBlock(ChunkManager chunkManager, Vector3f center, Vector3f dir) {
         Block block;
         Block selectedBlock = null;
         float blockClosestDistance = Float.POSITIVE_INFINITY;
         final float distance = 5.5f;
 
-        for (int x = (int) (center.x - distance); x <= (int) (center.x + distance); ++x) {
-            for (int y = (int) (center.y - distance); y <= (int) (center.y + distance); ++y) {
-                for (int z = (int) (center.z - distance); z <= (int) (center.z + distance); ++z) {
+        for (int x = max((int) (center.x - distance), 0); x <= min((int) (center.x + distance), Chunk.getY()); ++x) {
+            for (int y = max((int) (center.y - distance), 0); y <= min((int) (center.y + distance), Chunk.getY()); ++y) {
+                for (int z = max((int) (center.z - distance), 0); z <= min((int) (center.z + distance), Chunk.getY()); ++z) {
                     block = chunkManager.getBlock(x, y, z);
                     if (block == null) return null;
                     if (block.getBlockID() == TextureManager.AIR) continue;
@@ -63,44 +73,60 @@ public class CameraSelectionDetector {
         if (selectedBlock == null) return null;
         return selectedBlock.getPosition();
 
-//        for (Chunk chunk : chunks) {
-//            min.set(chunk.getPosition());
-//            max.set(chunk.getPosition());
-//            max.add(Chunk.getX(), Chunk.getY(), Chunk.getZ()); // the size of chunk
-//            if (Intersectionf.intersectRayAab(center, dir, min, max, nearFar)) {
-//                float dist = ((chunk.getx() << 4) + 8 - center.x) * ((chunk.getx() << 4) + 8 - center.x)
-//                        + ((chunk.getz() << 4) + 8 - center.z) * ((chunk.getz() << 4) + 8 - center.z);
-//                if (dist > 266.13708498984755)
-//                    continue; // (8 * (2 ** .5) + 5) ** 2
-//                for (int i = 0; i < Chunk.getX(); ++i) {
-//                    for (int j = (int) Math.max(center.y - 6, 0); j < (int) Math.min(center.y + 6, Chunk.getY()); ++j) {
-//                        for (int k = 0; k < Chunk.getZ(); ++k) {
-//                            if (manhattan_distance((chunk.getx() << 4) + i, (chunk.getz() << 4) + k, center.x,
-//                                    center.z) > 5)
-//                                continue;
-//                            block = chunk.getBlock(i, j, k);
-//                            if (block == null) {
-//                                return null;
-//                            }
-//                            if (block.getBlockID() == TextureManager.AIR)
-//                                continue;
-//                            min.set(block.getPosition());
-//                            max.set(block.getPosition());
-//                            max.add(1, 1, 1);
-//                            if (Intersectionf.intersectRayAab(center, dir, min, max, nearFar) && nearFar.x <= 5
-//                                    && nearFar.x < blockClosestDistance) {
-//                                blockClosestDistance = nearFar.x;
-//                                selectedBlock = block;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        if (selectedBlock == null)
-//            return null;
-//        else
-//            return selectedBlock.getPosition();
+    }
+
+    /**
+     * This method is almost the same as the method `selectBlock`, but this method runs faster
+     * for far blocks
+     * @param chunkManager contains all chunk data
+     * @param center camera position
+     * @param dir where camera is looking at
+     * @return the selected block, or null if nothing is selected
+     */
+    public Vector3f selectFarBlock(ChunkManager chunkManager, Vector3f center, Vector3f dir) {
+        Block block;
+        Block selectedBlock = null;
+        float blockClosestDistance = Float.POSITIVE_INFINITY;
+        final float distance = 5.5f;
+
+        for (Chunk chunk : chunkManager.getChunks()) {
+            min.set(chunk.getPosition());
+            max.set(chunk.getPosition());
+            max.add(Chunk.getX(), Chunk.getY(), Chunk.getZ()); // the size of chunk
+            if (Intersectionf.intersectRayAab(center, dir, min, max, nearFar)) {
+                float dist = ((chunk.getx() << 4) + 8 - center.x) * ((chunk.getx() << 4) + 8 - center.x)
+                        + ((chunk.getz() << 4) + 8 - center.z) * ((chunk.getz() << 4) + 8 - center.z);
+                if (dist > 266.13708498984755)
+                    continue; // (8 * (2 ** .5) + 5) ** 2
+                for (int i = 0; i < Chunk.getX(); ++i) {
+                    for (int j = (int) max(center.y - 6, 0); j < (int) min(center.y + 6, Chunk.getY()); ++j) {
+                        for (int k = 0; k < Chunk.getZ(); ++k) {
+                            if (manhattan_distance((chunk.getx() << 4) + i, (chunk.getz() << 4) + k, center.x,
+                                    center.z) > 5)
+                                continue;
+                            block = chunk.getBlock(i, j, k);
+                            if (block == null) {
+                                return null;
+                            }
+                            if (block.getBlockID() == TextureManager.AIR)
+                                continue;
+                            min.set(block.getPosition());
+                            max.set(block.getPosition());
+                            max.add(1, 1, 1);
+                            if (Intersectionf.intersectRayAab(center, dir, min, max, nearFar) && nearFar.x <= 5
+                                    && nearFar.x < blockClosestDistance) {
+                                blockClosestDistance = nearFar.x;
+                                selectedBlock = block;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (selectedBlock == null)
+            return null;
+        else
+            return selectedBlock.getPosition();
     }
 
     public Vector3f getNormalVector(Vector3f position, Camera camera, Transformations transformations) {
