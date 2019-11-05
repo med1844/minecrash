@@ -7,18 +7,79 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fd199bd0-17de-4e96-8139-258e73d17526" name="Default Changelist" comment="V">
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.core.resources.prefs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/CameraSelectionDetector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/CameraSelectionDetector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/engine/IO/Input.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/engine/IO/Input.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/engine/IO/Input.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/IO/Input.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/engine/Utils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/Utils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/engine/world/Block.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/world/Block.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/engine/world/Scene.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/world/Scene.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/engine/world/TextureManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/world/TextureManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/engine/world/Timer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/engine/world/Timer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/Camera.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/CameraSelectionDetector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/CameraSelectionDetector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/IO/Input.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/IO/Input.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/IO/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/IO/Window.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/MainEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/MainEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/ArrayTexture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/ArrayTexture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/DirectionalLight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/DirectionalLight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/Fog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/Fog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/HUD/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/HUD/Inventory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/Material.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/Material.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/Mesh.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/Mesh.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/Renderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/Texture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/Texture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/particles/BlockDebrisParticleEmitter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/particles/BlockDebrisParticleEmitter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/particles/Particle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/particles/Particle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/particles/ParticleEmitterInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/particles/ParticleEmitterInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/DepthShader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/shaders/DepthShader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/HUDShader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/shaders/HUDShader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/ParticleShader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/shaders/ParticleShader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/SceneShader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/shaders/SceneShader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/Shader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/shaders/Shader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/ShaderFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/shaders/ShaderFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/shadow/ShadowBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/shadow/ShadowBuffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/shadow/ShadowCascade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/shadow/ShadowCascade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/graphics/shadow/ShadowRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/shadow/ShadowRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/maths/FrustumCullFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/maths/FrustumCullFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/maths/NoiseMath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/maths/NoiseMath.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/maths/SimplexNoise.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/maths/SimplexNoise.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/maths/SimplexNoiseOctave.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/maths/SimplexNoiseOctave.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/maths/Transformations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/maths/Transformations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/Biome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/Biome.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/BiomeBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/BiomeBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/Block.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/Chunk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/ChunkUtils/Chunk.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/ChunkManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/ChunkUtils/ChunkManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/MultiThreadChunkGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/ChunkUtils/MultiThreadChunkGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/MultiThreadChunkMeshBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/ChunkUtils/MultiThreadChunkMeshBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/MultiThreadChunkReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/ChunkUtils/MultiThreadChunkReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/MultiThreadChunkWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/ChunkUtils/MultiThreadChunkWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/DayNightCycle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/DayNightCycle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/Scene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/TextureManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/TextureManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/Timer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/Timer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/ChunkGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/ChunkGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/ChunkGeneratorOverWorld.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/ChunkGeneratorOverWorld.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/NoiseGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/NoiseGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/NoiseGeneratorOctaves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/NoiseGeneratorOctaves.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/NoiseGeneratorPerlin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/NoiseGeneratorPerlin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/NoiseGeneratorPerlinOctaves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/NoiseGeneratorPerlinOctaves.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/NoiseGeneratorSimplex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/NoiseGeneratorSimplex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/NoiseGeneratorSimplexOctaves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/NoiseGeneratorSimplexOctaves.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/layer/GenLayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/layer/GenLayerAddIsland.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerAddIsland.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/layer/GenLayerAddMushroomIsland.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerAddMushroomIsland.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/layer/GenLayerAddSnow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerAddSnow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/layer/GenLayerDeepOcean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerDeepOcean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/layer/GenLayerEdge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerEdge.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/layer/GenLayerFuzzZoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerFuzzZoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/layer/GenLayerIsland.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerIsland.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/layer/GenLayerRemoveTooMuchOcean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerRemoveTooMuchOcean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/layer/GenLayerRiverInit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerRiverInit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/layer/GenLayerSmooth.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerSmooth.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/layer/GenLayerVoronoiZoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerVoronoiZoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/engine/world/gen/layer/GenLayerZoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerZoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/game/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/medioqrity/game/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/engine/IO/Input.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/engine/Utils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/engine/world/Block.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/engine/world/Scene.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/engine/world/TextureManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/engine/world/Timer.class" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -34,52 +95,19 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/CameraSelectionDetector.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2161">
-              <caret line="47" column="3" selection-start-line="47" selection-start-column="3" selection-end-line="47" selection-end-column="3" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#9129#9130#0" expanded="true" />
-                <element signature="e#9167#9168#0" expanded="true" />
-                <element signature="e#9201#9202#0" expanded="true" />
-                <element signature="e#9231#9232#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="180">
+              <caret line="9" selection-start-line="9" selection-end-line="9" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/Chunk.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/MainEngine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7270">
-              <caret line="37" column="24" selection-start-line="37" selection-start-column="24" selection-end-line="37" selection-end-column="24" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1772#1773#0" expanded="true" />
-                <element signature="e#1822#1823#0" expanded="true" />
-                <element signature="e#21844#21845#0" expanded="true" />
-                <element signature="e#21868#21869#0" expanded="true" />
-                <element signature="e#21893#21894#0" expanded="true" />
-                <element signature="e#21917#21918#0" expanded="true" />
-                <element signature="e#21949#21950#0" expanded="true" />
-                <element signature="e#21973#21974#0" expanded="true" />
-                <element signature="e#22005#22006#0" expanded="true" />
-                <element signature="e#22029#22030#0" expanded="true" />
-                <element signature="e#22061#22062#0" expanded="true" />
-                <element signature="e#22085#22086#0" expanded="true" />
-                <element signature="e#22615#22616#0" expanded="true" />
-                <element signature="e#22669#22670#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/ChunkManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="596">
-              <caret line="127" column="25" selection-start-line="127" selection-start-column="25" selection-end-line="127" selection-end-column="25" />
+            <state relative-caret-position="20">
+              <caret line="1" selection-start-line="1" selection-end-line="1" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -88,28 +116,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/engine/MainEngine.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/game/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="8" column="3" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/engine/Utils.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/Utils.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="100">
               <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
@@ -120,24 +127,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/engine/CameraSelectionDetector.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="3" column="36" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/engine/IO/Input.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/game/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="328">
-              <caret line="203" column="29" selection-start-line="203" selection-start-column="29" selection-end-line="203" selection-end-column="29" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#setCenter#0;class#Input#0" />
-              </folding>
+            <state relative-caret-position="80">
+              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -170,43 +164,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/engine/world/DayNightCycle.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/world/BiomeBase.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/shader/particle.fsh" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/world/Position2D.java" />
-        <option value="$PROJECT_DIR$/minecrash.iml" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/graphics/ShadowRenderer.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/shader/depth.vsh" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/DepthShader.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/IO/Window.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/SceneShader.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/graphics/ArrayTexture.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/shader/scene.fsh" />
-        <option value="$PROJECT_DIR$/src/main/resources/shader/scene.vsh" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/graphics/DirectionalLight.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/shader/particle.vsh" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/ParticleShader.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/maths/FrustrumCullFilter.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/maths/FrustumCullFilter.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/world/ChunkManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/graphics/shadow/ShadowBuffer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/maths/Transformations.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/graphics/shadow/ShadowCascade.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/world/Chunk.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/graphics/shadow/ShadowRenderer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ThreadUtils/Counter.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/MultithreadChunkGenerator.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/MultiThreadChunkGenerator.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/MultiThreadChunkMeshGenerator.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/world/gen/ChunkGeneratorOverWorld.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/world/Scene.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/Camera.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/MultiThreadChunkMeshBuilder.java" />
-        <option value="$PROJECT_DIR$/src/main/java/uml.puml" />
-        <option value="$PROJECT_DIR$/src/main/resources/shader/HUD.vsh.glsl" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/ShaderFactory.java" />
-        <option value="$PROJECT_DIR$/src/main/java/engine/graphics/Texture.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/shader/HUD.fsh" />
         <option value="$PROJECT_DIR$/src/main/java/engine/graphics/shaders/HUDShader.java" />
         <option value="$PROJECT_DIR$/src/main/resources/shader/HUD.vsh" />
         <option value="$PROJECT_DIR$/src/main/java/game/Main.java" />
@@ -221,6 +178,43 @@
         <option value="$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/ChunkManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/CameraSelectionDetector.java" />
         <option value="$PROJECT_DIR$/src/main/java/engine/IO/Input.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/HUD/Inventory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/particles/BlockDebrisParticleEmitter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/particles/Particle.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/particles/ParticleEmitterInterface.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/shaders/DepthShader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/shaders/HUDShader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/shaders/Shader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/ArrayTexture.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/Mesh.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/Renderer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/Texture.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/IO/Input.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/IO/Window.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/maths/FrustumCullFilter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/maths/Transformations.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/ChunkUtils/Chunk.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/ChunkUtils/ChunkManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/ChunkUtils/MultiThreadChunkMeshBuilder.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerAddIsland.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerAddMushroomIsland.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerAddSnow.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerDeepOcean.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerEdge.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerIsland.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerRemoveTooMuchOcean.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerRiverInit.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerSmooth.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerVoronoiZoom.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerZoom.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/ChunkGeneratorOverWorld.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/NoiseGeneratorPerlinOctaves.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/BiomeBase.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/DayNightCycle.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/Scene.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/TextureManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/CameraSelectionDetector.java" />
+        <option value="$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/MainEngine.java" />
       </list>
     </option>
   </component>
@@ -288,6 +282,15 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="medioqrity" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
+              <item name="minecrash" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="medioqrity" type="462c0819:PsiDirectoryNode" />
               <item name="engine" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -296,6 +299,7 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="medioqrity" type="462c0819:PsiDirectoryNode" />
               <item name="engine" type="462c0819:PsiDirectoryNode" />
               <item name="graphics" type="462c0819:PsiDirectoryNode" />
             </path>
@@ -305,6 +309,7 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="medioqrity" type="462c0819:PsiDirectoryNode" />
               <item name="engine" type="462c0819:PsiDirectoryNode" />
               <item name="IO" type="462c0819:PsiDirectoryNode" />
             </path>
@@ -314,6 +319,61 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="medioqrity" type="462c0819:PsiDirectoryNode" />
+              <item name="engine" type="462c0819:PsiDirectoryNode" />
+              <item name="maths" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
+              <item name="minecrash" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="medioqrity" type="462c0819:PsiDirectoryNode" />
+              <item name="engine" type="462c0819:PsiDirectoryNode" />
+              <item name="world" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
+              <item name="minecrash" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="medioqrity" type="462c0819:PsiDirectoryNode" />
+              <item name="engine" type="462c0819:PsiDirectoryNode" />
+              <item name="world" type="462c0819:PsiDirectoryNode" />
+              <item name="ChunkUtils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
+              <item name="minecrash" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="medioqrity" type="462c0819:PsiDirectoryNode" />
+              <item name="engine" type="462c0819:PsiDirectoryNode" />
+              <item name="world" type="462c0819:PsiDirectoryNode" />
+              <item name="gen" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
+              <item name="minecrash" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="medioqrity" type="462c0819:PsiDirectoryNode" />
+              <item name="engine" type="462c0819:PsiDirectoryNode" />
+              <item name="world" type="462c0819:PsiDirectoryNode" />
+              <item name="gen" type="462c0819:PsiDirectoryNode" />
+              <item name="layer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="minecrash" type="b2602c69:ProjectViewProjectNode" />
+              <item name="minecrash" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="medioqrity" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -386,11 +446,11 @@
   </component>
   <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="game.Main" />
+      <option name="MAIN_CLASS_NAME" value="io.github.medioqrity.game.Main" />
       <module name="minecrash" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="engine.*" />
+          <option name="PATTERN" value="io.github.medioqrity.engine.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -443,7 +503,7 @@
     <frame x="-6" y="-6" width="1513" height="1013" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20206186" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20206186" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -460,7 +520,7 @@
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5023349" side_tool="true" weight="0.29834256" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Messages" order="9" sideWeight="0.49965635" weight="0.14609286" />
-      <window_info anchor="bottom" id="Run" order="10" sideWeight="0.5003436" visible="true" weight="0.20724802" />
+      <window_info active="true" anchor="bottom" id="Run" order="10" sideWeight="0.5003436" visible="true" weight="0.20724802" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.24948454" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -531,359 +591,117 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/maths/FrustumCullFilter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="14" column="55" selection-start-line="14" selection-start-column="55" selection-end-line="14" selection-end-column="55" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/shader/particle.vsh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="11" column="29" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../lwjgl_3.2.2/joml-1.9.15.jar!/org/joml/Vector4f.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="336" column="20" selection-start-line="336" selection-start-column="20" selection-end-line="336" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../lwjgl_3.2.2/joml-1.9.15.jar!/org/joml/Vector3f.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="410" column="20" selection-start-line="410" selection-start-column="20" selection-end-line="410" selection-end-column="20" />
-          <folding>
-            <element signature="e#12125#12126#0" expanded="true" />
-            <element signature="e#12188#12189#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../lwjgl_3.2.2/joml-1.9.15.jar!/org/joml/Matrix4f.class">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/Fog.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="40">
-          <caret line="2676" column="27" selection-start-line="2676" selection-start-column="27" selection-end-line="2676" selection-end-column="27" />
-          <folding>
-            <element signature="e#91409#91410#0" expanded="true" />
-            <element signature="e#91451#91452#0" expanded="true" />
-          </folding>
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk-12.0.1/lib/src.zip!/java.base/java/util/List.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/Material.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="571" column="6" selection-start-line="571" selection-start-column="6" selection-end-line="571" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/shadow/ShadowCascade.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="13" column="2" selection-start-line="13" selection-start-column="2" selection-end-line="13" selection-end-column="2" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1300#1301#0" expanded="true" />
-            <element signature="e#1338#1339#0" expanded="true" />
-            <element signature="e#1388#1389#0" expanded="true" />
-            <element signature="e#1432#1433#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/shadow/ShadowBuffer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-304">
-          <caret line="10" column="53" selection-start-line="10" selection-start-column="53" selection-end-line="10" selection-end-column="53" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk-12.0.1/lib/src.zip!/java.base/java/lang/System.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="142" column="36" selection-start-line="142" selection-start-column="36" selection-end-line="142" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk-12.0.1/lib/src.zip!/java.base/java/lang/Integer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="560">
-          <caret line="63" column="19" selection-start-line="63" selection-start-column="19" selection-end-line="63" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Downloads/Compressed/javafx-sdk-12.0.1/lib/javafx.base.jar!/javafx/util/Pair.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ThreadUtils/Counter.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/gen/ChunkGenerator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="80">
-          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/gen/NoiseGeneratorPerlin.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="25" column="11" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/gen/NoiseGeneratorPerlinOctaves.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../lwjgl_3.2.2/joml-1.9.15.jar!/org/joml/AABBf.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="19" column="11" selection-start-line="19" selection-start-column="11" selection-end-line="19" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../lwjgl_3.2.2/joml-1.9.15.jar!/org/joml/AABBd.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-260">
-          <caret line="22" column="11" selection-start-line="22" selection-start-column="11" selection-end-line="22" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/MultiThreadChunkMeshBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="64" column="20" selection-start-line="64" selection-start-column="20" selection-end-line="64" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2895#2896#0" expanded="true" />
-            <element signature="e#2925#2926#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/uml.puml" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Material.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
+        <state relative-caret-position="300">
           <caret line="15" column="43" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/shaders/SceneShader.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/Mesh.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        <state relative-caret-position="180">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/Renderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="500">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/shaders/DepthShader.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/graphics/Texture.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+        <state relative-caret-position="140">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/ArrayTexture.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/IO/Input.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        <state relative-caret-position="80">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+          <folding>
+            <element signature="e#3627#3712#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/IO/Window.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/shader/HUD.fsh">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/maths/FrustumCullFilter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/shaders/HUDShader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="14" column="35" lean-forward="true" selection-start-line="14" selection-start-column="35" selection-end-line="14" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/shaders/ShaderFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../lwjgl_3.2.2/lwjgl-glfw-sources.jar!/org/lwjgl/glfw/GLFWScrollCallbackI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="50" column="50" selection-start-line="50" selection-start-column="50" selection-end-line="50" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/IO/Window.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="91" column="23" selection-start-line="91" selection-start-column="23" selection-end-line="91" selection-end-column="23" />
+        <state relative-caret-position="140">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/shadow/ShadowRenderer.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/maths/NoiseMath.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="501">
-          <caret line="69" column="40" selection-start-line="69" selection-start-column="40" selection-end-line="69" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="40">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/TextureManager.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/maths/SimplexNoise.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="347" column="61" selection-start-line="347" selection-start-column="61" selection-end-line="347" selection-end-column="61" />
-          <folding>
-            <element signature="e#15675#15676#0" expanded="true" />
-            <element signature="e#15712#15713#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="80">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/Scene.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/maths/SimplexNoiseOctave.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="55" column="23" selection-start-line="55" selection-start-column="23" selection-end-line="55" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="420">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/shader/HUD.vsh">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/maths/Transformations.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="13" column="18" lean-forward="true" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+        <state relative-caret-position="100">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/HUD/Inventory.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/ChunkUtils/Chunk.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1799">
-          <caret line="30" column="52" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4566#4567#0" expanded="true" />
-            <element signature="e#4604#4605#0" expanded="true" />
-            <element signature="e#4631#4632#0" expanded="true" />
-            <element signature="e#4671#4672#0" expanded="true" />
-            <element signature="e#4739#4740#0" expanded="true" />
-            <element signature="e#4777#4778#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="220">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/gen/ChunkGeneratorOverWorld.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/ChunkUtils/ChunkManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5160">
-          <caret line="315" column="4" selection-start-line="315" selection-start-column="4" selection-end-line="315" selection-end-column="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="240">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/shaders/Shader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="109" lean-forward="true" selection-start-line="109" selection-end-line="109" />
-          <folding>
-            <element signature="method#Shader#0;class#Shader#0" />
-            <element signature="e#623#694#1" />
-            <element signature="docComment;method#createUniform#1;class#Shader#0" />
-            <element signature="method#createUniform#1;class#Shader#0" />
-            <element signature="e#1391#1458#1" />
-            <element signature="method#createDirectionalLightUniform#0;class#Shader#0" />
-            <element signature="method#createMaterialUniform#0;class#Shader#0" />
-            <element signature="method#setUniform#0;class#Shader#0" />
-            <element signature="e#2168#2383#0" />
-            <element signature="method#setUniform#1;class#Shader#0" />
-            <element signature="method#setUniform#3;class#Shader#0" />
-            <element signature="method#setUniform#4;class#Shader#0" />
-            <element signature="method#setUniform#5;class#Shader#0" />
-            <element signature="method#setUniform#7;class#Shader#0" />
-            <element signature="method#setUniform#8;class#Shader#0" />
-            <element signature="method#setUniform#9;class#Shader#0" />
-            <element signature="method#createVertexShader#0;class#Shader#0" />
-            <element signature="method#createFragmentShader#0;class#Shader#0" />
-            <element signature="method#createShader#0;class#Shader#0" />
-            <element signature="e#4606#4696#1" />
-            <element signature="e#4840#4954#1" />
-            <element signature="docComment;method#link#0;class#Shader#0" />
-            <element signature="method#link#0;class#Shader#0" />
-            <element signature="e#5299#5413#1" />
-            <element signature="e#5448#5514#1" />
-            <element signature="e#5550#5618#1" />
-            <element signature="e#5721#5838#1" />
-            <element signature="e#5936#5937#0" expanded="true" />
-            <element signature="e#5967#5968#0" expanded="true" />
-            <element signature="method#clear#0;class#Shader#0" />
-            <element signature="e#6042#6093#1" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/Camera.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-94">
-          <caret line="33" column="29" selection-start-line="33" selection-start-column="29" selection-end-line="33" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Texture.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="90" column="26" selection-start-line="90" selection-start-column="26" selection-end-line="90" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1748#1749#0" expanded="true" />
-            <element signature="e#1796#1797#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/maths/Transformations.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="52" column="22" selection-start-line="52" selection-start-column="22" selection-end-line="52" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/MultiThreadChunkGenerator.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/ChunkUtils/MultiThreadChunkGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
           <caret line="33" column="16" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="16" />
@@ -893,131 +711,274 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Mesh.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/ChunkUtils/MultiThreadChunkMeshBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="140" column="16" selection-start-line="140" selection-start-column="16" selection-end-line="140" selection-end-column="16" />
+        <state relative-caret-position="60">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/ChunkUtils/MultiThreadChunkWriter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4283#4284#0" expanded="true" />
-            <element signature="e#4311#4312#0" expanded="true" />
-            <element signature="e#4346#4347#0" expanded="true" />
-            <element signature="e#4380#4381#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/MultiThreadChunkReader.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/ChunkUtils/MultiThreadChunkReader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-280">
+        <state relative-caret-position="20">
           <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/MultiThreadChunkWriter.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerAddMushroomIsland.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-285">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="220">
+          <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/shader/scene.vsh">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerAddIsland.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="28" selection-start-line="28" selection-end-line="28" />
+        <state relative-caret-position="220">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/particles/BlockDebrisParticleEmitter.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-122">
-          <caret line="17" column="37" selection-start-line="17" selection-start-column="37" selection-end-line="17" selection-end-column="37" />
+        <state relative-caret-position="40">
+          <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/MainEngine.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerAddSnow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerDeepOcean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerEdge.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
-          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/game/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerFuzzZoom.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="8" column="3" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
+        <state relative-caret-position="40">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/graphics/Renderer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2161">
-          <caret line="47" column="3" selection-start-line="47" selection-start-column="3" selection-end-line="47" selection-end-column="3" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#9129#9130#0" expanded="true" />
-            <element signature="e#9167#9168#0" expanded="true" />
-            <element signature="e#9201#9202#0" expanded="true" />
-            <element signature="e#9231#9232#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/ChunkManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="596">
-          <caret line="127" column="25" selection-start-line="127" selection-start-column="25" selection-end-line="127" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/world/ChunkUtils/Chunk.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7270">
-          <caret line="37" column="24" selection-start-line="37" selection-start-column="24" selection-end-line="37" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1772#1773#0" expanded="true" />
-            <element signature="e#1822#1823#0" expanded="true" />
-            <element signature="e#21844#21845#0" expanded="true" />
-            <element signature="e#21868#21869#0" expanded="true" />
-            <element signature="e#21893#21894#0" expanded="true" />
-            <element signature="e#21917#21918#0" expanded="true" />
-            <element signature="e#21949#21950#0" expanded="true" />
-            <element signature="e#21973#21974#0" expanded="true" />
-            <element signature="e#22005#22006#0" expanded="true" />
-            <element signature="e#22029#22030#0" expanded="true" />
-            <element signature="e#22061#22062#0" expanded="true" />
-            <element signature="e#22085#22086#0" expanded="true" />
-            <element signature="e#22615#22616#0" expanded="true" />
-            <element signature="e#22669#22670#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/CameraSelectionDetector.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerIsland.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
-          <caret line="3" column="36" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="36" />
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+          <folding>
+            <element signature="e#257#258#0" expanded="true" />
+            <element signature="e#288#289#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/engine/IO/Input.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerRemoveTooMuchOcean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="203" column="29" selection-start-line="203" selection-start-column="29" selection-end-line="203" selection-end-column="29" />
+        <state relative-caret-position="220">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerRiverInit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerSmooth.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerVoronoiZoom.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/layer/GenLayerZoom.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/ChunkGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/ChunkGeneratorOverWorld.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="47" column="30" selection-start-line="47" selection-start-column="30" selection-end-line="47" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#setCenter#0;class#Input#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/NoiseGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/NoiseGeneratorPerlin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/NoiseGeneratorOctaves.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/NoiseGeneratorPerlinOctaves.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/NoiseGeneratorSimplex.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/gen/NoiseGeneratorSimplexOctaves.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-682">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/Biome.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/BiomeBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/Block.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/DayNightCycle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/Scene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/TextureManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/world/Timer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/Camera.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/CameraSelectionDetector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/MainEngine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/engine/Utils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/io/github/medioqrity/game/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
         </state>
       </provider>
     </entry>
