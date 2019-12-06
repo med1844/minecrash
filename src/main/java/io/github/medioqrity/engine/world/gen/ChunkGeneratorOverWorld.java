@@ -47,7 +47,7 @@ public class ChunkGeneratorOverWorld implements ChunkGenerator {
         rand = new Random();
         if (seed == 0) seed = System.nanoTime();
 //        seed=884115298253700L;945874381819300 4 16 16 16 is great
-        seed = 85714926159550L;
+//        seed = 85714926159550L;
         rand.setSeed(seed);
 
         int depthNoiseOctave = 4;

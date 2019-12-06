@@ -1,5 +1,6 @@
 package io.github.medioqrity.engine.IO;
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.joml.AABBf;
 import org.joml.Vector3f;
 
@@ -9,6 +10,10 @@ import io.github.medioqrity.engine.graphics.HUD.Inventory;
 import io.github.medioqrity.engine.world.ChunkUtils.Chunk;
 import io.github.medioqrity.engine.world.Scene;
 import io.github.medioqrity.engine.Camera;
+import org.lwjgl.glfw.GLFWJoystickCallback;
+
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 
 import static io.github.medioqrity.engine.world.TextureManager.*;
 
@@ -18,6 +23,7 @@ public class Input {
     private boolean inWindow = true;
     private boolean leftButtonPressed = false, rightButtonPressed = false, middleButtonPressed = false;
     private boolean[] keys = new boolean[GLFW_KEY_LAST + 1];
+    private boolean[] lastControllerKeys = new boolean[6];
     private Window window;
     private Camera camera;
     private long lastUpdateTime;
@@ -34,8 +40,6 @@ public class Input {
     private int currentChoseBlockID = GLASS;
     private boolean fly = true;
     private boolean floating = false;
-    private final float FAST = 0.02f;
-    private final float SLOW = 0.008f;
     private double scrollY = 0;
 
     private static int FRONT = GLFW_KEY_W;
@@ -45,6 +49,9 @@ public class Input {
     private static int UP = GLFW_KEY_SPACE;
     private static int DOWN = GLFW_KEY_LEFT_SHIFT;
     private static int DROP = GLFW_KEY_Q;
+    private final float FAST = 0.02f;
+    private final float SLOW = 0.008f;
+    private final float GAMEPAD_FACTOR = 10;
 
     public Input() {
     }
@@ -63,16 +70,16 @@ public class Input {
         centerY = window.getHeight() / 2;
         glfwSetCursorPos(window.getWindowHandle(), centerX, centerY);
 
-        glfwSetCursorPosCallback(window.getWindowHandle(), (windowHandle, xpos, ypos) -> {
-            dx += centerX - (int)xpos;
-            dy += centerY - (int)ypos;
+        glfwSetCursorPosCallback(window.getWindowHandle(), (windowHandle, xPos, yPos) -> {
+            dx += centerX - (int)xPos;
+            dy += centerY - (int)yPos;
             glfwSetCursorPos(window.getWindowHandle(), centerX, centerY);
         });
 
-        glfwSetKeyCallback(window.getWindowHandle(), (windowHandle, key, scancode, action, mods) -> {
-            if (scancode <= GLFW_KEY_LAST) {
-                if (action == GLFW_PRESS) keys[scancode] = true;
-                else if (action == GLFW_RELEASE) keys[scancode] = false;
+        glfwSetKeyCallback(window.getWindowHandle(), (windowHandle, key, scanCode, action, mods) -> {
+            if (scanCode <= GLFW_KEY_LAST) {
+                if (action == GLFW_PRESS) keys[scanCode] = true;
+                else if (action == GLFW_RELEASE) keys[scanCode] = false;
             }
         });
 
@@ -96,8 +103,8 @@ public class Input {
         centerY = y;
     }
 
-    public boolean isKeyDown(int scancode) {
-         return glfwGetKey(window.getWindowHandle(), scancode) == GLFW_PRESS;
+    public boolean isKeyDown(int scanCode) {
+         return glfwGetKey(window.getWindowHandle(), scanCode) == GLFW_PRESS;
     }
 
     private void limit(Vector3f v, float keyboardSpeed) {
@@ -110,7 +117,60 @@ public class Input {
         return Math.max(Math.min(a, threshold), -threshold);
     }
 
+    private void updateGamePad() {
+        ByteBuffer buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1);
+        assert buttons != null;
+
+        if (buttons.get(GLFW_GAMEPAD_BUTTON_LEFT_BUMPER) == GLFW_PRESS && !lastControllerKeys[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER]) {
+            scrollY += 1;
+            lastControllerKeys[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER] = true;
+        }
+        if (buttons.get(GLFW_GAMEPAD_BUTTON_LEFT_BUMPER) == GLFW_RELEASE) {
+            lastControllerKeys[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER] = false;
+        }
+
+        if (buttons.get(GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER) == GLFW_PRESS && !lastControllerKeys[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER]) {
+            scrollY -= 1;
+            lastControllerKeys[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER] = true;
+        }
+        if (buttons.get(GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER) == GLFW_RELEASE) {
+            lastControllerKeys[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER] = false;
+        }
+
+        if (buttons.get(GLFW_GAMEPAD_BUTTON_X) == GLFW_PRESS) {
+            keyboardSpeed = FAST;
+        } else {
+            keyboardSpeed = SLOW;
+        }
+
+        FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
+
+        float MOVE_ACTIVATION = 0.4f;
+        float DIRECTION_ACTIVATION = 0.1f;
+        assert axes != null;
+
+        float axisLeftX = axes.get(GLFW_GAMEPAD_AXIS_LEFT_X);
+        float axisLeftY = axes.get(GLFW_GAMEPAD_AXIS_LEFT_Y);
+        float axisRightX = axes.get(GLFW_GAMEPAD_AXIS_RIGHT_X);
+        float axisRightY = axes.get(GLFW_GAMEPAD_AXIS_RIGHT_Y);
+
+        if (axisLeftX > MOVE_ACTIVATION || axisLeftX < -MOVE_ACTIVATION) {
+            rightSpeed += axisLeftX * ACCELERATION_FACTOR;
+        }
+        if (axisLeftY > MOVE_ACTIVATION || axisLeftY < -MOVE_ACTIVATION) {
+            frontSpeed -= axisLeftY * ACCELERATION_FACTOR;
+        }
+        if (axisRightX > DIRECTION_ACTIVATION || axisRightX < -DIRECTION_ACTIVATION) {
+            dx -= axisRightX * GAMEPAD_FACTOR;
+        }
+        if (axisRightY > DIRECTION_ACTIVATION || axisRightY < -DIRECTION_ACTIVATION) {
+            dy += axisRightY * GAMEPAD_FACTOR;
+        }
+    }
+
     public void update(Vector3f selectedBlockPos, Scene scene, Vector3f normalVector, Inventory inventory) {
+        updateGamePad();
+
         long deltaTime = System.currentTimeMillis() - lastUpdateTime;
 
         inventory.move(-(int) scrollY);
@@ -136,7 +196,7 @@ public class Input {
         if (isKeyDown(GLFW_KEY_LEFT_CONTROL)) {
             keyboardSpeed = FAST;
         } else {
-            keyboardSpeed = SLOW;
+            keyboardSpeed = Math.max(SLOW, keyboardSpeed);
         }
 
         if (isKeyDown(GLFW_KEY_ENTER) && coolDownBackspace == 0) {
