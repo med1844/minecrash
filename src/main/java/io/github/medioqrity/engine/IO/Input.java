@@ -119,52 +119,52 @@ public class Input {
 
     private void updateGamePad() {
         ByteBuffer buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1);
-        assert buttons != null;
+        if (buttons != null) {
+            if (buttons.get(GLFW_GAMEPAD_BUTTON_LEFT_BUMPER) == GLFW_PRESS && !lastControllerKeys[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER]) {
+                scrollY += 1;
+                lastControllerKeys[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER] = true;
+            }
+            if (buttons.get(GLFW_GAMEPAD_BUTTON_LEFT_BUMPER) == GLFW_RELEASE) {
+                lastControllerKeys[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER] = false;
+            }
 
-        if (buttons.get(GLFW_GAMEPAD_BUTTON_LEFT_BUMPER) == GLFW_PRESS && !lastControllerKeys[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER]) {
-            scrollY += 1;
-            lastControllerKeys[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER] = true;
-        }
-        if (buttons.get(GLFW_GAMEPAD_BUTTON_LEFT_BUMPER) == GLFW_RELEASE) {
-            lastControllerKeys[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER] = false;
-        }
+            if (buttons.get(GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER) == GLFW_PRESS && !lastControllerKeys[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER]) {
+                scrollY -= 1;
+                lastControllerKeys[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER] = true;
+            }
+            if (buttons.get(GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER) == GLFW_RELEASE) {
+                lastControllerKeys[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER] = false;
+            }
 
-        if (buttons.get(GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER) == GLFW_PRESS && !lastControllerKeys[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER]) {
-            scrollY -= 1;
-            lastControllerKeys[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER] = true;
-        }
-        if (buttons.get(GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER) == GLFW_RELEASE) {
-            lastControllerKeys[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER] = false;
-        }
+            if (buttons.get(GLFW_GAMEPAD_BUTTON_X) == GLFW_PRESS) {
+                keyboardSpeed = FAST;
+            } else {
+                keyboardSpeed = SLOW;
+            }
 
-        if (buttons.get(GLFW_GAMEPAD_BUTTON_X) == GLFW_PRESS) {
-            keyboardSpeed = FAST;
-        } else {
-            keyboardSpeed = SLOW;
-        }
+            FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
 
-        FloatBuffer axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
+            float MOVE_ACTIVATION = 0.4f;
+            float DIRECTION_ACTIVATION = 0.1f;
+            assert axes != null;
 
-        float MOVE_ACTIVATION = 0.4f;
-        float DIRECTION_ACTIVATION = 0.1f;
-        assert axes != null;
+            float axisLeftX = axes.get(GLFW_GAMEPAD_AXIS_LEFT_X);
+            float axisLeftY = axes.get(GLFW_GAMEPAD_AXIS_LEFT_Y);
+            float axisRightX = axes.get(GLFW_GAMEPAD_AXIS_RIGHT_X);
+            float axisRightY = axes.get(GLFW_GAMEPAD_AXIS_RIGHT_Y);
 
-        float axisLeftX = axes.get(GLFW_GAMEPAD_AXIS_LEFT_X);
-        float axisLeftY = axes.get(GLFW_GAMEPAD_AXIS_LEFT_Y);
-        float axisRightX = axes.get(GLFW_GAMEPAD_AXIS_RIGHT_X);
-        float axisRightY = axes.get(GLFW_GAMEPAD_AXIS_RIGHT_Y);
-
-        if (axisLeftX > MOVE_ACTIVATION || axisLeftX < -MOVE_ACTIVATION) {
-            rightSpeed += axisLeftX * ACCELERATION_FACTOR;
-        }
-        if (axisLeftY > MOVE_ACTIVATION || axisLeftY < -MOVE_ACTIVATION) {
-            frontSpeed -= axisLeftY * ACCELERATION_FACTOR;
-        }
-        if (axisRightX > DIRECTION_ACTIVATION || axisRightX < -DIRECTION_ACTIVATION) {
-            dx -= axisRightX * GAMEPAD_FACTOR;
-        }
-        if (axisRightY > DIRECTION_ACTIVATION || axisRightY < -DIRECTION_ACTIVATION) {
-            dy += axisRightY * GAMEPAD_FACTOR;
+            if (axisLeftX > MOVE_ACTIVATION || axisLeftX < -MOVE_ACTIVATION) {
+                rightSpeed += axisLeftX * ACCELERATION_FACTOR;
+            }
+            if (axisLeftY > MOVE_ACTIVATION || axisLeftY < -MOVE_ACTIVATION) {
+                frontSpeed -= axisLeftY * ACCELERATION_FACTOR;
+            }
+            if (axisRightX > DIRECTION_ACTIVATION || axisRightX < -DIRECTION_ACTIVATION) {
+                dx -= axisRightX * GAMEPAD_FACTOR;
+            }
+            if (axisRightY > DIRECTION_ACTIVATION || axisRightY < -DIRECTION_ACTIVATION) {
+                dy += axisRightY * GAMEPAD_FACTOR;
+            }
         }
     }
 
